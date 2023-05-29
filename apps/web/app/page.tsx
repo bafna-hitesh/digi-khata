@@ -1,4 +1,4 @@
-import Button from 'ui/components/Button'
+import { Button } from '@digi/components'
 
 export default function Page() {
   return (
