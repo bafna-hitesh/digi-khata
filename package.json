@@ -4,18 +4,18 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
   },
   "devDependencies": {
-    "@turbo/gen": "^1.9.7",
-    "eslint": "^7.32.0",
+    "@turbo/gen": "^1.10.1",
+    "eslint": "^8.42.0",
     "eslint-config-custom": "*",
-    "prettier": "^2.5.1",
-    "stylelint": "^15.6.2",
+    "prettier": "^2.8.8",
+    "stylelint": "^15.7.0",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended": "^12.0.0",
     "stylelint-order": "^6.0.3",
-    "turbo": "^1.9.7"
+    "turbo": "^1.10.1"
   },
   "name": "mono-digi-khata",
   "packageManager": "npm@9.4.0",
