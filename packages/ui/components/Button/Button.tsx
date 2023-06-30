@@ -1,8 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { Button as B } from "antd";
+import {Button} from '@nextui-org/button'; 
 
-export const Button = () => {
-  return <B onClick={() => alert("boop")}>Boo</B>;
+const DigiButton = () => {
+  return <Button color="primary">Booz</Button>;
 };
+
+export default DigiButton;

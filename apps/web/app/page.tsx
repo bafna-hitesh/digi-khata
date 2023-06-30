@@ -1,9 +1,10 @@
-import { Button } from '@digi/components'
+// app/page.tsx
+import { Provider, Button } from '@digi/components'
 
 export default function Page() {
   return (
-    <>
-      <Button />
-    </>
+    <Provider>
+      <Button>Click me</Button>
+    </Provider>
   )
 }
