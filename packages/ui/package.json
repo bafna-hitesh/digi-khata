@@ -1,5 +1,5 @@
 {
-  "name": "@digi/components",
+  "name": "@digi/components-with-nextui",
   "version": "0.0.0",
   "main": "dist/es/index.js",
   "module": "dist/es/index.js",
