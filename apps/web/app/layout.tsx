@@ -1,3 +1,5 @@
+import Provider from '@digi/provider';
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +7,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body>{children}</body>
+      <body>
+        <Provider>
+          {children}
+        </Provider>
+      </body>
     </html>
   )
 }
