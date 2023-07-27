@@ -6,10 +6,10 @@ import axios from 'axios';
 export async function GET (req) {
     try {
         const redirectURL = new URL(req.url);
-        const requestToken = redirectURL.searchParams.get('request_token');
+        let requestToken = redirectURL.searchParams.get('request_token');
 
         if(!requestToken) {
-            throw new Error('Request Token not found in callback URL');
+            throw new Error('Request Token not found in redirect URL');
         }
 
         const checksum = crypto.createHash('sha256').update(config.zerodha.apiKey + requestToken + config.zerodha.apiSecret);
@@ -21,14 +21,14 @@ export async function GET (req) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
-        let data = {
+        let sessionBody = {
             'api_key': config.zerodha.apiKey,
             'request_token': requestToken,
             'checksum': checksum
         }
 
-        let sessionResponse = await axios.post(sessionURL, data, { headers });
-        const accessToken = sessionResponse.access_token;
+        let sessionResponse = await axios.post(sessionURL, sessionBody, { headers });
+        let accessToken = sessionResponse.access_token;
         console.log(accessToken);
 
         return NextResponse.json({ sessionResponse });

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { generateLoginURLForAngelOne } from '../../../../../../utils/loginURL';
 
 export async function GET () {
-    return NextResponse.redirect();
+    const loginURL = generateLoginURLForAngelOne();
+    return NextResponse.redirect(loginURL);
 }
