@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@digi/zerodha": "*"
+    "@digi/zerodha": "*",
+    "@digi/upstox": "*",
+    "@digi/angelone": "*"
   }
 }
