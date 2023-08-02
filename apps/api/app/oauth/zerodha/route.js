@@ -13,7 +13,12 @@ export async function GET (req) {
 
         // return NextResponse.json({ sessionResponse: sessionResponse.data });
 
-        return NextResponse.redirect(process.env.APP_HOME_URL);
+        let response = NextResponse.redirect(process.env.APP_HOME_URL);
+        response.cookies.set('accessToken', accessToken, {
+            httpOnly: true,
+            secure: true
+        });
+        return response;
 
     } catch(error) {
         console.log('[Error] Some Exception occured' + JSON.stringify(error));
