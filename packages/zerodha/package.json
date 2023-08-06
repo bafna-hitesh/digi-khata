@@ -1,5 +1,5 @@
 {
     "name": "@digi/zerodha",
     "main": "src/index.js",
-    "types": "src/index.js"
+    "type": "module"
 }
