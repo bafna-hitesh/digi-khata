@@ -1,0 +1,5 @@
+{
+    "name": "@digi/upstox",
+    "main": "src/index.js",
+    "types": "src/index.js"
+}
