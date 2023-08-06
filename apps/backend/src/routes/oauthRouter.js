@@ -1,21 +1,58 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { userAuth } from '@digi/zerodha';
+import { userAuth, kiteUtils } from '@digi/zerodha';
+import { generateRandomToken } from '../utils/index.js';
+import User from '../models/User.js';
 
 const oauthRouter = express.Router();
 config();
 
 oauthRouter.get('/oauth/zerodha', async (req, res) => {
     try {
-        let requestToken = userAuth.getRequestToken(req.url);
+        let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        let requestToken = userAuth.getRequestToken(fullUrl);
 
         if(!requestToken) {
             throw new Error('Request Token not found in redirect URL');
         }
 
-        let accessToken = await userAuth.getAccessToken(process.env.KITE_API_KEY, process.env.KITE_API_SECRET, requestToken, process.env.KITE_BASE_URL);
+        let kiteUserProfile = await userAuth.getUserProfileWithAccessToken(process.env.KITE_API_KEY, process.env.KITE_API_SECRET, requestToken, process.env.KITE_BASE_URL);
 
-        res.cookies('accessToken', accessToken, {
+        let users = await User.findAll({
+            where: {
+                kiteUserID: kiteUserProfile.user_id
+            }
+        });
+
+        let existingUser;
+        
+        // Saving the user to database if doesn't exist
+        if(users.length === 0) {
+            let formattedKiteProfile = kiteUtils.formatKiteProfile(kiteUserProfile);
+            existingUser = await User.create({
+                name: kiteUserProfile.user_name,
+                kiteUserID: kiteUserProfile.user_id,
+                kiteUserDetails: formattedKiteProfile
+            });
+        }
+
+        if(users.length > 1) {
+            throw new Error('Duplicate Profile Found');
+        }
+
+        if(users.length === 1) 
+            existingUser = users[0];
+
+        let clientToken = generateRandomToken(20);
+
+        // Updating Tokens
+        await existingUser.update({
+            clientToken: clientToken,
+            kiteAccessToken: kiteUserProfile.access_token
+        });
+        await existingUser.save();
+
+        res.cookie('token', clientToken, {
             httpOnly: true,
             secure: true
         });

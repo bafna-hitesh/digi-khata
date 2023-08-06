@@ -2,25 +2,32 @@ import express from 'express';
 import { config } from 'dotenv';
 import authRouter from './routes/authRouter.js';
 import oauthRouter from './routes/oauthRouter.js';
+import sequelize from './db/index.js';
+import User from './models/User.js';
 
 const app = express();
-const PORT = process.env.APP_PORT || 3000;
+const PORT = process.env.APP_PORT || 5000;
 config();
-
-app.get('/', (req, res) => {
-    console.log(process.env.APP_PORT);
-    res.send('Hello World');
-})
 
 app.use('/api', authRouter);
 app.use('/api', oauthRouter);
 
 app.use((req, res) => {
-    console.log(req.url);
     res.send('404 - Page Not Found');
-})
+});
+
+async function connectToDB() {
+    try {
+        await sequelize.authenticate();
+        console.log('Successfully connected to DB');
+        await sequelize.sync({ alter: true });
+    } catch(err) {
+        console.log('Unable to connect to DB - ', err);
+        process.exit(1);
+    }
+}
 
 app.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
-    // connectToDB();
+    connectToDB();
 });

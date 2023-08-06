@@ -15,7 +15,7 @@ function getRequestToken(url) {
     return redirectURL.searchParams.get('request_token');
 }
 
-async function getAccessToken(apiKey, apiSecret, requestToken, kiteBaseURL) {
+async function getUserProfileWithAccessToken(apiKey, apiSecret, requestToken, kiteBaseURL) {
     const checksum = crypto.createHash('sha256').update(apiKey + requestToken + apiSecret).digest('hex');
         
     let headers = {
@@ -26,11 +26,11 @@ async function getAccessToken(apiKey, apiSecret, requestToken, kiteBaseURL) {
     let sessionBody = `api_key=${apiKey}&request_token=${requestToken}&checksum=${checksum}`;
 
     let sessionResponse = await axios.post(`${kiteBaseURL}/session/token`, sessionBody, { headers });
-    return sessionResponse.data.data.access_token;
+    return sessionResponse.data.data;
 }
 
 export {
     getLoginURLForZerodha,
     getRequestToken,
-    getAccessToken
+    getUserProfileWithAccessToken
 }
