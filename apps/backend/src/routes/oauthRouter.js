@@ -1,7 +1,7 @@
 import express from 'express';
 import { config } from 'dotenv';
 import { userAuth, kiteUtils } from '@digi/zerodha';
-import { generateRandomToken } from '../utils/index.js';
+import { generateRandomToken, generateJWT } from '../utils/index.js';
 import User from '../models/User.js';
 
 const oauthRouter = express.Router();
@@ -51,7 +51,9 @@ oauthRouter.get('/oauth/zerodha', async (req, res) => {
             kiteAccessToken: kiteUserProfile.access_token
         });
 
-        res.cookie('token', clientToken, {
+        let jwtToken = generateJWT(clientToken, process.env.APP_SECRET);
+
+        res.cookie('token', jwtToken, {
             httpOnly: true,
             secure: true
         });

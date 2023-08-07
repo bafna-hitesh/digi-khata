@@ -31,4 +31,8 @@ kiteRouter.get('/kite/orders', async (req, res) => {
     }
 });
 
+kiteRouter.get('/kite/refreshToken', (req, res) => {
+    res.redirect(process.env.APP_LOGIN_URL);
+});
+
 export default kiteRouter;
