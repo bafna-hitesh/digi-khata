@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import authRouter from './routes/authRouter.js';
 import oauthRouter from './routes/oauthRouter.js';
 import sequelize from './db/index.js';
+import kiteRouter from './routes/kiteRouter.js';
 import User from './models/User.js';
 
 const app = express();
@@ -12,6 +13,7 @@ config();
 
 app.use('/api', authRouter);
 app.use('/api', oauthRouter);
+app.use('/api', kiteRouter);
 
 app.use((req, res) => {
     res.send('404 - Page Not Found');

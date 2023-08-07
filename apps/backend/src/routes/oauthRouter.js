@@ -50,7 +50,6 @@ oauthRouter.get('/oauth/zerodha', async (req, res) => {
             clientToken: clientToken,
             kiteAccessToken: kiteUserProfile.access_token
         });
-        await existingUser.save();
 
         res.cookie('token', clientToken, {
             httpOnly: true,
