@@ -11,11 +11,11 @@ COPY ./docker/config/nginx.development.conf /etc/nginx/nginx.conf
 # COPY ./public /var/www/public
 
 # Copy self-signing cert: https://devcenter.heroku.com/articles/ssl-certificate-self
-COPY ./.certs/server.crt    /etc/nginx/server.crt
-COPY ./.certs/server.key    /etc/nginx/server.key
+# COPY ./.certs/server.crt    /etc/nginx/server.crt
+# COPY ./.certs/server.key    /etc/nginx/server.key
 
 # Copy DHE handshake and dhparam https://bjornjohansen.no/optimizing-https-nginx
-COPY ./.certs/dhparam.pem   /etc/nginx/dhparam.pem
+# COPY ./.certs/dhparam.pem   /etc/nginx/dhparam.pem
 
 # Make cert key only available to owner (root)
 RUN chmod 600 /etc/nginx/server.key

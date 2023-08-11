@@ -1,7 +1,7 @@
 FROM wurstmeister/kafka:latest
 
 LABEL author="Rachit Srivastava"
-WORKDIR /var/www/boilerplate
+WORKDIR /var/www/digi-khata
 
 
 # To build:

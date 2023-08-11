@@ -2,7 +2,7 @@ FROM node:latest
 
 LABEL author="Rachit Srivastava"
 
-WORKDIR /var/www/boilerplate
+WORKDIR /var/www/digi-khata
 
 RUN npm install -g pm2@latest
 RUN pm2 install typescript
