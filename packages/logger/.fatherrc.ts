@@ -3,11 +3,11 @@ import { defineConfig } from 'father'
 export default defineConfig({
   sourcemap: false,
   cjs: {
-    input: 'components',
+    input: './index.ts',
     output: 'dist/cjs'
   },
   esm: {
-    input: 'components',
+    input: './index.ts',
     output: 'dist/es'
   }
 })
