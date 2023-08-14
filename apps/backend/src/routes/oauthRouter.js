@@ -1,22 +1,23 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { userAuth, kiteUtils } from '@digi/zerodha';
+import { zerodha } from '@digi/brokers';
 import { generateRandomToken, generateJWT } from '../utils/index.js';
 import User from '../models/User.js';
 
+const { userAuth, kiteUtils } = zerodha;
 const oauthRouter = express.Router();
 config();
 
 oauthRouter.get('/oauth/zerodha', async (req, res) => {
     try {
         let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-        let requestToken = userAuth.getRequestToken(fullUrl);
+        let requestToken = userAuth?.getRequestToken(fullUrl);
 
         if(!requestToken) {
             throw new Error('Request Token not found in redirect URL');
         }
 
-        let kiteUserProfile = await userAuth.getUserProfileWithAccessToken(process.env.KITE_API_KEY, process.env.KITE_API_SECRET, requestToken, process.env.KITE_BASE_URL);
+        let kiteUserProfile = await userAuth?.getUserProfileWithAccessToken(process.env.KITE_API_KEY, process.env.KITE_API_SECRET, requestToken, process.env.KITE_BASE_URL);
 
         let users = await User.findAll({
             where: {
@@ -28,7 +29,7 @@ oauthRouter.get('/oauth/zerodha', async (req, res) => {
         
         // Saving the user to database if doesn't exist
         if(users.length === 0) {
-            let formattedKiteProfile = kiteUtils.formatKiteProfile(kiteUserProfile);
+            let formattedKiteProfile = kiteUtils?.formatKiteProfile(kiteUserProfile);
             existingUser = await User.create({
                 name: kiteUserProfile.user_name,
                 kiteUserID: kiteUserProfile.user_id,

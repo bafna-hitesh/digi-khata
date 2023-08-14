@@ -23,7 +23,8 @@
     "packages/*"
   ],
   "dependencies": {
-    "clsx": "^2.0.0"
+    "clsx": "^2.0.0",
+    "jws": "^4.0.0"
   },
   "engines": {
     "node": ">=19.0.0"

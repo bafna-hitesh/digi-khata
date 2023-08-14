@@ -1,10 +1,11 @@
 {
-  "name": "@digi/provider",
+  "name": "@digi/brokers",
   "version": "0.0.0",
   "main": "dist/es/index.js",
   "module": "dist/es/index.js",
   "types": "./index.tsx",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "father dev",
@@ -18,8 +19,9 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "antd": "^5.7.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "father": "^4.3.1"
+    "antd": "^5.8.3",
+    "crypto": "^1.0.1",
+    "father": "^4.3.1",
+    "querystring": "^0.2.1"
   }
 }

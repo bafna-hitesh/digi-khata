@@ -18,6 +18,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "antd": "^5.8.3"
+    "antd": "^5.8.3",
+    "father": "^4.3.1"
   }
 }

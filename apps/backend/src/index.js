@@ -7,7 +7,7 @@ import kiteRouter from './routes/kiteRouter.js';
 import User from './models/User.js';
 
 const app = express();
-const PORT = process.env.APP_PORT || 5000;
+const PORT = process.env.APP_PORT || 5010;
 config();
 
 

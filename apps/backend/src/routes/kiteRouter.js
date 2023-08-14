@@ -1,7 +1,9 @@
 import express from 'express';
 import { config } from 'dotenv';
 import User from '../models/User.js';
-import { kiteOrders } from '@digi/zerodha';
+import { zerodha } from '@digi/brokers';
+
+const { kiteOrders } = zerodha;
 
 const kiteRouter = express.Router();
 config();
@@ -16,7 +18,7 @@ kiteRouter.get('/kite/orders', async (req, res) => {
     
         let accessToken = userData.kiteAccessToken;
     
-        let ordersResponse = await kiteOrders.getAllOrdersForTheDay(process.env.KITE_API_KEY, accessToken, process.env.KITE_BASE_URL);
+        let ordersResponse = await kiteOrders?.getAllOrdersForTheDay(process.env.KITE_API_KEY, accessToken, process.env.KITE_BASE_URL);
     
         return res.status(200).json({
             message: 'Successfully got orders',

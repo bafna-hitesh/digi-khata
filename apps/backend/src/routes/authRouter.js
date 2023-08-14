@@ -1,12 +1,14 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { userAuth } from '@digi/zerodha';
+import { zerodha } from '@digi/brokers';
+
+const { userAuth } = zerodha;
 
 const authRouter = express.Router();
 config();
 
 authRouter.get('/auth/login/zerodha', (req, res) => {
-    const loginURL = userAuth.getLoginURLForZerodha(process.env.KITE_API_KEY, process.env.KITE_LOGIN_URL);
+    const loginURL = userAuth.getLoginUrl(process.env.KITE_API_KEY);
     res.redirect(loginURL);
 });
 
