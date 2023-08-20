@@ -10,11 +10,13 @@ if (envFound.error) throw new Error("⚠️  Couldn't find .env file  ⚠️");
 
 export default {
   PORT: process.env.PORT || 5000,
-  IN_PROD: process.env.IN_PROD,
   LOGGER: process.env.LOGGER,
   NODE_ENV: process.env.NODE_ENV,
-
-  DATABASE_URL: process.env.DATABASE_URL,
   SERVER_NAME: process.env.SERVER_NAME,
+  DATABASE_URL: process.env.DATABASE_URL,
+  POSTGRES_USER: process.env.POSTGRES_USER,
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+  POSTGRES_HOST: process.env.POSTGRES_HOST,
+  POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
   KAFKA_HOST: process.env.KAFKA_HOST,
 } as ProcessEnv;

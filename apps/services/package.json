@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pm2 start ./config/pm2.all.config.js",
-    "dev:user": "nodemon --watch services/servers/user --ext ts --exec ts-node servers/user/index.ts",
+    "dev:user": "nodemon --watch servers --ext ts --exec ts-node servers/user/index.ts",
     "eslint": "eslint .",
     "test-report": "nyc --reporter=text --reporter=html mocha ./test"
   },
