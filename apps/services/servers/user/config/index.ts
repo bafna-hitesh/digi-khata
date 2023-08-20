@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import { ProcessEnv } from '../types/Environment/index';
+import { ProcessEnv } from '../types/environment';
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'DEV';
 
 const envFound = dotenv.config();
 

@@ -1,11 +1,7 @@
 import { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import config from '../config';
-
-interface ErrorInterface {
-  status: number;
-  message: string
-}
+import { ErrorInterface } from '../types/error';
 
 export default ({ app }: { app: Application }) => {
   app.get('/status', (req, res) => {
@@ -31,10 +27,10 @@ export default ({ app }: { app: Application }) => {
   });
   
   app.listen(config.PORT, () => {
-    console.log(`Server started on port ${config.PORT}!`);  
+    console.log(`User Service started on port ${config.PORT}!`);  
   })
   .on('error', (err) => {
-    console.error('Error in server ', err);
+    console.error('Error in User Service ', err);
     process.exit(1);
   });
 };
