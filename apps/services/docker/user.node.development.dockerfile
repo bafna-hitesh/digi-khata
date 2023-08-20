@@ -6,7 +6,11 @@ WORKDIR /var/www/digi-khata
 
 RUN npm install -g pm2@latest
 RUN pm2 install typescript
-RUN yarn install
+# RUN yarn install
+
+COPY . /var/www/digi-khata
+
+RUN npm install
 
 RUN mkdir -p /var/log/pm2
 

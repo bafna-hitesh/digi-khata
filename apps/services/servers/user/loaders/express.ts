@@ -1,29 +1,27 @@
-import { Application } from 'express';
-import Logger from '../../shared/utils/logger/index';
-import routes from '../api';
+import { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import config from '../config';
-import expressRequestId from 'express-request-id';
-import requestLogger from '../../shared/utils/logger/loggers/RequestLogger';
+
+interface ErrorInterface {
+  status: number;
+  message: string
+}
 
 export default ({ app }: { app: Application }) => {
   app.get('/status', (req, res) => {
     res.status(200).send('It Works Fine');
   });
 
-  app.use(expressRequestId());
-  app.use(requestLogger);
   app.use(cors());
-  app.use(routes());
 
   /// catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    const err = new Error('Not Found');
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const err: any = new Error('Not Found');
     err['status'] = 404;
     next(err);
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err: ErrorInterface, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);
     res.json({
       errors: {
@@ -31,12 +29,12 @@ export default ({ app }: { app: Application }) => {
       },
     });
   });
-  app
-    .listen(config.PORT, () => {
-      Logger.log(`🛡️ User Server listening on port: ${config.PORT} 🛡️`);
-    })
-    .on('error', (err) => {
-      Logger.error(err);
-      process.exit(1);
-    });
+  
+  app.listen(config.PORT, () => {
+    console.log(`Server started on port ${config.PORT}!`);  
+  })
+  .on('error', (err) => {
+    console.error('Error in server ', err);
+    process.exit(1);
+  });
 };

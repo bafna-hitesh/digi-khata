@@ -7,6 +7,7 @@ module.exports = {
     script: './index.ts',
     watch: ['.', '../shared', '../../node_modules'],
     instance_var: 'INSTANCE_ID',
+    interpreter: '/usr/bin/ts-node',
     env: {
       NODE_ENV: 'development',
       NODE_PATH: path.resolve(__dirname, './node_modules'),
