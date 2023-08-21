@@ -1,5 +1,5 @@
 // delete un necessary values
-const formatKiteProfile = (kiteUserProfile) => {
+const formatKiteProfile = (kiteUserProfile: any) => {
   delete kiteUserProfile?.access_token;
   delete kiteUserProfile?.public_token;
   delete kiteUserProfile?.refresh_token;

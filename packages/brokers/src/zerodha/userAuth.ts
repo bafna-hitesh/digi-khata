@@ -1,10 +1,10 @@
 import crypto from "crypto";
 import axios from "./axiosInstance";
-import { baseURL } from "./constants";
+import { loginURL } from "./constants";
 
 // generate login url to be redirected https://kite.trade/docs/connect/v3/user/#login-flow
 const getLoginUrl = (apiKey: string) =>
-  `${baseURL}/connect/login?v=3&api_key=${apiKey}`;
+  `${loginURL}/?v=3&api_key=${apiKey}`;
 
 // get request token from url
 const getRequestToken = (url: string) =>
