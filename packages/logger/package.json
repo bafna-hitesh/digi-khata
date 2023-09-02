@@ -1,5 +1,5 @@
 {
-  "name": "@digi/provider",
+  "name": "@digi/logger",
   "version": "0.0.0",
   "main": "dist/es/index.js",
   "module": "dist/es/index.js",
@@ -18,8 +18,10 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "antd": "^5.7.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "father": "^4.3.1"
+    "morgan": "^1.10.0",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/morgan": "^1.9.4"
   }
 }

@@ -1,7 +1,7 @@
 export default function Login() {
     return (<>
           <div>
-              <a href="http://localhost:5000/api/auth/login/zerodha"><button>Login with Zerodha</button></a>
+              <a href="http://localhost:5000/auth/login/zerodha"><button>Login with Zerodha</button></a>
               <br/><br/>
               <a href="http://localhost:3000/api/auth/login/upstox"><button>Login with Upstox</button></a>
               <br/><br/>

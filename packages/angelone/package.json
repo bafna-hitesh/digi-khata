@@ -1,5 +1,0 @@
-{
-    "name": "@digi/angelone",
-    "main": "src/index.js",
-    "types": "src/index.js"
-}

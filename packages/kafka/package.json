@@ -1,9 +1,9 @@
 {
-  "name": "@digi/provider",
+  "name": "@digi/kafka",
   "version": "0.0.0",
-  "main": "dist/es/index.js",
-  "module": "dist/es/index.js",
-  "types": "./index.tsx",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.ts",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
@@ -18,8 +18,10 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "antd": "^5.7.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "father": "^4.3.1"
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/kafka-node": "^3.0.0",
+    "@types/kafkajs": "^1.9.0"
   }
 }

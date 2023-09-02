@@ -6,15 +6,16 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "@turbo/gen": "^1.10.9",
-    "eslint": "^8.45.0",
+    "@turbo/gen": "^1.10.12",
+    "@types/busboy": "^1.5.0",
+    "eslint": "^8.47.0",
     "eslint-config-custom": "*",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
     "stylelint": "^15.10.2",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended": "^13.0.0",
     "stylelint-order": "^6.0.3",
-    "turbo": "^1.10.9"
+    "turbo": "^1.10.12"
   },
   "name": "mono-digi-khata",
   "packageManager": "npm@9.4.0",
@@ -23,7 +24,8 @@
     "packages/*"
   ],
   "dependencies": {
-    "clsx": "^2.0.0"
+    "clsx": "^2.0.0",
+    "jws": "^4.0.0"
   },
   "engines": {
     "node": ">=19.0.0"
