@@ -6,7 +6,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "pm2 start ./config/pm2.all.config.js",
+    "dev": "npm run dev:user && npm run dev:order",
     "dev:user": "nodemon --watch servers --ext ts --exec ts-node servers/user/index.ts",
     "dev:order": "nodemon --watch servers --ext ts --exec ts-node servers/order/index.ts",
     "eslint": "eslint .",
