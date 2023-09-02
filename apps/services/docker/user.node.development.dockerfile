@@ -10,7 +10,7 @@ RUN pm2 install typescript
 
 COPY . /var/www/digi-khata
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 RUN mkdir -p /var/log/pm2
 

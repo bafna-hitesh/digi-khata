@@ -2,7 +2,6 @@ const path = require("path");
 
 module.exports = {
   apps: ['user'].map((name) => {
-    console.log("coming in >>>>>>>>>", name);
     return {
       name,
       cwd: path.resolve(__dirname, `../servers/${name}`),
