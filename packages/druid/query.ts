@@ -1,1 +1,1 @@
-export const getAllData = 'SELECT * FROM orders';
+export const getAllData = "SELECT * FROM orders WHERE __time BETWEEN ? AND ?";
