@@ -3,12 +3,12 @@ import * as druid from "@digi/druid";
 import config from "../config";
 
 export const getDashboardData = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  // try {
     let body = req.body;
-    let data = await druid.getAllData(config.DRUID_ROUTER_URL, 'Some Kite User', body.broker, body.commodity, body.freq, '2023-07-06', '2023-07-10');
-    return res.json(data.data);
-  } catch(err) {
-    console.log('Some Exception Occurred');
-    console.error(err);
-  }
+    let data: any = await druid.getKiteDailyFOData(config.DRUID_ROUTER_URL, 'Some Kite User', 'Kite', 'FO', body.freq, '2023-07-06', '2023-07-06');
+    return res.json(data);
+  // } catch(err) {
+    // console.log('Some Exception Occurred');
+    // console.error(err);
+  // }
 }
