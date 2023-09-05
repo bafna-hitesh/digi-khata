@@ -3,9 +3,11 @@ import cors from 'cors';
 import { ErrorInterface } from '../types/error';
 import config from '../config';
 import routes from '../api';
+import bodyParser from 'body-parser';
 
 export default async ({ app }: { app: Application }) => {
   app.use(cors());
+  app.use(bodyParser.json());
   app.use(routes());
   
   app.use((req: Request, res: Response, next: NextFunction) => {

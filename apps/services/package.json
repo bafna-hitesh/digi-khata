@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@digi/brokers": "*",
+    "body-parser": "^1.20.2",
     "busboy": "^1.6.0",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",

@@ -1,1 +1,1 @@
-export const getAllData = "SELECT * FROM orders WHERE __time BETWEEN ? AND ?";
+export const getKiteAllData = "SELECT * FROM orders WHERE __time BETWEEN ? AND ?";

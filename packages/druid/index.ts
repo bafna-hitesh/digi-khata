@@ -6,7 +6,7 @@ function getAllData(routerURL: string, user: string, broker: string, type: strin
     { "type": "TIMESTAMP", "value": startDate},
     { "type": "TIMESTAMP", "value": endDate },
   ]
-  return runQuery(routerURL, query.getAllData, parameters);
+  return runQuery(routerURL, query.getKiteAllData, parameters);
 }
 
 export {
