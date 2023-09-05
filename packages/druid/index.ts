@@ -44,7 +44,8 @@ async function getKiteDailyFOData(routerURL: string, user: string, broker: strin
       console.log('totalSellForTheDay: ', totalSellForTheDay[i].revenue);
       console.log('typeof(totalBuyForTheDay', typeof(totalBuyForTheDay[i].expense));
       console.log('typeof(totalSellForTheDay', typeof(totalSellForTheDay[i].revenue));
-      profitForTheDay = totalSellForTheDay[i].revenue - totalBuyForTheDay[i].expenses;
+      profitForTheDay = Number(totalSellForTheDay[i].revenue) - Number(totalBuyForTheDay[i].expenses);
+      console.log('typeof(profitForTheDay): ', typeof(profitForTheDay));
       console.log('profitForTheDay:', profitForTheDay);
       totalTrades++;
       console.log('totalTrades: ', totalTrades);
