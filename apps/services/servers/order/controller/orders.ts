@@ -14,11 +14,11 @@ export const ordersUpload = async (req: Request, res: Response, next: NextFuncti
     // Parse the file uploaded and upload the data to Kafka
     const bb = busboy({ headers: req.headers });
 
-    bb.on('file', (name, file, info) => {
+    bb.on('file', (name: string, file: any, info: any) => {
 
         file
         .pipe(csv())
-        .on('data', (row) => {
+        .on('data', (row: any) => {
           row.broker = 'Kite';
           // Todo - Get the user from req object. This user will be set when we verify the request that contains token in the middleware
           row.user = 'Some Kite User';
@@ -27,7 +27,7 @@ export const ordersUpload = async (req: Request, res: Response, next: NextFuncti
         .on('end', () => {
           console.log('CSV processing finished');
         })
-        .on('error', (error) => {
+        .on('error', (error: any) => {
           throw error;
         })
     });
