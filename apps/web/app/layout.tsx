@@ -1,4 +1,4 @@
-// import Provider from '@digi/provider';
+import Provider from '@digi/provider';
 
 export default function RootLayout({
   children,
@@ -8,9 +8,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body>
-        {/* <Provider> */}
+        <Provider isDarkMode>
           {children}
-        {/* </Provider> */}
+        </Provider>
       </body>
     </html>
   )

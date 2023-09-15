@@ -52,7 +52,7 @@ const AntdProvider = ({ children, theme, isDarkMode }) => (
   } : {
     algorithm: antdTheme.defaultAlgorithm,
     ...lightTheme,
-  }}>
+  }}> 
     {children}
   </ConfigProvider>
 );
