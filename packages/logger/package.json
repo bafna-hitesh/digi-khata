@@ -22,6 +22,6 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@types/morgan": "^1.9.4"
+    "@types/morgan": "^1.9.5"
   }
 }

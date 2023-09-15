@@ -3,12 +3,13 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "upgrade": "node updatePackages.js"
   },
   "devDependencies": {
     "@turbo/gen": "^1.10.13",
     "@types/busboy": "^1.5.0",
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-config-custom": "*",
     "prettier": "^3.0.3",
     "stylelint": "^15.10.3",
