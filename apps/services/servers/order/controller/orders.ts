@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
-import busboy from "busboy";
-import csv from "csv-parser";
-import { createKafkaInstance, kafkaProducer } from "@digi/kafka";
-import config from "../config";
+import { NextFunction, Request, Response } from 'express';
+import busboy from 'busboy';
+import csv from 'csv-parser';
+import { createKafkaInstance, kafkaProducer } from '@digi/kafka';
+import config from '../config';
 
 export const ordersUpload = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -15,8 +15,7 @@ export const ordersUpload = async (req: Request, res: Response, next: NextFuncti
     const bb = busboy({ headers: req.headers });
 
     bb.on('file', (name: string, file: any, info: any) => {
-
-        file
+      file
         .pipe(csv())
         .on('data', (row: any) => {
           row.broker = 'Kite';
@@ -29,19 +28,18 @@ export const ordersUpload = async (req: Request, res: Response, next: NextFuncti
         })
         .on('error', (error: any) => {
           throw error;
-        })
+        });
     });
 
     bb.on('close', () => {
       res.send('Parsed CSV Successfully');
     });
-  
-    req.pipe(bb);
 
-  } catch (error: any){
+    req.pipe(bb);
+  } catch (error: any) {
     next({
       status: 500,
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};

@@ -1,13 +1,13 @@
-import { defineConfig } from 'father'
+import { defineConfig } from 'father';
 
 export default defineConfig({
   sourcemap: false,
   cjs: {
     input: 'src',
-    output: 'dist/cjs'
+    output: 'dist/cjs',
   },
   esm: {
     input: 'src',
-    output: 'dist/es'
-  }
-})
+    output: 'dist/es',
+  },
+});

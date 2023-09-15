@@ -3,5 +3,5 @@ import loaders from './loaders';
 
 (async () => {
   const app = express();
-  await loaders({ expressApp: app })
+  await loaders({ expressApp: app });
 })();

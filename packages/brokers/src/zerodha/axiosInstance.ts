@@ -6,5 +6,5 @@ export default axios.create({
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     'X-Kite-Version': 3,
-  }
+  },
 });

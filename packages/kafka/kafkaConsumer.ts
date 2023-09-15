@@ -12,14 +12,10 @@ async function consumeDataFromKafka(kafkaConsumer: any, topic: string) {
     fromBeginning: true,
   });
   await kafkaConsumer.run({
-    eachMessage: async ({ topic, partition, message }: { topic: string, partition: string, message: any}) => {
+    eachMessage: async ({ topic, partition, message }: { topic: string; partition: string; message: any }) => {
       console.log(JSON.parse(message.value.toString()));
     },
   });
 }
 
-export {
-  createKafkaConsumer,
-  checkConsumerConnectionToKafka,
-  consumeDataFromKafka
-}
+export { createKafkaConsumer, checkConsumerConnectionToKafka, consumeDataFromKafka };

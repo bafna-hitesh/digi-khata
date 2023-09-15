@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosResponse } from 'axios';
 import axios from './axiosInstance';
 
 interface AllOrders {
@@ -7,10 +7,7 @@ interface AllOrders {
   kiteBaseURL: string;
 }
 
-const getAllOrdersForTheDay = ({
-  apiKey,
-  accessToken,
-}: AllOrders): Promise<AxiosResponse<any, any>> => {
+const getAllOrdersForTheDay = ({ apiKey, accessToken }: AllOrders): Promise<AxiosResponse<any, any>> => {
   let headers = {
     Authorization: `token ${apiKey}:${accessToken}`,
   };

@@ -1,30 +1,34 @@
 import { sequelize } from '../loaders/sequelize';
 import { DataTypes } from 'sequelize';
 
-const User = sequelize.define('User', {
+const User = sequelize.define(
+  'User',
+  {
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     kiteUserID: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     clientToken: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     kiteAccessToken: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     kiteUserDetails: {
-        type: DataTypes.JSON
-    }
-}, {
-    tableName: 'Users'
-});
+      type: DataTypes.JSON,
+    },
+  },
+  {
+    tableName: 'Users',
+  },
+);
 
 export default User;

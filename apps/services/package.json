@@ -30,7 +30,7 @@
     "mock-knex": "^0.4.12",
     "nodemon": "^3.0.1",
     "nyc": "^15.1.0",
-    "package-json-validator": "^0.6.3",
+    "package-json-validator": "^0.2.0",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"

@@ -11,14 +11,18 @@
     "build": "father build",
     "build:deps": "father prebundle",
     "prepublishOnly": "father doctor && npm run build",
-    "lint": "TIMING=1 eslint \"**/*.ts*\""
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "files": [
     "dist"
   ],
   "sideEffects": false,
+  "devDependencies": {
+    "eslint-config-custom": "*"
+  },
   "dependencies": {
     "antd": "^5.9.1",
-    "father": "^4.3.4"
+    "father": "^2.30.23",
+    "package-json-validator": "0.2.0"
   }
 }

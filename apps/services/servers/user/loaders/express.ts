@@ -27,12 +27,13 @@ export default ({ app }: { app: Application }) => {
       },
     });
   });
-  
-  app.listen(config.PORT, () => {
-    console.log(`User Service started on port ${config.PORT}!`);  
-  })
-  .on('error', (err) => {
-    console.error('Error in User Service ', err);
-    process.exit(1);
-  });
+
+  app
+    .listen(config.PORT, () => {
+      console.log(`User Service started on port ${config.PORT}!`);
+    })
+    .on('error', (err) => {
+      console.error('Error in User Service ', err);
+      process.exit(1);
+    });
 };

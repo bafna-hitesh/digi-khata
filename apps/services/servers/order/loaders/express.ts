@@ -7,7 +7,7 @@ import routes from '../api';
 export default async ({ app }: { app: Application }) => {
   app.use(cors());
   app.use(routes());
-  
+
   app.use((req: Request, res: Response, next: NextFunction) => {
     console.log('Inside 404');
     const err: any = new Error('Not found');
@@ -20,16 +20,17 @@ export default async ({ app }: { app: Application }) => {
     res.status(err.status || 500);
     res.json({
       errors: {
-        message: err.message
-      }
+        message: err.message,
+      },
     });
   });
 
-  app.listen(config.ORDER_MS_PORT, () => {
-    console.log(`Order Service started on port ${config.ORDER_MS_PORT}`);
-  })
-  .on('error', (err) => {
-    console.error('Error in Order Service ', err);
-    process.exit(1);
-  })
-}
+  app
+    .listen(config.ORDER_MS_PORT, () => {
+      console.log(`Order Service started on port ${config.ORDER_MS_PORT}`);
+    })
+    .on('error', (err) => {
+      console.error('Error in Order Service ', err);
+      process.exit(1);
+    });
+};

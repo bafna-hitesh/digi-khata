@@ -32,5 +32,5 @@ export default {
   APP_LOGIN_URL: process.env.APP_LOGIN_URL,
   APP_SECRET: process.env.APP_SECRET,
 
-  DRUID_ROUTER_URL: process.env.DRUID_ROUTER_URL
+  DRUID_ROUTER_URL: process.env.DRUID_ROUTER_URL,
 } as ProcessEnv;

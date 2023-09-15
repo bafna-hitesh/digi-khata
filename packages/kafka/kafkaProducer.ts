@@ -12,14 +12,10 @@ function produceDataToKafka(kafkaProducer: any, topic: string, partition: string
     messages: [
       {
         partition: partition,
-        value: JSON.stringify(payload)
-      }
-    ]
+        value: JSON.stringify(payload),
+      },
+    ],
   });
 }
 
-export {
-  createKafkaProducer,
-  checkProducerConnectionToKafka,
-  produceDataToKafka
-}
+export { createKafkaProducer, checkProducerConnectionToKafka, produceDataToKafka };

@@ -1,5 +1,3 @@
 import * as userAuth from './userAuth';
 
-export {
-  userAuth
-};
+export { userAuth };
