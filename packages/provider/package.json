@@ -11,15 +11,19 @@
     "build": "father build",
     "build:deps": "father prebundle",
     "prepublishOnly": "father doctor && npm run build",
-    "lint": "TIMING=1 eslint \"**/*.ts*\""
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "files": [
     "dist"
   ],
   "sideEffects": false,
+  "devDependencies": {
+    "eslint-config-custom": "*"
+  },
   "dependencies": {
-    "antd": "^5.7.0",
+    "@ant-design/cssinjs": "^1.17.0",
+    "antd": "^5.9.1",
     "copy-webpack-plugin": "^11.0.0",
-    "father": "^4.3.1"
+    "package-json-validator": "0.2.0"
   }
 }

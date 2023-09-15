@@ -1,0 +1,16 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "eslint.workingDirectories": [
+    "../apps",
+    "../packages",
+    "./apps",
+    "./packages"
+    // Add all your app and package directories here
+  ],
+  "eslint.options": {
+    "configFile": "./.eslintrc.js"
+  }
+}

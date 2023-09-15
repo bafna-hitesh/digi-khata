@@ -3,13 +3,47 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "upgrade": "node updatePackages.js",
+    "commit": "git cz",
+    "delete-node:apps": "rm -rf apps/*/node_modules",
+    "delete-node:packages": "rm -rf packages/*/node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install && chmod a+x .husky/commit-msg"
+  },
+  "lint-staged": {
+    "apps/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "packages/**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "*.json": [
+      "prettier --write"
+    ],
+    "package.json": "npx sort-package-json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/is-ignored": "^17.7.0",
     "@turbo/gen": "^1.10.13",
     "@types/busboy": "^1.5.0",
-    "eslint": "^8.48.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-git": "^1.7.1",
+    "eslint": "^8.49.0",
     "eslint-config-custom": "*",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "stylelint": "^15.10.3",
     "stylelint-config-prettier": "^9.0.5",
@@ -25,6 +59,7 @@
   ],
   "dependencies": {
     "clsx": "^2.0.0",
+    "father": "^4.3.4",
     "jws": "^4.0.0"
   },
   "engines": {

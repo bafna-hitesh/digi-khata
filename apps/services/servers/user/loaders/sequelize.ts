@@ -3,7 +3,7 @@ import config from '../config';
 
 const sequelize = new Sequelize(config.POSTGRES_DATABASE, config.POSTGRES_USER, config.POSTGRES_PASSWORD, {
   host: config.POSTGRES_HOST,
-  dialect: 'postgres'
+  dialect: 'postgres',
 });
 
 async function sequelizeLoader() {
@@ -11,13 +11,10 @@ async function sequelizeLoader() {
     await sequelize.authenticate();
     console.log('Successfully connected to Postgres!');
     await sequelize.sync({ alter: true });
-  } catch(err) {
+  } catch (err) {
     console.log('Unable to connect to Postgres ', err);
     process.exit(1);
   }
 }
 
-export {
-  sequelizeLoader,
-  sequelize
-}
+export { sequelizeLoader, sequelize };

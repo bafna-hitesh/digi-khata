@@ -9,7 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended'
   ],
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   parser: '@typescript-eslint/parser',
   rules: {
     semi: ['error', 'never'],
@@ -24,36 +24,6 @@ module.exports = {
         ignore: ['antd']
       }
     ],
-    // 'import/order': [
-    //   'error',
-    //   {
-    //     groups: ['builtin', 'external', ['internal', 'parent', 'sibling', 'index'], 'unknown'],
-    //     pathGroups: [
-    //       {
-    //         pattern: '@ocloud/**',
-    //         group: 'external',
-    //         position: 'after'
-    //       },
-    //       {
-    //         pattern: '@hooks/**',
-    //         group: 'external',
-    //         position: 'after'
-    //       },
-    //       {
-    //         pattern: '@components/**',
-    //         group: 'external',
-    //         position: 'after'
-    //       }
-    //     ],
-    //     pathGroupsExcludedImportTypes: ['builtin'],
-    //     'newlines-between': 'always',
-    //     alphabetize: {
-    //       order: 'asc',
-    //       orderImportKind: 'asc',
-    //       caseInsensitive: true
-    //     }
-    //   }
-    // ],
     'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,
     'no-console': ['error', { allow: ['error', 'info', 'warn'] }],
@@ -93,6 +63,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/no-unused-vars': 'error'
+    '@typescript-eslint/no-unused-vars': 'error',
   }
 }

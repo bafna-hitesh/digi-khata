@@ -11,7 +11,7 @@
     "build": "father build",
     "build:deps": "father prebundle",
     "prepublishOnly": "father doctor && npm run build",
-    "lint": "TIMING=1 eslint \"**/*.ts*\""
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "files": [
     "dist"
@@ -22,6 +22,7 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@types/morgan": "^1.9.4"
+    "@types/morgan": "^1.9.5",
+    "eslint-config-custom": "*"
   }
 }

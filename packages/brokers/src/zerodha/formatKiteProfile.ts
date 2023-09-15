@@ -8,6 +8,4 @@ const formatKiteProfile = (kiteUserProfile: any) => {
   return kiteUserProfile;
 };
 
-export {
-  formatKiteProfile
-};
+export { formatKiteProfile };

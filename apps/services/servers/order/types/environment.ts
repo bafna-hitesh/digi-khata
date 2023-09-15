@@ -14,7 +14,7 @@ export interface ProcessEnv {
   POSTGRES_PASSWORD: string;
   POSTGRES_HOST: string;
   POSTGRES_DATABASE: string;
-  
+
   KAFKA_HOST: string;
 
   APP_HOME_URL: string;

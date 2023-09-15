@@ -29,5 +29,5 @@ export default {
 
   APP_HOME_URL: process.env.APP_HOME_URL,
   APP_LOGIN_URL: process.env.APP_LOGIN_URL,
-  APP_SECRET: process.env.APP_SECRET
+  APP_SECRET: process.env.APP_SECRET,
 } as ProcessEnv;

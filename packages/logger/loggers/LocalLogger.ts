@@ -23,7 +23,7 @@ export default class LocalLogger implements ILogger {
       }),
       simple(),
       colorize(),
-      errors({ stack: true })
+      errors({ stack: true }),
     );
     return {
       exitOnError: false,
