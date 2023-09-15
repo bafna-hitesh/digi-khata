@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "antd": "^5.9.1",
-    "father": "^2.30.23",
     "package-json-validator": "0.2.0"
   }
 }

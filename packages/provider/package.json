@@ -24,7 +24,6 @@
     "@ant-design/cssinjs": "^1.17.0",
     "antd": "^5.9.1",
     "copy-webpack-plugin": "^11.0.0",
-    "father": "^2.30.23",
     "package-json-validator": "0.2.0"
   }
 }

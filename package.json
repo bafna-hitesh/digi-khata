@@ -59,6 +59,7 @@
   ],
   "dependencies": {
     "clsx": "^2.0.0",
+    "father": "^4.3.4",
     "jws": "^4.0.0"
   },
   "engines": {
