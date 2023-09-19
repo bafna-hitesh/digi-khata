@@ -182,7 +182,6 @@ async function getKiteFODataByHourly(routerURL: string, user: string, broker: st
 //   if(weekDay === 7) return 'Sunday';
 // }
 
-
 export {
   // getAllData,
   getKiteFODataDaily,
