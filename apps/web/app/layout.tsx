@@ -1,4 +1,5 @@
 import Provider from '@digi/provider';
+import './global.scss';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

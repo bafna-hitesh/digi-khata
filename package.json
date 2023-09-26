@@ -33,12 +33,12 @@
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "@commitlint/is-ignored": "^17.7.0",
-    "@turbo/gen": "^1.10.13",
-    "@types/busboy": "^1.5.0",
+    "@turbo/gen": "^1.10.14",
+    "@types/busboy": "^1.5.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.7.1",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-config-custom": "*",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -49,7 +49,7 @@
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended": "^13.0.0",
     "stylelint-order": "^6.0.3",
-    "turbo": "^1.10.13"
+    "turbo": "^1.10.14"
   },
   "name": "mono-digi-khata",
   "packageManager": "npm@9.4.0",
@@ -59,8 +59,9 @@
   ],
   "dependencies": {
     "clsx": "^2.0.0",
-    "father": "^4.3.4",
-    "jws": "^4.0.0"
+    "father": "^4.3.5",
+    "jws": "^4.0.0",
+    "sass": "^1.68.0"
   },
   "engines": {
     "node": ">=19.0.0"
