@@ -34,4 +34,16 @@ const getUserProfileWithAccessToken = async ({
   return sessionResponse.data.data;
 };
 
-export { getLoginUrl, getRequestToken, getUserProfileWithAccessToken };
+// Get Opening Balance - https://kite.trade/docs/connect/v3/user/#funds-and-margins
+const getOpeningBalance = async ({
+  apiKey, 
+  accessToken 
+} : {
+  apiKey: string;
+  accessToken: string
+}) => {
+  let balanceResponse = await axios.get('/user/margins', { headers: {'Authorization: token ' : apiKey + accessToken } });
+  return balanceResponse.data.data.available.opening_balance;
+}
+
+export { getLoginUrl, getRequestToken, getUserProfileWithAccessToken, getOpeningBalance };

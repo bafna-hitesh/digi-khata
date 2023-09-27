@@ -1,14 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import * as druid from '@digi/druid';
-import config from '../config';
+// import config from '../config';
+import testData from '../../../test/constants';
 
 export const getDashboardData = async (req: Request, res: Response, next: NextFunction) => {
   // try {
     // Todo - Validate Input
-    let body = req.body;
-    let calendarData: any = await druid.getKiteFODataDaily(config.DRUID_ROUTER_URL, 'Some Kite User', 'Kite', 'FO', body.freq, '2023-07-06', '2023-07-07');
-    let dataByDayOfWeek: any = await druid.getKiteFODataByDayOfWeek(config.DRUID_ROUTER_URL, 'Some Kite User', 'Kite', 'FO', body.freq, '2023-07-06', '2023-07-07');
-    let hourlyData: any = await druid.getKiteFODataByHourly(config.DRUID_ROUTER_URL, 'Some Kite User', 'Kite', 'FO', body.freq, '2023-07-06', '2023-07-07');
+    // let body = req.body;
+    let calendarData: any = await druid.getKiteFODataDaily(testData.routerURL, testData.user, testData.broker, testData.commodity, testData.freq, testData.startDate, testData.endDate);
+    let dataByDayOfWeek: any = await druid.getKiteFODataByDayOfWeek(testData.routerURL, testData.user, testData.broker, testData.commodity, testData.freq, testData.startDate, testData.endDate);
+    let hourlyData: any = await druid.getKiteFODataByHourly(testData.routerURL, testData.user, testData.broker, testData.commodity, testData.freq, testData.startDate, testData.endDate);
     
     return res.json({
       "calendar": calendarData,
