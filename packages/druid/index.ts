@@ -1,9 +1,7 @@
-import runQuery from './runQuery';
-import * as query from './query';
-import { getKiteFOBuyForTheDay, getKiteFOSellForTheDay } from './daily';
-import { DateTime } from 'luxon';
+import { getKiteFOProfitDaily, getKiteFOProfitByDayOfWeek, getKiteFOProfitHourly } from './daily';
+import dayjs from 'dayjs';
 
-function getAllData(
+async function getKiteFODataDaily(
   routerURL: string,
   user: string,
   broker: string,
@@ -12,85 +10,72 @@ function getAllData(
   startDate: any,
   endDate: any,
 ) {
-  let parameters = [
-    { type: 'TIMESTAMP', value: startDate },
-    { type: 'TIMESTAMP', value: endDate },
-    { type: 'VARCHAR', value: user },
-    { type: 'VARCHAR', value: broker },
-    { type: 'VARCHAR', value: type },
-  ];
-  return runQuery(routerURL, query.getKiteAllData, parameters);
-}
+  
+  // Converting to dayjs object to make date calculations easier
+  startDate = dayjs(startDate);
+  endDate = dayjs(endDate);
 
-async function getKiteDailyFOData(
-  routerURL: string,
-  user: string,
-  broker: string,
-  type: string,
-  freq: string,
-  startDate: any,
-  endDate: any,
-) {
+  let kiteFOProfitDaily = await getKiteFOProfitDaily(startDate, endDate, routerURL, user, broker, type);
+
   let totalTrades = 0;
-  let totalProfitableTrades = 0;
-  let totalProfit = 0;
-  let dailyData: any = [];
+  let dailyWins = 0;
+  let dailyLoses = 0;
+  let winRate;
 
-  // Making startDate and endDate as DateTime Object to make Date calculations easier
-  startDate = DateTime.fromISO(startDate);
-  endDate = DateTime.fromISO(endDate);
-  let currentDate = startDate;
-
-  while (currentDate <= endDate) {
-    let totalBuyForTheDay: any = await getKiteFOBuyForTheDay(currentDate, routerURL, user, broker, type);
-    console.log('Total Buy for the day', totalBuyForTheDay);
-    console.log(typeof totalBuyForTheDay);
-    let totalSellForTheDay: any = await getKiteFOSellForTheDay(currentDate, routerURL, user, broker, type);
-    console.log('Total Sell for the day: ', totalSellForTheDay);
-    let noOfTradesForTheDay = 0;
-    let profitForTheDay = 0;
-
-    if (totalBuyForTheDay.length !== totalSellForTheDay.length) {
-      throw new Error('Inconsistent Data');
-    }
-
-    for (let i = 0; i < totalBuyForTheDay.length; i++) {
-      console.log('I: ', i);
-      console.log('totalBuyForTheDay: ', totalBuyForTheDay[i].expense);
-      console.log('totalSellForTheDay: ', totalSellForTheDay[i].revenue);
-      console.log('typeof(totalBuyForTheDay', typeof totalBuyForTheDay[i].expense);
-      console.log('typeof(totalSellForTheDay', typeof totalSellForTheDay[i].revenue);
-      profitForTheDay = Number(totalSellForTheDay[i].revenue) - Number(totalBuyForTheDay[i].expenses);
-      console.log('typeof(profitForTheDay): ', typeof profitForTheDay);
-      console.log('profitForTheDay:', profitForTheDay);
-      totalTrades++;
-      console.log('totalTrades: ', totalTrades);
-      totalProfitableTrades = profitForTheDay > 0 ? totalProfitableTrades++ : totalProfitableTrades;
-      totalProfit += profitForTheDay;
-      console.log('totalProfit: ', totalProfit);
-      noOfTradesForTheDay++;
-    }
-
-    dailyData.push({
-      date: currentDate.toISODate(),
-      noOfTrades: noOfTradesForTheDay,
-      profit: profitForTheDay,
-    });
-
-    currentDate = currentDate.plus({ days: 1 });
+  for(let currentDayData of kiteFOProfitDaily) {
+    totalTrades += currentDayData.totalTrades;
+    currentDayData.profit >= 0 ? dailyWins++ : dailyLoses++;
   }
-
-  let totalLossTrades = totalTrades - totalProfitableTrades;
-  let winRate = (totalProfitableTrades / totalTrades) * 100;
-
+  
+  winRate = dailyWins / (dailyWins + dailyLoses) * 100;
+  
   return {
-    type: 'calendar',
-    dailyData: dailyData,
-    totalTrades: totalTrades,
-    profitableTrades: totalProfitableTrades,
-    lossTrades: totalLossTrades,
-    winRate: winRate,
-  };
+    dailyData: kiteFOProfitDaily,
+    totalTrades,
+    dailyWins,
+    dailyLoses,
+    winRate
+  }
 }
 
-export { getAllData, getKiteDailyFOData };
+async function getKiteFODataByDayOfWeek(
+  routerURL: string,
+  user: string,
+  broker: string,
+  type: string,
+  freq: string,
+  startDate: any,
+  endDate: any) {
+  
+    // Converting to dayjs object to make date calculations easier
+  startDate = dayjs(startDate);
+  endDate = dayjs(endDate);
+
+  let kiteFOProfitByDayOfWeek = await getKiteFOProfitByDayOfWeek(startDate, endDate, routerURL, user, broker, type);
+
+  return { profitByDayOfWeek : kiteFOProfitByDayOfWeek };
+}
+
+async function getKiteFODataByHourly(
+  routerURL: string,
+  user: string,
+  broker: string,
+  type: string,
+  freq: string,
+  startDate: any,
+  endDate: any) {
+  
+  // Converting to dayjs object to make date calculations easier
+  startDate = dayjs(startDate);
+  endDate = dayjs(endDate);
+
+  let kiteFOProfitHourly = await getKiteFOProfitHourly(startDate, endDate, routerURL, user, broker, type);
+
+  return { hourlyData : kiteFOProfitHourly };
+}
+
+export {
+  getKiteFODataDaily,
+  getKiteFODataByDayOfWeek,
+  getKiteFODataByHourly
+}
