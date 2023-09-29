@@ -21,7 +21,7 @@
     "eslint-config-custom": "*"
   },
   "dependencies": {
-    "antd": "^5.9.3",
+    "antd": "^5.9.4",
     "package-json-validator": "0.6.3"
   }
 }

@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",
-    "antd": "^5.9.3",
+    "antd": "^5.9.4",
     "copy-webpack-plugin": "^11.0.0",
     "package-json-validator": "0.6.3"
   }
