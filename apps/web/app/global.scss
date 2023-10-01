@@ -1,9 +1,30 @@
 :root {
-  --background: #202124;
+  --background: #141414;
   --foreground: #e8eaed;
 }
 
-html,
-body {
-  background: var(--background);
+html.dark {
+  body {
+    background: var(--background);
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+  }
+
+  svg {
+    color: var(--foreground);
+  }
+}
+
+html.light {
+  body {
+    background: var(--foreground);
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+  }
+
+  svg {
+    color: var(--background);
+  }
 }

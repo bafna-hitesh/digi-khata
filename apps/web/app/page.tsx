@@ -1,15 +1,13 @@
-// app/page.tsx
-import { Button } from '@digi/components';
-
+'use client';
+import { Layout, Header } from '@digi/components';
 import Logo from '@/assets/Logo';
 
 export default function Page() {
   return (
-    <>
-      <Button>Click me</Button>
-      <h1>
+    <Layout>
+      <Header>
         <Logo />
-      </h1>
-    </>
+      </Header>
+    </Layout>
   );
 }

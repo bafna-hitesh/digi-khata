@@ -6,7 +6,7 @@ const darkTheme: ThemeConfig = {
     colorInfo: '#e8eaed',
     fontSize: 14,
     wireframe: true,
-    colorBgBase: '#202124',
+    colorBgBase: '#141414',
     colorError: '#F5222D',
     colorSuccess: '#94ff9b',
   },
