@@ -2,9 +2,10 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  mode: 'production',
+  mode: isProduction ? 'production' : 'development',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -14,6 +15,7 @@ module.exports = {
     umdNamedDefine: true,
     clean: true,
     globalObject: 'this',
+    chunkFilename: '[name].js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.wasm'],
@@ -27,18 +29,29 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                auto: (resourcePath) => resourcePath.endsWith('.module.scss'),
+              },
+            },
+          },
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
       {
-        test: /\.worker\.js$/,
+        test: /\.worker\.(js|ts)$/,
         use: { loader: 'worker-loader' },
       },
       {
-        test: /\.sharedworker\.js$/,
+        test: /\.sharedworker\.(js|ts)$/,
         use: { loader: 'worker-loader', options: { workerType: 'SharedWorker' } },
       },
       {

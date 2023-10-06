@@ -45,6 +45,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
+    "style-loader": "^3.3.3",
     "stylelint": "^15.10.3",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended": "^13.0.0",
@@ -58,10 +59,14 @@
     "packages/*"
   ],
   "dependencies": {
+    "classnames": "^2.3.2",
     "clsx": "^2.0.0",
+    "css-loader": "^6.8.1",
     "father": "^4.3.5",
     "jws": "^4.0.0",
-    "sass": "^1.68.0"
+    "mini-css-extract-plugin": "^2.7.6",
+    "sass": "^1.68.0",
+    "sass-loader": "^13.3.2"
   },
   "engines": {
     "node": ">=19.0.0"

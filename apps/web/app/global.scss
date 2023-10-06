@@ -1,6 +1,6 @@
 :root {
-  --background: #141414;
-  --foreground: #e8eaed;
+  --background: #000;
+  --foreground: #d9d9d9;
 }
 
 html.dark {
@@ -27,4 +27,20 @@ html.light {
   svg {
     color: var(--background);
   }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-horizontal-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-vertical-center {
+  display: flex;
+  align-items: center;
 }
