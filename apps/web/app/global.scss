@@ -1,9 +1,85 @@
 :root {
-  --background: #202124;
-  --foreground: #e8eaed;
+  --background: #080808;
+  --foreground: #fff;
+  --text-primary: #ffffff;
+  --text-secondary: #808081;
 }
 
-html,
+html {
+  font-size: 100%;
+}
+
 body {
-  background: var(--background);
+  font-size: clamp(12px, calc(12px + (32 - 12) * ((100vw - 300px) / (3200 - 300))), 32px);
+}
+
+html.dark {
+  body {
+    background: var(--background);
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    color: var(--foreground);
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  svg {
+    color: var(--foreground);
+  }
+
+  a {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+}
+
+html.light {
+  body {
+    background: var(--foreground);
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    color: var(--background);
+  }
+
+  svg {
+    color: var(--background);
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-horizontal-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.f1 {
+  flex: 1;
+}
+
+.primary-text-color {
+  color: var(--text-primary);
+}
+
+.secondary-text-color {
+  color: var(--text-secondary);
 }
