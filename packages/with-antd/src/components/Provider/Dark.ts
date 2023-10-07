@@ -47,9 +47,6 @@ const darkTheme: ThemeConfig = {
     Spin: {
       colorPrimary: 'rgb(255, 255, 255)',
     },
-    Input: {
-      colorBgContainer: 'rgb(255, 0, 0)',
-    },
   },
 };
 

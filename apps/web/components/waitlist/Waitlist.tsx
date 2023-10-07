@@ -5,7 +5,7 @@ const Waitlist = () => {
   return (
     <div>
       <Input />
-      <Button>Waitlist</Button>
+      <Button type='primary'>Waitlist</Button>
     </div>
   );
 };
