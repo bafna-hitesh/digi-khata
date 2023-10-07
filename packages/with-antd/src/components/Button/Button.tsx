@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from 'antd';
+import { Button, ButtonProps } from 'antd';
 
-const DigiButton = () => <Button type='primary'>hello</Button>;
+const DigiButton = (props: ButtonProps) => <Button {...props}>{props.children}</Button>;
 
 export default DigiButton;

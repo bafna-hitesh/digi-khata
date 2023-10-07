@@ -1,6 +1,8 @@
-import { ThemeConfig } from 'antd';
+import { ThemeConfig, theme as antdTheme } from 'antd';
+const { darkAlgorithm } = antdTheme;
 
 const darkTheme: ThemeConfig = {
+  algorithm: darkAlgorithm,
   token: {
     colorPrimary: '#e8eaed',
     colorInfo: '#e8eaed',
@@ -44,6 +46,9 @@ const darkTheme: ThemeConfig = {
     },
     Spin: {
       colorPrimary: 'rgb(255, 255, 255)',
+    },
+    Input: {
+      colorBgContainer: 'rgb(255, 0, 0)',
     },
   },
 };
