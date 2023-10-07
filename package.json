@@ -33,12 +33,12 @@
     "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@commitlint/is-ignored": "^17.7.0",
-    "@turbo/gen": "^1.10.14",
+    "@turbo/gen": "^1.10.15",
     "@types/busboy": "^1.5.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.7.1",
-    "eslint": "^8.50.0",
+    "eslint": "^8.51.0",
     "eslint-config-custom": "*",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -65,7 +65,7 @@
     "father": "^4.3.5",
     "jws": "^4.0.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "sass": "^1.68.0",
+    "sass": "^1.69.0",
     "sass-loader": "^13.3.2"
   },
   "engines": {
