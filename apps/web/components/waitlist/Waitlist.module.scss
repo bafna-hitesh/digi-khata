@@ -18,6 +18,29 @@
   color: transparent;
   -webkit-text-fill-color: transparent;
   background-color: white;
+
+  &:hover {
+    background-size: 500% auto;
+    animation: textShine 5s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% 10%;
+  }
+  10% {
+    background-position: 10% 30%;
+  }
+  30% {
+    background-position: 30% 50%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 .heroActionButtonFrames {
