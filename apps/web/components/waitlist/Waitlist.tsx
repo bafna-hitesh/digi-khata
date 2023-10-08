@@ -1,11 +1,25 @@
 import { memo } from 'react';
 import { Input, Button } from '@digi/components';
+import styles from './Waitlist.module.scss';
 
 const Waitlist = () => {
   return (
-    <div>
-      <Input />
-      <Button type='primary'>Waitlist</Button>
+    <div className='d-flex gap20'>
+      <Input size='large' placeholder='Enter your email address' />
+      <Button type='primary' size='large' className={styles.heroActionButton}>
+        Join Waitlist
+        <div className={styles.heroActionButtonFrames}>
+          <div className={styles.heroActionButtonFrame}>
+            <div></div>
+          </div>
+          <div className={styles.heroActionButtonFrame}>
+            <div></div>
+          </div>
+          <div className={styles.heroActionButtonFrame}>
+            <div></div>
+          </div>
+        </div>
+      </Button>
     </div>
   );
 };
