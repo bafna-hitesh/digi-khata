@@ -3,8 +3,7 @@ import axios from './axiosInstance';
 
 interface AllOrders {
   apiKey: string;
-  accessToken: string;
-  kiteBaseURL: string;
+  accessToken: any;
 }
 
 const getAllOrdersForTheDay = ({ apiKey, accessToken }: AllOrders): Promise<AxiosResponse<any, any>> => {
@@ -15,4 +14,6 @@ const getAllOrdersForTheDay = ({ apiKey, accessToken }: AllOrders): Promise<Axio
   return axios.get('/orders', { headers });
 };
 
-export { getAllOrdersForTheDay };
+export {
+  getAllOrdersForTheDay
+};
