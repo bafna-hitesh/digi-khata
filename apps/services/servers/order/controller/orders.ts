@@ -18,7 +18,7 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
     
     // let accessToken = await User.findAll({
     //   where: {
-    //     kiteUserID: 'JX7559',
+    //     kiteUserID: 'Some Kite User',
     //     // Change to req.user after authentication is done
     //   },
     // });
@@ -39,7 +39,8 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
         quantity: trades[i].quantity,
         price: trades[i].average_price,
         tradeID: trades[i].trade_id,
-        orderID: trades[i].order_id
+        orderID: trades[i].order_id,
+        orderTimestamp: trades[i].fill_timestamp
       }
       kafkaProducer.produceDataToKafka(producer, 'trades', '0', trade);
     }
@@ -73,7 +74,7 @@ export const tradesSyncToPostgres = async (req: Request, res: Response, next: Ne
     await consumer.run({
       eachMessage: async ({ message }: { message: any }) => {
         let trade = JSON.parse(message.value.toString());
-        // console.log(trade);
+        console.log(trade);
 
         // Inserting to Postgres
         await Trade.create({
@@ -87,7 +88,8 @@ export const tradesSyncToPostgres = async (req: Request, res: Response, next: Ne
           quantity: trade.quantity,
           price: trade.price,
           tradeID: trade.tradeID,
-          orderID: trade.orderID
+          orderID: trade.orderID,
+          orderTimestamp: trade.orderTimestamp
         });
       },
     });

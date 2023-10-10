@@ -36,6 +36,9 @@ const Trade = sequelize.define(
     },
     orderID: {
       type: DataTypes.STRING,
+    },
+    orderTimeStamp: {
+      type: DataTypes.DATE
     }
   },
   {
