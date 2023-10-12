@@ -21,7 +21,9 @@ module.exports = {
   entry: entryPoints,
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]/index.js',
+    filename: (chunkData) => {
+      return chunkData.chunk.name === 'index' ? 'index.js' : '[name]/index.js';
+    },
     library: {
       name: '@digi/components',
       type: 'umd',
