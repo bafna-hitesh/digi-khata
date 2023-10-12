@@ -11,6 +11,7 @@
     // Add all your app and package directories here
   ],
   "eslint.options": {
-    "configFile": "./.eslintrc.js"
+    "overrideConfigFile": "../.eslintrc.js",
+    "cache": false
   }
 }
