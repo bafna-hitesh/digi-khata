@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
 const fs = require('fs');
@@ -36,9 +35,8 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.wasm'],
     alias: {
-      '@digi/components': path.resolve(__dirname, 'dist'),
+      '@digi/components': path.resolve(__dirname, 'dist/index.d.ts'),
     },
-    plugins: [new TsconfigPathsPlugin()],
   },
   devtool: 'inline-source-map',
   module: {
@@ -118,5 +116,4 @@ module.exports = {
       root: 'ReactDOM',
     },
   },
-  target: ['web', 'es5'],
 };

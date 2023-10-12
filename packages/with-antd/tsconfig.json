@@ -18,7 +18,7 @@
     "declaration": true,
     "baseUrl": "./",
     "paths": {
-      "@digi/components/*": ["./src/components/*"]
+      "@digi/components/*": ["./dist/*"]
     },
   },
   "include": [
