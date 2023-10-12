@@ -1,5 +1,6 @@
 import { memo } from 'react';
-import { Input, Button } from '@digi/components';
+import Input from '@digi/components/dist/Input';
+import Button from '@digi/components/dist/Button';
 import styles from './Waitlist.module.scss';
 
 const Waitlist = () => {

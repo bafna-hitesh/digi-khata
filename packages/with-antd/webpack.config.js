@@ -3,14 +3,29 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
+const fs = require('fs');
+const moduleAlias = require('module-alias');
+
+const componentsDir = path.resolve(__dirname, 'src');
+const entryPoints = {};
+
+fs.readdirSync(componentsDir).forEach((file) => {
+  const componentName = path.basename(file, path.extname(file));
+  entryPoints[componentName] = path.join(componentsDir, file);
+});
 
 module.exports = {
   mode: isProduction ? 'production' : 'development',
-  entry: './src/index.tsx',
+  entry: entryPoints,
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
-    library: '@digi/components',
+    filename: '[name]/index.js',
+    library: {
+      name: '@digi/components',
+      type: 'umd',
+    },
     libraryTarget: 'umd',
     umdNamedDefine: true,
     clean: true,
@@ -19,7 +34,12 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.wasm'],
+    alias: {
+      '@digi/components': path.resolve(__dirname, 'dist'),
+    },
+    plugins: [new TsconfigPathsPlugin()],
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -62,14 +82,20 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'styles.css',
+      filename: '[name]/styles.css',
     }),
   ],
   optimization: {
     minimize: true,
     minimizer: [
       new TerserPlugin({
+        include: /\.min\.(css|js)$/,
         extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
       }),
       new CssMinimizerPlugin(),
     ],
@@ -88,4 +114,5 @@ module.exports = {
       root: 'ReactDOM',
     },
   },
+  target: ['web', 'es5'],
 };

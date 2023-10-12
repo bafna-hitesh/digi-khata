@@ -16,7 +16,10 @@
     "noEmit": false,
     "jsx": "react-jsx",
     "declaration": true,
-    "declarationDir": "./dist"
+    "baseUrl": "./",
+    "paths": {
+      "@digi/components/*": ["./src/components/*"]
+    },
   },
   "include": [
     "src/**/*.ts",
