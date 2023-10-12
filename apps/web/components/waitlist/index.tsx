@@ -1,5 +1,7 @@
 'use client';
+
 import { Suspense, lazy } from 'react';
+
 const Waitlist = lazy(() => import('./Waitlist'));
 
 const SuspendedWaitlist = () => (

@@ -20,6 +20,8 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 0,
+    'import/extensions': 0,
+    'react/function-component-definition': 0,
     'react/jsx-filename-extension': [
       0,
       {
