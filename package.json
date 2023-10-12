@@ -43,7 +43,7 @@
     "jws": "^4.0.0",
     "mini-css-extract-plugin": "^2.7.6",
     "module-alias": "^2.2.3",
-    "sass": "^1.69.0",
+    "sass": "^1.69.3",
     "sass-loader": "^13.3.2"
   },
   "devDependencies": {
@@ -59,7 +59,7 @@
     "eslint": "^8.51.0",
     "eslint-config-custom": "*",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",

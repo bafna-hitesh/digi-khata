@@ -19,7 +19,7 @@
   "sideEffects": false,
   "dependencies": {
     "morgan": "^1.10.0",
-    "winston": "^3.10.0"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@types/morgan": "^1.9.6",
