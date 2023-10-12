@@ -1,9 +1,9 @@
 export default {
   'routerURL' : 'http://localhost:8888',
-  'user' : 'Some Kite User',
+  'user' : 'Some User',
   'broker' : 'Kite',
-  'commodity' : 'FO',
+  'segment' : 'EQUITY',
   'freq' : 'Daily',
-  'startDate' : '2023-07-06',
-  'endDate' : '2023-07-07'
+  'startDate' : '2021-05-31',
+  'endDate' : '2021-05-31'
 }
