@@ -1,8 +1,9 @@
 'use client';
+
 import Logo from '@assets/Logo';
-import styles from './home.module.scss';
 import cx from 'classnames';
 import Waitlist from '@components/waitlist';
+import styles from './home.module.scss';
 
 export default function Page() {
   return (

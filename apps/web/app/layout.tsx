@@ -1,4 +1,5 @@
 'use client';
+
 import Provider from '@digi/components/dist/Provider';
 import './global.scss';
 import { Inter } from 'next/font/google';

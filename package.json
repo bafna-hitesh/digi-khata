@@ -1,15 +1,21 @@
 {
+  "name": "mono-digi-khata",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "upgrade": "node updatePackages.js",
+    "precommit": "lint-staged",
     "commit": "git cz",
     "delete-node:apps": "rm -rf apps/*/node_modules",
     "delete-node:packages": "rm -rf packages/*/node_modules",
+    "dev": "turbo run dev --parallel",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prepare": "husky install && chmod a+x .husky/commit-msg"
+    "lint": "turbo run lint",
+    "prepare": "husky install && chmod a+x .husky/commit-msg",
+    "upgrade": "node updatePackages.js"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
@@ -27,6 +33,18 @@
     "commitizen": {
       "path": "node_modules/cz-git"
     }
+  },
+  "dependencies": {
+    "babel-plugin-module-resolver": "^5.0.0",
+    "classnames": "^2.3.2",
+    "clsx": "^2.0.0",
+    "css-loader": "^6.8.1",
+    "father": "^4.3.5",
+    "jws": "^4.0.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "module-alias": "^2.2.3",
+    "sass": "^1.69.0",
+    "sass-loader": "^13.3.2"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
@@ -53,24 +71,7 @@
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "turbo": "^1.10.15"
   },
-  "name": "mono-digi-khata",
   "packageManager": "npm@9.4.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "babel-plugin-module-resolver": "^5.0.0",
-    "classnames": "^2.3.2",
-    "clsx": "^2.0.0",
-    "css-loader": "^6.8.1",
-    "father": "^4.3.5",
-    "jws": "^4.0.0",
-    "mini-css-extract-plugin": "^2.7.6",
-    "module-alias": "^2.2.3",
-    "sass": "^1.69.0",
-    "sass-loader": "^13.3.2"
-  },
   "engines": {
     "node": ">=19.0.0"
   }

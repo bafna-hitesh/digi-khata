@@ -4,6 +4,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const webpack = require('webpack');
 
 const fs = require('fs');
 const moduleAlias = require('module-alias');
@@ -45,7 +46,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules|\.DS_Store$/,
       },
       {
         test: /\.s[ac]ss$/i,
@@ -83,6 +84,9 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name]/styles.css',
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /\.DS_Store$/,
     }),
   ],
   optimization: {

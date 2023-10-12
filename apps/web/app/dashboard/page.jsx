@@ -1,4 +1,5 @@
-"use client"
+'use client';
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -13,7 +14,7 @@ export default function Dashboard() {
     event.preventDefault();
 
     if (!selectedFile) {
-      alert('Please select a file.');
+      // alert('Please select a file.');
       return;
     }
 
@@ -23,21 +24,21 @@ export default function Dashboard() {
 
       const response = await axios.post('http://localhost:7000/orders/upload', formData);
 
-      console.log(response.data);
+      console.info(response.data);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  return (<>
+  return (
     <div>
       <h2>Dashboard</h2>
       <div>
         <form onSubmit={handleSubmit}>
-          <input type="file" name="orders" onChange={handleFileChange} />
-          <button type="submit">Upload</button>
+          <input type='file' name='orders' onChange={handleFileChange} />
+          <button type='submit'>Upload</button>
         </form>
       </div>
     </div>
-  </>)
+  );
 }
