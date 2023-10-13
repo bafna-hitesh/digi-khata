@@ -7,8 +7,8 @@ const Waitlist = () => {
   const handleFinish = () => {};
   return (
     <Form name='waitlist' size='large' className='d-flex gap20' onFinish={handleFinish}>
-      <Input name='email' type='email' className={cx('f1', styles.EmailInput)} />
-      <FormItem>
+      <Input name='email' type='email' className={cx('f2', styles.EmailInput)} />
+      <FormItem className='f1'>
         <Button htmlType='submit' type='primary' size='large' className={styles.heroActionButton}>
           Join Waitlist
           <div className={styles.heroActionButtonFrames}>

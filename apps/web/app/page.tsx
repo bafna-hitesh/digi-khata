@@ -3,6 +3,7 @@
 import Logo from '@assets/Logo';
 import cx from 'classnames';
 import Waitlist from '@components/waitlist';
+import LoginWithBrokers from '@components/LoginWithBrokers';
 import styles from './home.module.scss';
 
 export default function Page() {
@@ -26,7 +27,9 @@ export default function Page() {
               </p>
               <Waitlist />
             </div>
-            <div className='f1'>hello</div>
+            <div className={cx('f1', styles.brokersContainer)}>
+              <LoginWithBrokers />
+            </div>
           </div>
         </header>
       </main>

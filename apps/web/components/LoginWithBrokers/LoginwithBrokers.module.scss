@@ -1,0 +1,23 @@
+.container {
+  border: solid 1px var(--grey-border);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+
+  h3 {
+    font-weight: 500;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+  p {
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+  }
+  .brokersWrapper {
+    margin: 2rem;
+
+    button {
+      width: 106px;
+      height: 66px;
+    }
+  }
+}
