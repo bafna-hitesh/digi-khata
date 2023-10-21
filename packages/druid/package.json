@@ -14,7 +14,7 @@
   ],
   "sideEffects": false,
   "devDependencies": {
-    "@types/luxon": "^3.3.2",
+    "@types/luxon": "^3.3.3",
     "eslint-config-custom": "*"
   },
   "dependencies": {

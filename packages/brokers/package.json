@@ -21,7 +21,7 @@
     "eslint-config-custom": "*"
   },
   "dependencies": {
-    "antd": "^5.10.0",
+    "antd": "^5.10.2",
     "crypto": "^1.0.1",
     "package-json-validator": "0.6.3",
     "querystring": "^0.2.1"
