@@ -2,8 +2,9 @@
 
 import Logo from '@assets/Logo';
 import cx from 'classnames';
-import Waitlist from '@components/waitlist';
+import Waitlist from '@components/Waitlist';
 import LoginWithBrokers from '@components/LoginWithBrokers';
+import HomeTabs from '@components/HomeTabs';
 import styles from './home.module.scss';
 
 export default function Page() {
@@ -19,7 +20,7 @@ export default function Page() {
       </nav>
       <main className={styles.main}>
         <header>
-          <div className='d-flex'>
+          <div className={cx('d-flex', styles.headerContainer)}>
             <div className='f1'>
               <h1 className={styles.headerTitle}>You found your edge in the stock market</h1>
               <p className={cx('secondary-text-color', styles.headerSubTitle)}>
@@ -27,12 +28,16 @@ export default function Page() {
               </p>
               <Waitlist />
             </div>
-            <div className={cx('f1', styles.brokersContainer)}>
+            <div className={cx('f1 flex-horizontal-center', styles.brokersContainer)}>
               <LoginWithBrokers />
             </div>
           </div>
         </header>
       </main>
+      <section>
+        <h2 className={styles.headerSubTitle}>The Web&apos;s best</h2>
+        <HomeTabs />
+      </section>
     </>
   );
 }
