@@ -4,6 +4,7 @@
   padding: 0.5rem 1rem;
   width: fit-content;
   max-height: 380px;
+  position: relative;
 
   h3 {
     font-weight: 500;
@@ -20,6 +21,23 @@
     button {
       width: 106px;
       height: 66px;
+      position: relative;
     }
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .comingSoon {
+    background: var(--foreground);
+    border-radius: 12px;
+    position: absolute;
+    right: 10px;
+    color: var(--background);
+    font-size: 11px;
+    padding: 6px;
+    top: -14px;
   }
 }

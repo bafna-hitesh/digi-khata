@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from '@assets/Logo';
+import Logo from '@assets/DigiKhataLogo';
 import cx from 'classnames';
 import Waitlist from '@components/Waitlist';
 import LoginWithBrokers from '@components/LoginWithBrokers';
