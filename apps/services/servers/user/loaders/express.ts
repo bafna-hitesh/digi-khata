@@ -13,10 +13,18 @@ export default ({ app }: { app: Application }) => {
   app.use(express.json());
   app.use(routes());
 
+  class HttpError extends Error {
+    status: number;
+
+    constructor(message: string, status: number) {
+      super(message);
+      this.status = status;
+    }
+  }
+
   /// catch 404 and forward to error handler
   app.use((req: Request, res: Response, next: NextFunction) => {
-    const err: any = new Error('Not Found');
-    err['status'] = 404;
+    const err: Error = new HttpError('Not Found', 404);
     next(err);
   });
 
@@ -27,6 +35,7 @@ export default ({ app }: { app: Application }) => {
         message: err.message,
       },
     });
+    next();
   });
 
   app

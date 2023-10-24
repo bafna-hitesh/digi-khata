@@ -9,7 +9,7 @@ const envFound = dotenv.config();
 if (envFound.error) throw new Error("⚠️  Couldn't find .env file  ⚠️");
 
 export default {
-  PORT: process.env.PORT || 5010,
+  PORT: process.env.USER_MS_PORT || 5010,
   LOGGER: process.env.LOGGER,
   NODE_ENV: process.env.NODE_ENV,
   SERVER_NAME: process.env.SERVER_NAME,

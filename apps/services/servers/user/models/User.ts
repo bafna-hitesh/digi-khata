@@ -1,5 +1,5 @@
-import { sequelize } from '../loaders/sequelize';
 import { DataTypes } from 'sequelize';
+import { sequelize } from '../loaders/sequelize';
 
 const User = sequelize.define(
   'User',
