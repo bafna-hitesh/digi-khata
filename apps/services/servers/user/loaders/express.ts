@@ -1,4 +1,4 @@
-import { Application, Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import config from '../config';
 import routes from '../api';
@@ -10,6 +10,7 @@ export default ({ app }: { app: Application }) => {
   });
 
   app.use(cors());
+  app.use(express.json());
   app.use(routes());
 
   /// catch 404 and forward to error handler
