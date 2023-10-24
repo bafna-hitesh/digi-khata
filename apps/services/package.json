@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\" \"node updateNginxConfig.js\"",
+    "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\"",
     "dev:dashboard": "nodemon --watch servers --ext ts --exec ts-node servers/dashboard/index.ts",
     "dev:order": "nodemon --watch servers --ext ts --exec ts-node servers/order/index.ts",
     "dev:user": "nodemon --watch servers --ext ts --exec ts-node servers/user/index.ts",
@@ -11,7 +11,8 @@
     "standalone:dashboard": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/dashboard/index.ts",
     "standalone:order": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/order/index.ts",
     "standalone:user": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/user/index.ts",
-    "test-report": "nyc --reporter=text --reporter=html mocha ./test"
+    "test-report": "nyc --reporter=text --reporter=html mocha ./test",
+    "update-nginx": "node updateNginxConfig.js"
   },
   "dependencies": {
     "@digi/brokers": "*",
