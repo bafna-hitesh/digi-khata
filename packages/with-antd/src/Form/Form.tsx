@@ -1,8 +1,8 @@
 import { Form, FormProps } from 'antd';
-import { memo } from 'react';
+import { ReactNode, memo } from 'react';
 import defaultValidateMessages from './defaultMessages';
 
-const DigiForm = (props: FormProps) => (
+const DigiForm = (props: FormProps & { children: ReactNode }) => (
   <Form
     validateMessages={
       props.validateMessages ? { ...defaultValidateMessages, ...props.validateMessages } : defaultValidateMessages
