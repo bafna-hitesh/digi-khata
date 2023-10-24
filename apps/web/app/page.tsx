@@ -34,7 +34,7 @@ export default function Page() {
           </div>
         </header>
       </main>
-      <section>
+      <section className={styles.main}>
         <h2 className={styles.headerSubTitle}>The Web&apos;s best</h2>
         <HomeTabs />
       </section>

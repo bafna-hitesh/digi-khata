@@ -76,48 +76,12 @@ html.light {
   }
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-horizontal-center {
-  display: flex;
-  justify-content: center;
-}
-
-.flex-vertical-center {
-  display: flex;
-  align-items: center;
-}
-
-.d-flex {
-  display: flex;
-}
-
-.space-evenly {
-  justify-content: space-evenly;
-}
-
-.f1 {
-  flex: 1;
-}
-
-.f2 {
-  flex: 2;
-}
-
 .primary-text-color {
   color: var(--text-primary);
 }
 
 .secondary-text-color {
   color: var(--text-secondary);
-}
-
-.gap20 {
-  gap: 20px;
 }
 
 .full-height {
