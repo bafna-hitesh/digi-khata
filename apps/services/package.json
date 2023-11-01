@@ -39,7 +39,7 @@
     "@types/jsonwebtoken": "^9.0.4",
     "@types/luxon": "^3.3.3",
     "@types/morgan": "^1.9.7",
-    "@types/node": "^20.8.8",
+    "@types/node": "^20.8.10",
     "chai": "^4.3.10",
     "concurrently": "^8.2.2",
     "eslint": "^8.52.0",
