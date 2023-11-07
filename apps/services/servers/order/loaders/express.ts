@@ -1,4 +1,4 @@
-import { Application, NextFunction, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { ErrorInterface } from '../types/error';
 import config from '../config';
@@ -6,6 +6,7 @@ import routes from '../api';
 
 export default async ({ app }: { app: Application }) => {
   app.use(cors());
+  app.use(express.json());
   app.use(routes());
 
   app.use((req: Request, res: Response, next: NextFunction) => {

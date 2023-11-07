@@ -1,32 +1,32 @@
-import { sequelize } from "../../loaders/sequelize";
-import * as query from "./query";
-import { QueryTypes } from "sequelize";
-
+import { Op, QueryTypes } from 'sequelize';
+import { sequelize } from '../../loaders/sequelize';
+import * as query from './query';
+import Balance from '../../../user/models/Balance';
 
 async function getKiteProfitDaily(startDate: any, endDate: any, user: string, broker: string, segment: string) {
-  let kiteFOProfitDaily = await sequelize.query(query.getKiteProfitDaily, {
+  const kiteFOProfitDaily = await sequelize.query(query.getKiteProfitDaily, {
     replacements: {
-      startDate: startDate,
-      endDate: endDate,
-      user: user,
-      broker: broker,
-      segment: segment
+      startDate,
+      endDate,
+      user,
+      broker,
+      segment,
     },
-    type: QueryTypes.SELECT
+    type: QueryTypes.SELECT,
   });
   return kiteFOProfitDaily;
 }
 
 async function getKiteProfitByDayOfWeek(startDate: any, endDate: any, user: string, broker: string, segment: string) {
-  let kiteFOProfitDaily = await sequelize.query(query.getKiteProfitByDayOfWeek, {
+  const kiteFOProfitDaily = await sequelize.query(query.getKiteProfitByDayOfWeek, {
     replacements: {
-      startDate: startDate,
-      endDate: endDate,
-      user: user,
-      broker: broker,
-      segment: segment
+      startDate,
+      endDate,
+      user,
+      broker,
+      segment,
     },
-    type: QueryTypes.SELECT
+    type: QueryTypes.SELECT,
   });
   return kiteFOProfitDaily;
 }
@@ -43,8 +43,44 @@ async function getKiteProfitByDayOfWeek(startDate: any, endDate: any, user: stri
 //   return kiteFOProfitHourly.data;
 // }
 
+async function getKiteTradeDistributionByMistakes(
+  startDate: any,
+  endDate: any,
+  user: string,
+  broker: string,
+  segment: string,) {
+
+  // Todo - Get the trade by mistakes according to how mistakes are defined
+  // const kiteTradeDistributionByMistakes = await sequelize.query(query.getKiteProfitByDayOfWeek, {
+  //   replacements: {
+  //     startDate,
+  //     endDate,
+  //     user,
+  //     broker,
+  //     segment,
+  //   },
+  //   type: QueryTypes.SELECT,
+  // });
+  // return kiteTradeDistributionByMistakes;
+}
+
+async function getKiteOpeningBalanceDaily(startDate: string, endDate: string, userID: string, broker: string) {
+  const kiteOpeningBalanceDaily = await Balance.findAll({
+    where: {
+      balanceDate: {
+        [Op.between]: [startDate, endDate],
+      },
+      userID,
+      broker,
+    },
+  });
+  return kiteOpeningBalanceDaily;
+}
+
 export {
   getKiteProfitDaily,
   getKiteProfitByDayOfWeek,
-  // getKiteFOProfitHourly
-}
+  // getKiteFOProfitHourly,
+  getKiteTradeDistributionByMistakes,
+  getKiteOpeningBalanceDaily,
+};

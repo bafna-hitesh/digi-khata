@@ -1,46 +1,38 @@
-import { getKiteProfitDaily, getKiteProfitByDayOfWeek } from './daily';
+import { getKiteProfitDaily, getKiteProfitByDayOfWeek, getKiteOpeningBalanceDaily } from './daily';
 
-async function getKiteDataDaily(
-  user: string,
-  broker: string,
-  segment: string,
-  startDate: any,
-  endDate: any,
-) {
-
-  let kiteProfitDaily: any = await getKiteProfitDaily(startDate, endDate, user, broker, segment);
+async function getKiteDataDaily(user: string, broker: string, segment: string, startDate: string, endDate: string) {
+  const kiteProfitDaily: any = await getKiteProfitDaily(startDate, endDate, user, broker, segment);
 
   let totalTrades: number = 0;
   let dailyWins = 0;
   let dailyLoses = 0;
-  let winRate;
 
   for(let currentDayData of kiteProfitDaily) {
-    totalTrades += (currentDayData.totalTrades);
+    totalTrades += currentDayData.totalTrades;
     currentDayData.profit >= 0 ? dailyWins++ : dailyLoses++;
   }
-  
-  winRate = dailyWins / (dailyWins + dailyLoses) * 100;
-  
+
+  const winRate = (dailyWins / (dailyWins + dailyLoses)) * 100;
+
   return {
     dailyData: kiteProfitDaily,
     totalTrades,
     dailyWins,
     dailyLoses,
-    winRate
-  }
+    winRate,
+  };
 }
 
 async function getKiteDataByDayOfWeek(
   user: string,
   broker: string,
   segment: string,
-  startDate: any,
-  endDate: any) {
+  startDate: string,
+  endDate: string,
+) {
+  const kiteProfitByDayOfWeek = await getKiteProfitByDayOfWeek(startDate, endDate, user, broker, segment);
 
-  let kiteProfitByDayOfWeek = await getKiteProfitByDayOfWeek(startDate, endDate, user, broker, segment);
-
-  return { profitByDayOfWeek : kiteProfitByDayOfWeek };
+  return { profitByDayOfWeek: kiteProfitByDayOfWeek };
 }
 
 // async function getKiteFODataByHourly(
@@ -51,7 +43,7 @@ async function getKiteDataByDayOfWeek(
 //   freq: string,
 //   startDate: any,
 //   endDate: any) {
-  
+
 //   // Converting to dayjs object to make date calculations easier
 //   startDate = dayjs(startDate);
 //   endDate = dayjs(endDate);
@@ -61,8 +53,41 @@ async function getKiteDataByDayOfWeek(
 //   return { hourlyData : kiteFOProfitHourly };
 // }
 
+// async function getKiteTradesByMistakes(
+//   user: string,
+//   broker: string,
+//   segment: string,
+//   startDate: string,
+//   endDate: string,
+// ) {
+//   const kiteTradeDistributionByMistakes = await getKiteTradesByMistakes(startDate, endDate, user, broker, segment);
+
+//   return { tradeDistributionByMistakes: kiteTradeDistributionByMistakes };
+// }
+
+async function getKiteOpeningBalanceDataDaily(
+  user: string,
+  broker: string,
+  segment: string,
+  startDate: string,
+  endDate: string,
+) {
+  const kiteBalanceDailyQueryResponse = await getKiteOpeningBalanceDaily(startDate, endDate, user, broker);
+
+  const kiteBalanceDaily = kiteBalanceDailyQueryResponse.map((row: any) => {
+    if (segment === 'EQUITY') {
+      return row.toJSON().equityOpeningBalance;
+    }
+    return row.toJSON().commodityOpeningBalance;
+  });
+
+  return { kiteBalanceDaily };
+}
+
 export {
   getKiteDataDaily,
   getKiteDataByDayOfWeek,
-  // getKiteFODataByHourly
-}
+  // getKiteFODataByHourly,
+  // getKiteTradesByMistakes,
+  getKiteOpeningBalanceDataDaily,
+};

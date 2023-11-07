@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import orders from './routes/orders';
+import trades from './routes/trades';
 
 export default () => {
   const router = Router();
-  orders(router);
+  trades(router);
   return router;
 };

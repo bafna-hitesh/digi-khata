@@ -1,21 +1,23 @@
 import { NextFunction, Request, Response } from 'express';
 import { createKafkaInstance, kafkaConsumer, kafkaProducer } from '@digi/kafka';
+import { zerodha } from '@digi/brokers';
 import config from '../config';
 import User from '../../user/models/User';
-import { zerodha } from '@digi/brokers';
 import Trade from '../models/Trades';
+import Mistake from '../models/Mistakes';
+import Setup from '../models/Setup';
 
 export const tradesUploadToKafka = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Connecting to Kafka
-    let kafka = createKafkaInstance(config.KAFKA_HOST.split(','));
-    let producer = kafkaProducer.createKafkaProducer(kafka);
+    const kafka = createKafkaInstance(config.KAFKA_HOST.split(','));
+    const producer = kafkaProducer.createKafkaProducer(kafka);
     await kafkaProducer.checkProducerConnectionToKafka(producer);
 
     // 1. Get trades for the day
     // 2. Upload these trades to Kafka Topic
     // 3. Consume these messages from Kakfa Topic and insert it into Postgres
-    
+
     // let accessToken = await User.findAll({
     //   where: {
     //     kiteUserID: 'Some Kite User',
@@ -29,7 +31,7 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
     for(let i = 0; i < trades.length; i++) {
       let trade = {
         // Todo - Get the user from req object. This user will be set when we verify the request that contains token in the middleware
-        user: 'Some User',
+        name: 'Some User',
         broker: 'Kite',
         symbol: trades[i].tradingsymbol,
         tradeDate: trades[i].fill_timestamp.split(' ')[0],
@@ -40,13 +42,13 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
         price: trades[i].average_price,
         tradeID: trades[i].trade_id,
         orderID: trades[i].order_id,
-        orderTimestamp: trades[i].fill_timestamp
-      }
+        orderTimestamp: new Date(trades[i].fill_timestamp).toISOString(),
+      };
       kafkaProducer.produceDataToKafka(producer, 'trades', '0', trade);
     }
 
     return res.status(200).json({
-      message: 'Data uploaded to Kafka successfully'
+      message: 'Data uploaded to Kafka successfully',
     });
 
   } catch (error: any) {
@@ -59,26 +61,24 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
 
 export const tradesSyncToPostgres = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
-    let topic = 'trades';
+    const topic = 'trades';
     // Connecting to Kafka
-    let kafka = createKafkaInstance(config.KAFKA_HOST.split(','));
-    let consumer = kafkaConsumer.createKafkaConsumer(kafka, topic);
+    const kafka = createKafkaInstance(config.KAFKA_HOST.split(','));
+    const consumer = kafkaConsumer.createKafkaConsumer(kafka, topic);
     await kafkaConsumer.checkConsumerConnectionToKafka(consumer);
 
     await consumer.subscribe({
-      topic: topic,
+      topic,
       fromBeginning: true,
     });
 
     await consumer.run({
       eachMessage: async ({ message }: { message: any }) => {
-        let trade = JSON.parse(message.value.toString());
-        console.log(trade);
+        const trade = JSON.parse(message.value.toString());
 
         // Inserting to Postgres
         await Trade.create({
-          user: trade.user,
+          name: trade.name,
           broker: trade.broker,
           symbol: trade.symbol,
           tradeDate: trade.tradeDate,
@@ -89,22 +89,21 @@ export const tradesSyncToPostgres = async (req: Request, res: Response, next: Ne
           price: trade.price,
           tradeID: trade.tradeID,
           orderID: trade.orderID,
-          orderTimestamp: trade.orderTimestamp
+          orderTimestamp: trade.orderTimestamp,
         });
       },
     });
 
     return res.status(200).json({
-      message: 'Data synced to Postgres successfully'
+      message: 'Data synced to Postgres successfully',
     });
-
-  } catch(error: any) {
+  } catch (error: any) {
     next({
       status: 500,
-      message: error.message
+      message: error.message,
     });
   }
-}
+};
 
 // For Testing Only
 let trades = [
@@ -167,5 +166,74 @@ let trades = [
     "fill_timestamp": "2021-05-31 16:08:41",
     "order_timestamp": "16:08:41",
     "exchange_timestamp": "2021-05-31 16:08:41"
-  }
+  },
 ];
+
+export const updateTrade = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { tradeID } = req.params;
+    const tradeBody = req.body;
+
+    if (
+      !Array.isArray(tradeBody?.mistakes) ||
+      !Array.isArray(tradeBody?.setup) ||
+      tradeBody?.mistakes.length === 0 ||
+      tradeBody?.setup.length === 0
+    ) {
+      return res.status(400).json({
+        message: 'Invalid Input',
+      });
+    }
+
+    const tradeToUpdate = await Trade.findOne({
+      where: {
+        id: tradeID,
+      },
+    });
+
+    if (tradeToUpdate === null) {
+      return res.status(400).json({
+        message: 'Invalid Trade',
+      });
+    }
+
+    const { mistakes, setup } = tradeBody;
+
+    const mistakesReferences: Array<string> = await Promise.all(
+      mistakes.map(async (tag: string) => {
+        const mistakeResponse = await Mistake.upsert({
+          // Returns an array with first index as record and second index as a boolean if the record was created or updated.
+          // The second value is always null for Postgres
+          tag: tag.toLowerCase(),
+        });
+        return mistakeResponse[0].toJSON().id;
+      }),
+    );
+
+    const setupReferences: Array<string> = await Promise.all(
+      setup.map(async (tag: string) => {
+        const setupResponse = await Setup.upsert({
+          // Returns an array with first index as record and second index as a boolean if the record was created or updated.
+          // The second value is always null for Postgres
+          tag: tag.toLowerCase(),
+        });
+        return setupResponse[0].toJSON().id;
+      }),
+    );
+
+    // Insert the reference of mistakes in trade
+    await tradeToUpdate.update({
+      mistakes: mistakesReferences,
+      setup: setupReferences,
+    });
+
+    return res.status(200).json({
+      message: 'Successfully updated trade',
+    });
+  } catch (err: any) {
+    next({
+      status: 500,
+      message: err.message,
+    });
+  }
+};
