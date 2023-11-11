@@ -1,8 +1,8 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
 
 // eslint-disable-next-line no-use-before-define
-class Mistake extends Model<InferAttributes<Mistake>, InferCreationAttributes<Mistake>> {
+class Strategy extends Model<InferAttributes<Strategy>, InferCreationAttributes<Strategy>> {
   declare id: CreationOptional<string>;
 
   declare tag: string;
@@ -12,7 +12,7 @@ class Mistake extends Model<InferAttributes<Mistake>, InferCreationAttributes<Mi
   declare updatedAt: CreationOptional<Date>;
 }
 
-Mistake.init(
+Strategy.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -28,9 +28,9 @@ Mistake.init(
     updatedAt: DataTypes.DATE,
   },
   {
-    tableName: 'mistakes',
+    tableName: 'strategies',
     sequelize,
   },
 );
 
-export default Mistake;
+export default Strategy;

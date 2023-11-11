@@ -5,7 +5,8 @@ import config from '../config';
 import User from '../../user/models/User';
 import Trade from '../models/Trades';
 import Mistake from '../models/Mistakes';
-import Setup from '../models/Setup';
+import Setup from '../models/Strategy';
+import Strategy from '../models/Strategy';
 
 export const tradesUploadToKafka = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -28,8 +29,8 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
     // let trades = (await zerodha.kitetrades.getAlltradesForTheDay({ apiKey: config.KITE_API_KEY, accessToken })).data;
 
     // For testing, getting the trades locally
-    for(let i = 0; i < trades.length; i++) {
-      let trade = {
+    for (let i = 0; i < trades.length; i++) {
+      const trade = {
         // Todo - Get the user from req object. This user will be set when we verify the request that contains token in the middleware
         name: 'Some User',
         broker: 'Kite',
@@ -50,7 +51,6 @@ export const tradesUploadToKafka = async (req: Request, res: Response, next: Nex
     return res.status(200).json({
       message: 'Data uploaded to Kafka successfully',
     });
-
   } catch (error: any) {
     next({
       status: 500,
@@ -108,78 +108,78 @@ export const tradesSyncToPostgres = async (req: Request, res: Response, next: Ne
 // For Testing Only
 let trades = [
   {
-    "trade_id": "10000000",
-    "order_id": "200000000000000",
-    "exchange": "NSE",
-    "tradingsymbol": "SBIN",
-    "instrument_token": 779521,
-    "product": "CNC",
-    "average_price": 420.65,
-    "quantity": 1,
-    "exchange_order_id": "300000000000000",
-    "transaction_type": "BUY",
-    "fill_timestamp": "2021-05-31 09:16:39",
-    "order_timestamp": "09:16:39",
-    "exchange_timestamp": "2021-05-31 09:16:39"
+    trade_id: '10000000',
+    order_id: '200000000000000',
+    exchange: 'NSE',
+    tradingsymbol: 'SBIN',
+    instrument_token: 779521,
+    product: 'CNC',
+    average_price: 420.65,
+    quantity: 1,
+    exchange_order_id: '300000000000000',
+    transaction_type: 'BUY',
+    fill_timestamp: '2021-05-31 09:16:39',
+    order_timestamp: '09:16:39',
+    exchange_timestamp: '2021-05-31 09:16:39',
   },
   {
-    "trade_id": "40000000",
-    "order_id": "500000000000000",
-    "exchange": "CDS",
-    "tradingsymbol": "USDINR21JUNFUT",
-    "instrument_token": 412675,
-    "product": "MIS",
-    "average_price": 72.755,
-    "quantity": 1,
-    "exchange_order_id": "600000000000000",
-    "transaction_type": "BUY",
-    "fill_timestamp": "2021-05-31 11:18:27",
-    "order_timestamp": "11:18:27",
-    "exchange_timestamp": "2021-05-31 11:18:27"
+    trade_id: '40000000',
+    order_id: '500000000000000',
+    exchange: 'CDS',
+    tradingsymbol: 'USDINR21JUNFUT',
+    instrument_token: 412675,
+    product: 'MIS',
+    average_price: 72.755,
+    quantity: 1,
+    exchange_order_id: '600000000000000',
+    transaction_type: 'BUY',
+    fill_timestamp: '2021-05-31 11:18:27',
+    order_timestamp: '11:18:27',
+    exchange_timestamp: '2021-05-31 11:18:27',
   },
   {
-    "trade_id": "70000000",
-    "order_id": "800000000000000",
-    "exchange": "MCX",
-    "tradingsymbol": "GOLDPETAL21JUNFUT",
-    "instrument_token": 58424839,
-    "product": "NRML",
-    "average_price": 4852,
-    "quantity": 1,
-    "exchange_order_id": "312115100078593",
-    "transaction_type": "BUY",
-    "fill_timestamp": "2021-05-31 16:00:36",
-    "order_timestamp": "16:00:36",
-    "exchange_timestamp": "2021-05-31 16:00:36"
+    trade_id: '70000000',
+    order_id: '800000000000000',
+    exchange: 'MCX',
+    tradingsymbol: 'GOLDPETAL21JUNFUT',
+    instrument_token: 58424839,
+    product: 'NRML',
+    average_price: 4852,
+    quantity: 1,
+    exchange_order_id: '312115100078593',
+    transaction_type: 'BUY',
+    fill_timestamp: '2021-05-31 16:00:36',
+    order_timestamp: '16:00:36',
+    exchange_timestamp: '2021-05-31 16:00:36',
   },
   {
-    "trade_id": "90000000",
-    "order_id": "1100000000000000",
-    "exchange": "MCX",
-    "tradingsymbol": "GOLDPETAL21JUNFUT",
-    "instrument_token": 58424839,
-    "product": "NRML",
-    "average_price": 4852,
-    "quantity": 1,
-    "exchange_order_id": "1200000000000000",
-    "transaction_type": "BUY",
-    "fill_timestamp": "2021-05-31 16:08:41",
-    "order_timestamp": "16:08:41",
-    "exchange_timestamp": "2021-05-31 16:08:41"
+    trade_id: '90000000',
+    order_id: '1100000000000000',
+    exchange: 'MCX',
+    tradingsymbol: 'GOLDPETAL21JUNFUT',
+    instrument_token: 58424839,
+    product: 'NRML',
+    average_price: 4852,
+    quantity: 1,
+    exchange_order_id: '1200000000000000',
+    transaction_type: 'BUY',
+    fill_timestamp: '2021-05-31 16:08:41',
+    order_timestamp: '16:08:41',
+    exchange_timestamp: '2021-05-31 16:08:41',
   },
 ];
 
 export const updateTrade = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // 1. Check for trade
+    // 2. For each mistake, check if already exists otherwise create it
+    // 3. Add mistake to trade
+    // 4. Do the same for strategy
+
     const { tradeID } = req.params;
     const tradeBody = req.body;
 
-    if (
-      !Array.isArray(tradeBody?.mistakes) ||
-      !Array.isArray(tradeBody?.setup) ||
-      tradeBody?.mistakes.length === 0 ||
-      tradeBody?.setup.length === 0
-    ) {
+    if (!Array.isArray(tradeBody?.mistakes) || !Array.isArray(tradeBody?.strategies)) {
       return res.status(400).json({
         message: 'Invalid Input',
       });
@@ -197,34 +197,26 @@ export const updateTrade = async (req: Request, res: Response, next: NextFunctio
       });
     }
 
-    const { mistakes, setup } = tradeBody;
+    const { mistakes, strategies } = tradeBody;
 
-    const mistakesReferences: Array<string> = await Promise.all(
-      mistakes.map(async (tag: string) => {
-        const mistakeResponse = await Mistake.upsert({
-          // Returns an array with first index as record and second index as a boolean if the record was created or updated.
-          // The second value is always null for Postgres
-          tag: tag.toLowerCase(),
-        });
-        return mistakeResponse[0].toJSON().id;
-      }),
-    );
+    // Loop through mistakes and add it to trade
+    mistakes.map(async (tag: string) => {
+      const [mistake] = await Mistake.findOrCreate({
+        where: { tag: tag.toLowerCase() },
+      });
 
-    const setupReferences: Array<string> = await Promise.all(
-      setup.map(async (tag: string) => {
-        const setupResponse = await Setup.upsert({
-          // Returns an array with first index as record and second index as a boolean if the record was created or updated.
-          // The second value is always null for Postgres
-          tag: tag.toLowerCase(),
-        });
-        return setupResponse[0].toJSON().id;
-      }),
-    );
+      // Adding mistake to trade
+      await tradeToUpdate.addMistake(mistake);
+    });
 
-    // Insert the reference of mistakes in trade
-    await tradeToUpdate.update({
-      mistakes: mistakesReferences,
-      setup: setupReferences,
+    // Loop through strategies and add it to trade
+    strategies.map(async (tag: string) => {
+      const [strategy] = await Strategy.findOrCreate({
+        where: { tag: tag.toLowerCase() },
+      });
+
+      // Adding setup to trade
+      await tradeToUpdate.addStrategy(strategy);
     });
 
     return res.status(200).json({
