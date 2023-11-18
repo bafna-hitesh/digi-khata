@@ -2717,6 +2717,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/swagger-jsdoc@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/swagger-jsdoc/-/swagger-jsdoc-6.0.3.tgz#5222107a17a30f9d7624b2bce86cc779ab50b16c"
+  integrity sha512-QMwYeiA7OajGiqqNCESZFnZRA7HIJ1WLz53IhBkPNUsVA9ibMcEVseJQiJRtJmW3YrluHItVmANvFBTg/N8/yQ==
+
 "@types/swagger-ui-express@^4.1.6":
   version "4.1.6"
   resolved "https://registry.yarnpkg.com/@types/swagger-ui-express/-/swagger-ui-express-4.1.6.tgz#d0929e3fabac1a96a8a9c6c7ee8d42362c5cdf48"
