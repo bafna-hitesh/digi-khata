@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import WaitListedUser from '../models/WaitListedUser';
 import { isValidEmail, isValidName } from '../utils';
@@ -58,7 +59,7 @@ const waitList = async (req: Request, res: Response) => {
     return res.status(201).json({
       message: 'Successfully created a new waitlisted user',
     });
-  } catch (err: unknown) {
+  } catch (err: any) {
     return res.status(500).json({
       message: 'Failed to create a new waitlisted user',
       error: err?.errors?.[0]?.message,
