@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import config from '../config';
 import { zerodha } from '@digi/brokers';
 import User from '../models/User';
-import { generateJWT, generateRandomToken } from '../utils';
+import { generateJWT, generateRandomToken } from '../../../utils';
 
 export const zerodhaInitialLogin = (req: Request, res: Response) => {
   const loginURL = zerodha.userAuth.getLoginUrl(config.KITE_API_KEY);

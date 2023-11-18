@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import WaitListedUser from '../models/WaitListedUser';
-import { isValidEmail, isValidName } from '../utils';
+import { isValidEmail, isValidName } from '../../../utils';
 
 const waitList = async (req: Request, res: Response) => {
   try {

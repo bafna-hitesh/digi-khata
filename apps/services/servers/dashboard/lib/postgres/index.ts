@@ -1,4 +1,10 @@
-import { getKiteProfitDaily, getKiteProfitByDayOfWeek, getKiteOpeningBalanceDaily } from './daily';
+import {
+  getKiteProfitDaily,
+  getKiteProfitByDayOfWeek,
+  getKiteOpeningBalanceDaily,
+  getKiteTradeDistributionByMistakesData,
+} from './daily';
+import { compareMistakesByCount } from '../../../../utils';
 
 async function getKiteDataDaily(user: string, broker: string, segment: string, startDate: string, endDate: string) {
   const kiteProfitDaily: any = await getKiteProfitDaily(startDate, endDate, user, broker, segment);
@@ -7,7 +13,7 @@ async function getKiteDataDaily(user: string, broker: string, segment: string, s
   let dailyWins = 0;
   let dailyLoses = 0;
 
-  for(let currentDayData of kiteProfitDaily) {
+  for (const currentDayData of kiteProfitDaily) {
     totalTrades += currentDayData.totalTrades;
     currentDayData.profit >= 0 ? dailyWins++ : dailyLoses++;
   }
@@ -84,10 +90,55 @@ async function getKiteOpeningBalanceDataDaily(
   return { kiteBalanceDaily };
 }
 
+async function getKiteTradeDistributionByMistakes(
+  user: string,
+  broker: string,
+  segment: string,
+  startDate: string,
+  endDate: string,
+) {
+  const kiteTradeDistributionByMistakes = await getKiteTradeDistributionByMistakesData(
+    startDate,
+    endDate,
+    user,
+    broker,
+    segment,
+  );
+
+  // Converting Trade[] to JSON by removing sequelize metadata
+  // Doing this way because Typescript is not recognising the get({plain: true}) function on the model which converts directly the model instance to JSON
+  const kiteTradeDistributionByMistakesString = JSON.stringify(kiteTradeDistributionByMistakes);
+  const kiteTradeDistributionByMistakesJSON = JSON.parse(kiteTradeDistributionByMistakesString);
+  const tradeDistributionByMistakes: any = {};
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const trade of kiteTradeDistributionByMistakesJSON) {
+    const { tag } = trade.Mistakes;
+    // Storing it as HashMap
+    if (tradeDistributionByMistakes[tag]) {
+      tradeDistributionByMistakes[tag] += 1;
+    } else {
+      tradeDistributionByMistakes[tag] = 1;
+    }
+  }
+
+  // Pushing each tag and its count to array to sort it in desc order
+  const tradeDistributionByMistakesArray = Object.keys(tradeDistributionByMistakes).map((mistake) => {
+    return {
+      tag: mistake,
+      count: tradeDistributionByMistakes[mistake],
+    };
+  });
+
+  tradeDistributionByMistakesArray.sort(compareMistakesByCount);
+  return tradeDistributionByMistakesArray;
+}
+
 export {
   getKiteDataDaily,
   getKiteDataByDayOfWeek,
   // getKiteFODataByHourly,
   // getKiteTradesByMistakes,
   getKiteOpeningBalanceDataDaily,
+  getKiteTradeDistributionByMistakes,
 };

@@ -2,6 +2,8 @@ import { Op, QueryTypes } from 'sequelize';
 import { sequelize } from '../../loaders/sequelize';
 import * as query from './query';
 import Balance from '../../../user/models/Balance';
+import Mistake from '../../../order/models/Mistake';
+import Trade from '../../../order/models/Trade';
 
 async function getKiteProfitDaily(startDate: any, endDate: any, user: string, broker: string, segment: string) {
   const kiteFOProfitDaily = await sequelize.query(query.getKiteProfitDaily, {
@@ -43,25 +45,36 @@ async function getKiteProfitByDayOfWeek(startDate: any, endDate: any, user: stri
 //   return kiteFOProfitHourly.data;
 // }
 
-async function getKiteTradeDistributionByMistakes(
+async function getKiteTradeDistributionByMistakesData(
   startDate: any,
   endDate: any,
   user: string,
   broker: string,
-  segment: string,) {
-
-  // Todo - Get the trade by mistakes according to how mistakes are defined
-  // const kiteTradeDistributionByMistakes = await sequelize.query(query.getKiteProfitByDayOfWeek, {
-  //   replacements: {
-  //     startDate,
-  //     endDate,
-  //     user,
-  //     broker,
-  //     segment,
-  //   },
-  //   type: QueryTypes.SELECT,
-  // });
-  // return kiteTradeDistributionByMistakes;
+  segment: string,
+) {
+  const kiteTradeDistributionByMistakes = await Trade.findAll({
+    attributes: ['id'],
+    where: {
+      name: user,
+      broker,
+      segment,
+      tradeDate: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+    include: [
+      {
+        model: Mistake,
+        attributes: {
+          exclude: ['id', 'createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    raw: true,
+    nest: true,
+    // plain: true,
+  });
+  return kiteTradeDistributionByMistakes;
 }
 
 async function getKiteOpeningBalanceDaily(startDate: string, endDate: string, userID: string, broker: string) {
@@ -81,6 +94,6 @@ export {
   getKiteProfitDaily,
   getKiteProfitByDayOfWeek,
   // getKiteFOProfitHourly,
-  getKiteTradeDistributionByMistakes,
+  getKiteTradeDistributionByMistakesData,
   getKiteOpeningBalanceDaily,
 };
