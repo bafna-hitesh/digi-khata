@@ -4,7 +4,7 @@ export const getKiteProfitDaily = `SELECT
   COUNT(*) as "totalTrades"
 FROM trades
 WHERE
-  "tradeDate" BETWEEN :startDate AND :endDate AND "user" = :user AND "broker" = :broker AND "segment" = :segment 
+  "tradeDate" BETWEEN :startDate AND :endDate AND "name" = :user AND "broker" = :broker AND "segment" = :segment 
 GROUP BY
   "tradeDate"
 ORDER BY
@@ -23,7 +23,7 @@ export const getKiteProfitByDayOfWeek = `SELECT
   SUM(CASE WHEN "transactionType" = 'BUY' THEN -("quantity" * "price") ELSE ("quantity" * "price") END) AS "profit"
 FROM trades
 WHERE
-  "tradeDate" BETWEEN :startDate AND :endDate AND "user" = :user AND "broker" = :broker AND "segment" = :segment 
+  "tradeDate" BETWEEN :startDate AND :endDate AND "name" = :user AND "broker" = :broker AND "segment" = :segment 
 GROUP BY
   EXTRACT(DOW FROM "tradeDate")
 ORDER BY
@@ -43,7 +43,7 @@ export const getKiteProfitHourly = `SELECT
   COUNT(*) as totalTrades
 FROM orders
 WHERE
-  __time BETWEEN ? AND ? AND user = ? AND broker = ? AND segment = ?
+  __time BETWEEN ? AND ? AND name = ? AND broker = ? AND segment = ?
 GROUP BY
   TIME_EXTRACT(__time, 'HOUR')
 ORDER BY
