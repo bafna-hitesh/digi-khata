@@ -33,17 +33,19 @@ async function getKiteProfitByDayOfWeek(startDate: any, endDate: any, user: stri
   return kiteFOProfitDaily;
 }
 
-// async function getKiteFOProfitHourly(startDate: any, endDate: any, routerURL: string, user: string, broker: string, type: string) {
-//   let parameters = [
-//     { "type": "TIMESTAMP", "value": startDate },
-//     { "type": "TIMESTAMP", "value": endDate.add(1, 'day').format('YYYY-MM-DD') }, // Incrementing Date since Druid doesn't include end Date
-//     { "type": "VARCHAR", "value": user },
-//     { "type": "VARCHAR", "value": broker },
-//     { "type": "VARCHAR", "value": type },
-//   ]
-//   let kiteFOProfitHourly = await runQuery(routerURL, query.getKiteFOProfitHourly, parameters);
-//   return kiteFOProfitHourly.data;
-// }
+async function getKiteProfitHourly(startDate: any, endDate: any, user: string, broker: string, segment: string) {
+  const kiteFOProfitHourly = await sequelize.query(query.getKiteProfitHourly, {
+    replacements: {
+      startDate,
+      endDate,
+      user,
+      broker,
+      segment,
+    },
+    type: QueryTypes.SELECT,
+  });
+  return kiteFOProfitHourly;
+}
 
 async function getKiteTradeDistributionByMistakesData(
   startDate: any,
@@ -77,15 +79,17 @@ async function getKiteTradeDistributionByMistakesData(
   return kiteTradeDistributionByMistakes;
 }
 
-async function getKiteOpeningBalanceDaily(startDate: string, endDate: string, userID: string, broker: string) {
+async function getKiteOpeningBalanceDaily(startDate: string, endDate: string, user: string, broker: string) {
   const kiteOpeningBalanceDaily = await Balance.findAll({
+    attributes: ['balanceDate', 'equityOpeningBalance', 'commodityOpeningBalance'],
     where: {
       balanceDate: {
         [Op.between]: [startDate, endDate],
       },
-      userID,
+      userName: user,
       broker,
     },
+    raw: true,
   });
   return kiteOpeningBalanceDaily;
 }
@@ -93,7 +97,7 @@ async function getKiteOpeningBalanceDaily(startDate: string, endDate: string, us
 export {
   getKiteProfitDaily,
   getKiteProfitByDayOfWeek,
-  // getKiteFOProfitHourly,
+  getKiteProfitHourly,
   getKiteTradeDistributionByMistakesData,
   getKiteOpeningBalanceDaily,
 };

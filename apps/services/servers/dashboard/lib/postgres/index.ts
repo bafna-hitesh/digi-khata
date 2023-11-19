@@ -1,10 +1,14 @@
+import { QueryTypes } from 'sequelize';
 import {
   getKiteProfitDaily,
   getKiteProfitByDayOfWeek,
   getKiteOpeningBalanceDaily,
   getKiteTradeDistributionByMistakesData,
+  getKiteProfitHourly,
 } from './daily';
 import { compareMistakesByCount } from '../../../../utils';
+import { sequelize } from '../../loaders/sequelize';
+import * as query from './query';
 
 async function getKiteDataDaily(user: string, broker: string, segment: string, startDate: string, endDate: string) {
   const kiteProfitDaily: any = await getKiteProfitDaily(startDate, endDate, user, broker, segment);
@@ -38,38 +42,20 @@ async function getKiteDataByDayOfWeek(
 ) {
   const kiteProfitByDayOfWeek = await getKiteProfitByDayOfWeek(startDate, endDate, user, broker, segment);
 
-  return { profitByDayOfWeek: kiteProfitByDayOfWeek };
+  return kiteProfitByDayOfWeek;
 }
 
-// async function getKiteFODataByHourly(
-//   routerURL: string,
-//   user: string,
-//   broker: string,
-//   type: string,
-//   freq: string,
-//   startDate: any,
-//   endDate: any) {
+async function getKiteDataHourly(
+  user: string,
+  broker: string,
+  segment: string,
+  startDate: string,
+  endDate: string,
+) {
+  const kiteFOProfitHourly = await getKiteProfitHourly(startDate, endDate, user, broker, segment);
 
-//   // Converting to dayjs object to make date calculations easier
-//   startDate = dayjs(startDate);
-//   endDate = dayjs(endDate);
-
-//   let kiteFOProfitHourly = await getKiteFOProfitHourly(startDate, endDate, routerURL, user, broker, type);
-
-//   return { hourlyData : kiteFOProfitHourly };
-// }
-
-// async function getKiteTradesByMistakes(
-//   user: string,
-//   broker: string,
-//   segment: string,
-//   startDate: string,
-//   endDate: string,
-// ) {
-//   const kiteTradeDistributionByMistakes = await getKiteTradesByMistakes(startDate, endDate, user, broker, segment);
-
-//   return { tradeDistributionByMistakes: kiteTradeDistributionByMistakes };
-// }
+  return { hourlyData: kiteFOProfitHourly };
+}
 
 async function getKiteOpeningBalanceDataDaily(
   user: string,
@@ -81,13 +67,15 @@ async function getKiteOpeningBalanceDataDaily(
   const kiteBalanceDailyQueryResponse = await getKiteOpeningBalanceDaily(startDate, endDate, user, broker);
 
   const kiteBalanceDaily = kiteBalanceDailyQueryResponse.map((row: any) => {
+    const dailyData = row;
     if (segment === 'EQUITY') {
-      return row.toJSON().equityOpeningBalance;
+      delete dailyData.commodityOpeningBalance;
+    } else {
+      delete dailyData.equityOpeningBalance;
     }
-    return row.toJSON().commodityOpeningBalance;
+    return dailyData;
   });
-
-  return { kiteBalanceDaily };
+  return { balanceData: kiteBalanceDaily };
 }
 
 async function getKiteTradeDistributionByMistakes(
@@ -134,11 +122,54 @@ async function getKiteTradeDistributionByMistakes(
   return tradeDistributionByMistakesArray;
 }
 
+async function getKiteTradePerformanceByMistakes(
+  user: string,
+  broker: string,
+  segment: string,
+  startDate: string,
+  endDate: string,
+) {
+  const kiteTradePerformanceByMistakes = await sequelize.query(query.getKiteTradePerformanceByMistakes, {
+    replacements: {
+      startDate,
+      endDate,
+      user,
+      broker,
+      segment,
+    },
+    type: QueryTypes.SELECT,
+  });
+
+  return kiteTradePerformanceByMistakes;
+}
+
+async function getKiteTradePerformanceByStrategy(
+  user: string,
+  broker: string,
+  segment: string,
+  startDate: string,
+  endDate: string,
+) {
+  const kiteTradePerformanceByStrategy = await sequelize.query(query.getKiteTradePerformanceByStrategy, {
+    replacements: {
+      startDate,
+      endDate,
+      user,
+      broker,
+      segment,
+    },
+    type: QueryTypes.SELECT,
+  });
+
+  return kiteTradePerformanceByStrategy;
+}
+
 export {
   getKiteDataDaily,
   getKiteDataByDayOfWeek,
-  // getKiteFODataByHourly,
-  // getKiteTradesByMistakes,
+  getKiteDataHourly,
   getKiteOpeningBalanceDataDaily,
   getKiteTradeDistributionByMistakes,
+  getKiteTradePerformanceByMistakes,
+  getKiteTradePerformanceByStrategy,
 };
