@@ -17,6 +17,7 @@ fs.readdirSync(componentsDir).forEach((file) => {
 });
 
 module.exports = {
+  stats: 'minimal',
   mode: isProduction ? 'production' : 'development',
   entry: entryPoints,
   output: {

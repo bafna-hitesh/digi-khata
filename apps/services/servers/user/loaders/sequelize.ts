@@ -4,6 +4,7 @@ import config from '../config';
 const sequelize = new Sequelize(config.POSTGRES_DATABASE, config.POSTGRES_USER, config.POSTGRES_PASSWORD, {
   host: config.POSTGRES_HOST,
   dialect: 'postgres',
+  logging: false,
 });
 
 async function sequelizeLoader() {

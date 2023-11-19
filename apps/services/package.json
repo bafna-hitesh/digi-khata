@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\"",
-    "dev:dashboard": "nodemon --watch servers --ext ts --exec ts-node servers/dashboard/index.ts",
-    "dev:order": "nodemon --watch servers --ext ts --exec ts-node servers/order/index.ts",
-    "dev:user": "nodemon --watch servers --ext ts --exec ts-node servers/user/index.ts",
+    "dev:dashboard": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/dashboard/index.ts",
+    "dev:order": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/order/index.ts",
+    "dev:user": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/user/index.ts",
     "eslint": "eslint .",
     "standalone:dashboard": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/dashboard/index.ts",
     "standalone:order": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/order/index.ts",
@@ -28,6 +28,8 @@
     "pg-hstore": "^2.3.4",
     "pm2": "^5.3.0",
     "sequelize": "^6.33.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {
@@ -37,7 +39,9 @@
     "@types/fs-extra": "^11.0.3",
     "@types/jsonwebtoken": "^9.0.4",
     "@types/morgan": "^1.9.7",
-    "@types/node": "^20.8.8",
+    "@types/node": "^20.8.10",
+    "@types/swagger-jsdoc": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.6",
     "chai": "^4.3.10",
     "concurrently": "^8.2.2",
     "eslint": "^8.52.0",
