@@ -1,22 +1,22 @@
 {
   "name": "@digi/logger",
   "version": "0.0.0",
+  "license": "MIT",
+  "sideEffects": false,
   "main": "dist/es/index.js",
   "module": "dist/es/index.js",
   "types": "./index.tsx",
-  "license": "MIT",
-  "scripts": {
-    "clean": "rm -rf dist",
-    "dev": "father dev",
-    "build": "father build",
-    "build:deps": "father prebundle",
-    "prepublishOnly": "father doctor && npm run build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
-  },
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "scripts": {
+    "build": "father build",
+    "build:deps": "father prebundle",
+    "clean": "rm -rf dist",
+    "dev": "father dev --quiet",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepublishOnly": "father doctor && npm run build"
+  },
   "dependencies": {
     "morgan": "^1.10.0",
     "winston": "^3.11.0"

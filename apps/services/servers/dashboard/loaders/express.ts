@@ -11,7 +11,7 @@ export default async ({ app }: { app: Application }) => {
 
   app
     .listen(config.DASHBOARD_MS_PORT, () => {
-      console.log(`Dasboard Service started on port ${config.DASHBOARD_MS_PORT}`);
+      console.log('\u001b[31m', `Dasboard Service started on port ${config.DASHBOARD_MS_PORT}`);
     })
     .on('error', (err) => {
       console.error('Error in Order Service ', err);
