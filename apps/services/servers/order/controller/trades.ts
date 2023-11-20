@@ -3,8 +3,8 @@ import { createKafkaInstance, kafkaConsumer, kafkaProducer } from '@digi/kafka';
 import { zerodha } from '@digi/brokers';
 import config from '../config';
 import User from '../../user/models/User';
-import Trade from '../models/Trades';
-import Mistake from '../models/Mistakes';
+import Trade from '../models/Trade';
+import Mistake from '../models/Mistake';
 import Setup from '../models/Strategy';
 import Strategy from '../models/Strategy';
 

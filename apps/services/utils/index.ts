@@ -23,4 +23,8 @@ function isValidName(name: string) {
   return nameRegex.test(name);
 }
 
-export { generateRandomToken, generateJWT, isValidEmail, isValidName };
+function compareMistakesByCount(a: any, b: any) {
+  return b.count - a.count;
+}
+
+export { generateRandomToken, generateJWT, isValidEmail, isValidName, compareMistakesByCount };

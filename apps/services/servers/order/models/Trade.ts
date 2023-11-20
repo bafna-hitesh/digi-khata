@@ -16,7 +16,7 @@ import {
   Model,
 } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
-import Mistake from './Mistakes';
+import Mistake from './Mistake';
 import Strategy from './Strategy';
 
 // Defining Trade Model Configuration

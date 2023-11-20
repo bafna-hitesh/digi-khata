@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import WaitListedUser from '../models/WaitListedUser';
-import { isValidEmail, isValidName } from '../utils';
+import { isValidEmail, isValidName } from '../../../utils';
 /**
  * @swagger
  * /waitlist:
