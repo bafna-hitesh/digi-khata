@@ -22,7 +22,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@types/morgan": "^1.9.7",
+    "@types/morgan": "^1.9.9",
     "eslint-config-custom": "*"
   }
 }
