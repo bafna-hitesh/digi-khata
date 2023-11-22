@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+
 const isProduction = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 
 const fs = require('fs');
-const moduleAlias = require('module-alias');
+const million = require('million/compiler');
 
 const componentsDir = path.resolve(__dirname, 'src');
 const entryPoints = {};
@@ -89,6 +91,7 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /\.DS_Store$/,
     }),
+    million.webpack({ auto: true }),
   ],
   optimization: {
     minimize: true,

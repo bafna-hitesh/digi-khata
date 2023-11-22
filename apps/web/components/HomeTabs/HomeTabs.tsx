@@ -7,6 +7,16 @@ import Journal from './Journal';
 
 const HomeTabs = () => {
   const [activeTab, changeActiveTab] = useState(Tabs[0]);
+  const getActiveTab = () => {
+    switch (activeTab) {
+      case 'Analytics':
+        return <TabAnalytics />;
+      case 'Journal':
+        return <Journal />;
+      default:
+        return null;
+    }
+  };
   return (
     <div className='flex-center flex-direction-column'>
       <div className='d-flex gap20'>
@@ -29,10 +39,7 @@ const HomeTabs = () => {
           </div>
         ))}
       </div>
-      <div className='full-width'>
-        {activeTab === 'Analytics' && <TabAnalytics />}
-        {activeTab === 'Journal' && <Journal />}
-      </div>
+      <div className='full-width'>{getActiveTab()}</div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 {
   "name": "@digi/services",
   "version": "1.0.0",
+  "license": "MIT",
+  "author": "Rachit Srivastava",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\"",
