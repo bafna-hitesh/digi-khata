@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import config from '../config';
 import { zerodha } from '@digi/brokers';
+import config from '../config';
 import User from '../models/User';
-import { generateJWT, generateRandomToken } from '../../../utils';
+import { generateJWT, generateRandomToken } from '../utils';
 
 export const zerodhaInitialLogin = (req: Request, res: Response) => {
   const loginURL = zerodha.userAuth.getLoginUrl(config.KITE_API_KEY);
@@ -11,20 +11,20 @@ export const zerodhaInitialLogin = (req: Request, res: Response) => {
 
 export const zerodhaLogin = async (req: Request, res: Response) => {
   try {
-    let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    let requestToken = zerodha.userAuth.getRequestToken(fullUrl);
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const requestToken = zerodha.userAuth.getRequestToken(fullUrl);
 
     if (!requestToken) {
       throw new Error('Request Token not found in redirect URL');
     }
 
-    let kiteUserProfile = await zerodha.userAuth.getUserProfileWithAccessToken({
+    const kiteUserProfile = await zerodha.userAuth.getUserProfileWithAccessToken({
       apiKey: config.KITE_API_KEY,
       apiSecret: config.KITE_API_SECRET,
       requestToken,
     });
 
-    let users = await User.findAll({
+    const users = await User.findAll({
       where: {
         kiteUserID: kiteUserProfile.user_id,
       },
@@ -38,7 +38,7 @@ export const zerodhaLogin = async (req: Request, res: Response) => {
 
     // Saving the user to database if doesn't exist
     if (users.length === 0) {
-      let formattedKiteProfile = zerodha.kiteUtils.formatKiteProfile(kiteUserProfile);
+      const formattedKiteProfile = zerodha.kiteUtils.formatKiteProfile(kiteUserProfile);
       existingUser = await User.create({
         name: kiteUserProfile.user_name,
         kiteUserID: kiteUserProfile.user_id,
@@ -48,17 +48,17 @@ export const zerodhaLogin = async (req: Request, res: Response) => {
 
     if (users.length === 1) existingUser = users[0];
 
-    let clientToken = generateRandomToken(20);
+    const clientToken = generateRandomToken(20);
 
     // Updating Tokens
     if (existingUser) {
       await existingUser.update({
-        clientToken: clientToken,
+        clientToken,
         kiteAccessToken: kiteUserProfile.access_token,
       });
     }
 
-    let jwtToken = generateJWT(clientToken, config.APP_SECRET);
+    const jwtToken = generateJWT(clientToken, config.APP_SECRET);
 
     res.cookie('token', jwtToken, {
       httpOnly: true,
@@ -66,7 +66,7 @@ export const zerodhaLogin = async (req: Request, res: Response) => {
     });
     return res.redirect(config.APP_HOME_URL);
   } catch (error) {
-    console.log('[Error] Some Exception occured' + JSON.stringify(error));
+    console.log(`[Error] Some Exception occured${JSON.stringify(error)}`);
     return res.redirect(config.APP_LOGIN_URL);
   }
 };

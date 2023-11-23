@@ -4,6 +4,7 @@ import million from 'million/compiler';
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@digi/components'],
+  compress: true,
 };
 
 const millionConfig = {

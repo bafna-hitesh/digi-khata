@@ -6,10 +6,12 @@ import {
   getKiteTradeDistributionByMistakesData,
   getKiteProfitHourly,
 } from './daily';
-import { compareMistakesByCount } from '../../../../utils';
 import { sequelize } from '../../loaders/sequelize';
 import * as query from './query';
 
+function compareMistakesByCount(a: any, b: any) {
+  return b.count - a.count;
+}
 async function getKiteDataDaily(user: string, broker: string, segment: string, startDate: string, endDate: string) {
   const kiteProfitDaily: any = await getKiteProfitDaily(startDate, endDate, user, broker, segment);
 
@@ -45,13 +47,7 @@ async function getKiteDataByDayOfWeek(
   return kiteProfitByDayOfWeek;
 }
 
-async function getKiteDataHourly(
-  user: string,
-  broker: string,
-  segment: string,
-  startDate: string,
-  endDate: string,
-) {
+async function getKiteDataHourly(user: string, broker: string, segment: string, startDate: string, endDate: string) {
   const kiteFOProfitHourly = await getKiteProfitHourly(startDate, endDate, user, broker, segment);
 
   return { hourlyData: kiteFOProfitHourly };
