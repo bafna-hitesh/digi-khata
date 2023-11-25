@@ -18,6 +18,7 @@
     "prepublishOnly": "father doctor && npm run build"
   },
   "dependencies": {
+    "@types/express": "^4.17.21",
     "antd": "^5.11.3",
     "crypto": "^1.0.1",
     "package-json-validator": "0.6.3",

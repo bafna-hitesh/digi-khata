@@ -1,6 +1,8 @@
 import crypto from 'crypto';
+import { Request } from 'express';
 import axios from './axiosInstance';
 import { loginURL } from './constants';
+import IKiteUserProfile from './types/userTypes';
 
 // generate login url to be redirected https://kite.trade/docs/connect/v3/user/#login-flow
 const getLoginUrl = (apiKey: string) => `${loginURL}/?v=3&api_key=${apiKey}`;
@@ -17,7 +19,7 @@ const getUserProfileWithAccessToken = async ({
   apiKey: string;
   apiSecret: string;
   requestToken: string;
-}) => {
+}): Promise<IKiteUserProfile> => {
   const checksum = crypto
     .createHash('sha256')
     .update(apiKey + requestToken + apiSecret)
@@ -42,4 +44,9 @@ const getOpeningBalance = async (apiKey: string, accessToken: string) => {
   return balanceResponse.data;
 };
 
-export { getLoginUrl, getRequestToken, getUserProfileWithAccessToken, getOpeningBalance };
+const extractRequestToken = (req: Request) => {
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  return getRequestToken(fullUrl);
+};
+
+export { getLoginUrl, getRequestToken, getUserProfileWithAccessToken, getOpeningBalance, extractRequestToken };

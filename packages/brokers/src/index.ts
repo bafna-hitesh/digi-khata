@@ -1,4 +1,2 @@
-import * as zerodha from './zerodha';
-import * as angelOne from './angelone';
-
-export { zerodha, angelOne };
+export * as zerodha from './zerodha';
+export * as angelOne from './angelone';

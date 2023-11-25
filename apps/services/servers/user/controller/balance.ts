@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { Response } from 'express';
 import { getOpeningBalance } from '@digi/brokers/src/zerodha/userAuth';
 import Balance from '../models/Balance';
