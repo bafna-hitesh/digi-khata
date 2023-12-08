@@ -16,7 +16,9 @@ export default ({ app }: { app: Application }) => {
 
   app
     .listen(config.PORT, () => {
-      console.log('\x1b[32m%s\x1b[0m', `Validate Service started on port ${config.PORT}!`);
+      console.log('---------------------------------------------------');
+      console.log('\n\x1b[32m%s\x1b[0m', `Validate Service started on port ${config.PORT}!`, '\u001b[0m\n');
+      console.log('---------------------------------------------------');
     })
     .on('error', (err) => {
       console.error('Error in Validate Service ', err);
