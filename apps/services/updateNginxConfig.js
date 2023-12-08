@@ -105,9 +105,9 @@ const run = async () => {
   await checkAndGenerateSSLCertificates();
 
   const updatedNewConfig = newConfigData
-    .replace('USER_PORT', userPort)
-    .replace('ORDER_PORT', orderPort)
-    .replace('DASHBOARD_PORT', dashboardPort)
+    .replace('USER_MS_PORT', userPort)
+    .replace('ORDER_MS_PORT', orderPort)
+    .replace('DASHBOARD_MS_PORT', dashboardPort)
     .replace('VALIDATE_MS_PORT', validatePort)
     .replace('/path/to/your/certificate.pem', sslCertPath)
     .replace('/path/to/your/private.key', sslKeyPath);
