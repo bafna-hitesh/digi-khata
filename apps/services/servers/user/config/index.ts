@@ -30,4 +30,7 @@ export default {
   APP_HOME_URL: process.env.APP_HOME_URL,
   APP_LOGIN_URL: process.env.APP_LOGIN_URL,
   APP_SECRET: process.env.APP_SECRET,
+
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: Number(process.env.REDIS_PORT),
 } as ProcessEnv;

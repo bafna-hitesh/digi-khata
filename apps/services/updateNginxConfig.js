@@ -9,6 +9,40 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const sslCertPath = path.join(__dirname, 'ssl', 'nginx.crt');
+const sslKeyPath = path.join(__dirname, 'ssl', 'nginx.key');
+
+const generateSSLCertificates = async () => {
+  // Ensure the ssl directory exists
+  const sslDir = path.join(__dirname, 'ssl');
+  await fs.mkdir(sslDir, { recursive: true }).catch((err) => {
+    throw new Error(`Failed to create SSL directory: ${err.message}`);
+  });
+
+  return new Promise((resolve, reject) => {
+    const command = `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${sslKeyPath} -out ${sslCertPath} -subj "/C=US/ST=YourState/L=YourCity/O=YourOrganization/CN=localhost"`;
+
+    exec(command, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+const checkAndGenerateSSLCertificates = async () => {
+  try {
+    await fs.access(sslCertPath);
+    await fs.access(sslKeyPath);
+    console.log('SSL certificates already exist.');
+  } catch {
+    console.log('Generating SSL certificates...');
+    await generateSSLCertificates();
+  }
+};
+
 const installNginx = () => {
   return new Promise((resolve, reject) => {
     const platform = os.platform();
@@ -66,11 +100,17 @@ const run = async () => {
   const userPort = process.env.USER_MS_PORT || '6000';
   const orderPort = process.env.ORDER_MS_PORT || '7000';
   const dashboardPort = process.env.DASHBOARD_MS_PORT || '8000';
+  const validatePort = process.env.VALIDATE_MS_PORT || '8000';
+
+  await checkAndGenerateSSLCertificates();
 
   const updatedNewConfig = newConfigData
     .replace('USER_PORT', userPort)
     .replace('ORDER_PORT', orderPort)
-    .replace('DASHBOARD_PORT', dashboardPort);
+    .replace('DASHBOARD_PORT', dashboardPort)
+    .replace('VALIDATE_MS_PORT', validatePort)
+    .replace('/path/to/your/certificate.pem', sslCertPath)
+    .replace('/path/to/your/private.key', sslKeyPath);
 
   // Replace the existing nginx.conf with the new configuration
   await fs.writeFile(nginxConfigPath, updatedNewConfig, 'utf8');
