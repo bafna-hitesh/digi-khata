@@ -32,7 +32,7 @@ const hasRequiredCookies = (cookies: { [key: string]: string } | undefined): boo
 const getUserDataFromRedis = async (
   hashedAccessToken: string,
   hashedRefreshToken: string,
-): Promise<[string | null, string | null]> => {
+): Promise<[string | null | undefined, string | null | undefined]> => {
   return Promise.all([getAsync(`accessToken:${hashedAccessToken}`), getAsync(`refreshToken:${hashedRefreshToken}`)]);
 };
 

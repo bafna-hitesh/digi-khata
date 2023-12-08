@@ -13,7 +13,7 @@ import config from '../config';
 const hashToken = (token: string) => createHash('sha256').update(token).digest('hex');
 
 // Generate JWT
-const generateJWT = (userId, expiresIn) => {
+const generateJWT = (userId: string, expiresIn: string) => {
   const payload = { userId };
   return jwt.sign(payload, config.APP_SECRET, { expiresIn });
 };

@@ -5,10 +5,11 @@
   "author": "Rachit Srivastava",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\"",
+    "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\" \"yarn dev:validate\"",
     "dev:dashboard": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/dashboard/index.ts",
     "dev:order": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/order/index.ts",
     "dev:user": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/user/index.ts",
+    "dev:validate": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/validate/index.ts",
     "eslint": "eslint .",
     "standalone:dashboard": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/dashboard/index.ts",
     "standalone:order": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/order/index.ts",
@@ -38,28 +39,28 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@types/cookie": "^0.5.4",
+    "@types/cookie": "^0.6.0",
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/fs-extra": "^11.0.4",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^20.9.4",
+    "@types/node": "^20.10.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "chai": "^4.3.10",
     "concurrently": "^8.2.2",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-config-custom": "*",
     "mocha": "^10.2.0",
-    "mock-knex": "^0.4.12",
-    "nodemon": "^3.0.1",
+    "mock-knex": "^0.4.13",
+    "nodemon": "^3.0.2",
     "nyc": "^15.1.0",
     "package-json-validator": "^0.6.3",
     "supertest": "^6.3.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18"

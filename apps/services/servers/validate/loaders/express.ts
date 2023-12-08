@@ -16,10 +16,10 @@ export default ({ app }: { app: Application }) => {
 
   app
     .listen(config.PORT, () => {
-      console.log('\x1b[36m%s\x1b[0m', `User Service started on port ${config.PORT}!`);
+      console.log('\x1b[32m%s\x1b[0m', `Validate Service started on port ${config.PORT}!`);
     })
     .on('error', (err) => {
-      console.error('Error in User Service ', err);
+      console.error('Error in Validate Service ', err);
       process.exit(1);
     });
 };
