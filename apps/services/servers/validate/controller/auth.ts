@@ -7,6 +7,19 @@ import { hashToken, hasRequiredCookies, getUserDataFromRedis } from '../utils/va
  *   post:
  *     summary: Validates the access and refresh tokens from cookies
  *     description: Validates the tokens and returns user data if valid.
+ *     parameters:
+ *       - in: cookie
+ *         name: accessToken
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Access token for the user
+ *       - in: cookie
+ *         name: refreshToken
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Refresh token for the user
  *     responses:
  *       200:
  *         description: Tokens are valid, and user data is returned.

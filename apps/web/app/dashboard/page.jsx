@@ -22,7 +22,7 @@ export default function Dashboard() {
       const formData = new FormData();
       formData.append('orders', selectedFile);
 
-      const response = await axios.post('http://localhost:7000/orders/upload', formData);
+      const response = await axios.post('http://localhost:8080/orders/orders/upload', formData);
 
       console.info(response.data);
     } catch (error) {

@@ -5,6 +5,6 @@ const authRouter = Router();
 
 // the route created with this would be /auth/login/zerodha
 export default (baseRouter: Router) => {
-  baseRouter.use('/', authRouter);
-  authRouter.post('/', validateController);
+  baseRouter.use('/validate', authRouter);
+  authRouter.get('/', validateController);
 };
