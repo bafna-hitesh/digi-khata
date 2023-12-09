@@ -15,7 +15,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "prepare": "husky install && chmod a+x .husky/commit-msg",
-    "upgrade": "node updatePackages.js"
+    "upgrade": "node updatePackages.js",
+    "postinstall": "pip install -r ./apps/services/servers/dashboardMs/requirements.txt"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
