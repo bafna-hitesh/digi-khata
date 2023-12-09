@@ -90,4 +90,22 @@ const handleExpiredAccessToken = async (refreshToken: string) => {
   return { newAccessToken };
 };
 
-export { setAuthenticationToken, getActiveBrokerTokens, isJwtExpired, handleExpiredAccessToken };
+// Function to get userId from hashedAccessToken
+const getUserIDFromRedis = async (hashedAccessToken: string) => {
+  const userData = await redisClient.get(`accessToken:${hashedAccessToken}`);
+  let userId;
+  if (userData) {
+    // If found userData in Redis, get the userId
+    userId = JSON.parse(userData)?.userId;
+  }
+  return userId;
+};
+
+export {
+  hashToken,
+  setAuthenticationToken,
+  getActiveBrokerTokens,
+  isJwtExpired,
+  handleExpiredAccessToken,
+  getUserIDFromRedis,
+};

@@ -9,6 +9,11 @@ export interface ProcessEnv {
   KITE_BASE_URL: string;
   KITE_REDIRECT_URL: string;
 
+  UPSTOX_API_KEY: string;
+  UPSTOX_API_SECRET: string;
+  UPSTOX_BASE_URL: string;
+  UPSTOX_REDIRECT_URL: string;
+
   DATABASE_URL: string;
   POSTGRES_USER: string;
   POSTGRES_PASSWORD: string;
