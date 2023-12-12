@@ -1,24 +1,16 @@
-from flask import Flask, jsonify, request, Response, make_response
+# loaders/errors.py
 
+from flask import Flask, jsonify, make_response
 
 class HttpError(Exception):
-    status: int
-
     def __init__(self, message: str, status: int) -> None:
         super().__init__(message)
         self.status = status
-
+        self.message = message  # Ensure the message attribute is set
 
 def load_errors(app: Flask):
-    """
-    Registers error handling middleware for the application.
-
-    Args:
-        app: Flask application instance.
-    """
-
     @app.errorhandler(HttpError)
-    def handle_http_error(error: HttpError) -> Response:
+    def handle_http_error(error: HttpError):
         response = make_response(
             jsonify({"errors": {"message": error.message}})
         )
