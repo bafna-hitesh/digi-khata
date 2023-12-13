@@ -1,4 +1,5 @@
 import * as userAuth from './userAuth';
-import * as constants from './constants';
+import * as upstoxOrders from './orders';
+import * as upstoxTrades from './trades';
 
-export { userAuth, constants };
+export { userAuth, upstoxOrders, upstoxTrades };

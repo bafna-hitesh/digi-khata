@@ -105,7 +105,7 @@ export const zerodhaLogin = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /broker/connect
+ * /broker/connect:
  *  get:
  *    summary: Connect Broker Endpoint
  *    description: Handles the connect broker functionality
@@ -245,7 +245,7 @@ export const upstoxLogin = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /callback/upstox/connect
+ * /callback/upstox/connect:
  *  get:
  *    summary: Callback endpoint for Upstox login when connecting a broker
  *    description: Handles the callback after the upstox login is complete. Used when connecting a broker
@@ -305,6 +305,7 @@ export const upstoxBrokerConnectLogin = async (req: Request, res: Response) => {
     }
 
     // Get full user details
+    // Todo: Fix the any type
     const user: any = await User.findByPk(userId);
 
     if (!user) {

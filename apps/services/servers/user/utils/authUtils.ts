@@ -55,6 +55,8 @@ const setAuthenticationToken = async (res: Response, userId: string) => {
     secure: true,
     sameSite: 'strict',
   });
+
+  // Todo - Fire event to trade ms telling the user has logged in and get the orders/trades data
 };
 
 // Checks if the JWT is expired

@@ -19,6 +19,29 @@ import { sequelize } from '../loaders/sequelize';
 import Mistake from './Mistake';
 import Strategy from './Strategy';
 
+interface ITrade {
+  id: string;
+  userId: string;
+  brokerName: string;
+  tradingsymbol: string;
+  tradeDate: Date;
+  exchange: string;
+  product: string;
+  segment: string;
+  instrument_token: string;
+  order_type?: string;
+  transaction_type: string;
+  quantity: number;
+  exchange_order_id?: string;
+  average_price: number;
+  trade_id: string;
+  order_id: string;
+  order_timestamp: string;
+  exchange_timestamp: string;
+  order_ref_id?: string;
+  fill_timestamp?: string;
+}
+
 // Defining Trade Model Configuration
 // Model needs 2 types, Attributes and CreationAttributes.
 // Can use InferAttributes to directly infer the types when defining the model configuration. Similar is for InferCreationAttributes
@@ -27,29 +50,43 @@ class Trade extends Model<InferAttributes<Trade>, InferCreationAttributes<Trade>
   // CreationOptional field meaning not necessary to define at creation of Trade instance
   declare id: CreationOptional<string>;
 
-  declare name: string;
+  declare userId: string;
 
-  declare broker: string;
+  declare brokerName: string;
 
-  declare symbol: string;
+  declare tradingsymbol: string;
 
   declare tradeDate: Date;
 
   declare exchange: string;
 
+  declare product: string;
+
   declare segment: string;
 
-  declare transactionType: string;
+  declare instrument_token: string;
+
+  declare order_type: CreationOptional<string>;
+
+  declare transaction_type: string;
 
   declare quantity: number;
 
-  declare price: number;
+  declare exchange_order_id: CreationOptional<string>;
 
-  declare tradeID: string;
+  declare average_price: number;
 
-  declare orderID: string;
+  declare trade_id: string;
 
-  declare orderTimestamp: Date;
+  declare order_id: string;
+
+  declare order_timestamp: string;
+
+  declare exchange_timestamp: string;
+
+  declare order_ref_id: CreationOptional<string>;
+
+  declare fill_timestamp: CreationOptional<string>;
 
   declare createdAt: CreationOptional<Date>;
 
@@ -105,15 +142,11 @@ Trade.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    name: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    broker: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    symbol: {
+    brokerName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -121,7 +154,15 @@ Trade.init(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    tradingsymbol: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     exchange: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    product: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -129,34 +170,59 @@ Trade.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    transactionType: {
+    instrument_token: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    order_type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    transaction_type: {
+      type: DataTypes.ENUM('BUY', 'SELL'),
       allowNull: false,
     },
     quantity: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
-    price: {
+    exchange_order_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    average_price: {
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    tradeID: {
+    trade_id: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    orderID: {
+    order_id: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    orderTimestamp: {
-      type: DataTypes.DATE,
+    exchange_timestamp: {
+      type: DataTypes.STRING,
       allowNull: false,
+    },
+    order_timestamp: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    order_ref_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    fill_timestamp: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
   {
+    modelName: 'Trade',
     tableName: 'trades',
     sequelize,
   },
@@ -168,4 +234,5 @@ Trade.belongsToMany(Mistake, { through: 'trade_mistake' });
 Strategy.belongsToMany(Trade, { through: 'trade_strategy' });
 Trade.belongsToMany(Strategy, { through: 'trade_strategy' });
 
+export { ITrade };
 export default Trade;
