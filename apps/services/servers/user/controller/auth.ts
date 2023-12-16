@@ -201,7 +201,9 @@ export const upstoxLogin = async (req: Request, res: Response) => {
 
     // If no code was found, then its an invalid state for login
     if (!code) {
-      throw new Error('[Upstox] Unable to find code in callback URL');
+      return res.status(500).json({
+        message: '[UPSTOX] Code missing from callback URL',
+      });
     }
 
     // Generate Access Token
@@ -278,12 +280,16 @@ export const upstoxBrokerConnectLogin = async (req: Request, res: Response) => {
 
     // If no code was found, then its an invalid state for login
     if (!code) {
-      throw new Error('[Upstox-Connect] Unable to find code in callback URL');
+      return res.status(500).json({
+        message: '[Upstox-CONNECT] Code missing from callback URL',
+      });
     }
 
     // If no state was found, then something went wrong and this is an invalid state
     if (!state) {
-      throw new Error('[Upstox-Connect] Missing State in callback URL');
+      return res.status(500).json({
+        message: '[Upstox-Connect] State missing from callback URL',
+      });
     }
 
     // Generate Access Token

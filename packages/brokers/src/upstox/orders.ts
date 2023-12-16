@@ -4,8 +4,8 @@ const getAllOrdersForTheDay = async (accessToken: string) => {
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
-
-  return axios.get('/order/retrieve-all', { headers });
+  const ordersResponse = await axios.get('/order/retrieve-all', { headers });
+  return ordersResponse.data;
 };
 
 // eslint-disable-next-line import/prefer-default-export

@@ -1,21 +1,26 @@
-function createKafkaConsumer(kafka: any, groupId: string) {
+import { Kafka, Consumer } from 'kafkajs';
+
+function createConsumer(kafka: Kafka, groupId: string) {
   return kafka.consumer({ groupId });
 }
 
-async function checkConsumerConnectionToKafka(kafkaConsumer: any) {
+async function checkConsumerConnectionToKafka(kafkaConsumer: Consumer) {
   await kafkaConsumer.connect();
 }
 
-async function consumeDataFromKafka(kafkaConsumer: any, topic: string) {
+async function subscribeToTopic(kafkaConsumer: Consumer, topic: string, fromBeginning?: boolean) {
   await kafkaConsumer.subscribe({
-    topic: topic,
-    fromBeginning: true,
-  });
-  await kafkaConsumer.run({
-    eachMessage: async ({ topic, partition, message }: { topic: string; partition: string; message: any }) => {
-      console.log(JSON.parse(message.value.toString()));
-    },
+    topic,
+    fromBeginning,
   });
 }
 
-export { createKafkaConsumer, checkConsumerConnectionToKafka, consumeDataFromKafka };
+async function pauseConsumer(kafkaConsumer: Consumer, topic: string) {
+  await kafkaConsumer.pause([{ topic }]);
+}
+
+async function resumeConsumer(kafkaConsumer: Consumer, topic: string) {
+  await kafkaConsumer.resume([{ topic }]);
+}
+
+export { createConsumer, checkConsumerConnectionToKafka, subscribeToTopic, pauseConsumer, resumeConsumer };

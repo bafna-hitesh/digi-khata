@@ -2,7 +2,7 @@
 
 import Logo from '@assets/DigiKhataLogo';
 import cx from 'classnames';
-import Waitlist from '@components/Waitlist';
+// import Waitlist from '@components/Waitlist';
 import LoginWithBrokers from '@components/LoginWithBrokers';
 import HomeTabs from '@components/HomeTabs';
 import styles from './home.module.scss';
@@ -26,7 +26,7 @@ export default function Page() {
               <p className={cx('secondary-text-color', styles.headerSubTitle)}>
                 Auto sync trades, Great Analytics, proven performance, data-driven results
               </p>
-              <Waitlist />
+              {/* <Waitlist /> */}
             </div>
             <div className={cx('f1 flex-horizontal-center', styles.brokersContainer)}>
               <LoginWithBrokers />

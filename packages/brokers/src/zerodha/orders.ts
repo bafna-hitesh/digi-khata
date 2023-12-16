@@ -5,12 +5,13 @@ interface AllOrders {
   accessToken: string;
 }
 
-const getAllOrdersForTheDay = ({ apiKey, accessToken }: AllOrders) => {
+const getAllOrdersForTheDay = async ({ apiKey, accessToken }: AllOrders) => {
   const headers = {
     Authorization: `token ${apiKey}:${accessToken}`,
   };
-
-  return axios.get('/orders', { headers });
+  const ordersResponse = await axios.get('/orders', { headers });
+  return ordersResponse.data;
 };
 
+// eslint-disable-next-line import/prefer-default-export
 export { getAllOrdersForTheDay };

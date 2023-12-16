@@ -1,7 +1,10 @@
+/* eslint-disable prefer-object-spread */
 import { upstox, zerodha } from '@digi/brokers';
-import getUserDataFromRedis from './authUtils';
+import memoizedGetUserDataFromRedis from '@digi/redis';
 import config from '../config';
-import Order, { IOrder } from '../models/Order';
+import { KiteOrder, IKiteOrder } from '../models/KiteOrder';
+import { UpstoxOrder, IUpstoxOrder } from '../models/UpstoxOrder';
+import redisClient from '../../user/loaders/redis';
 
 interface IBroker {
   brokerName: string;
@@ -22,33 +25,58 @@ const getOrdersBasedOnBroker = async (brokerDetails: IBroker) => {
   } else if (brokerDetails.brokerName === 'UPSTOX') {
     orders = await upstox.upstoxOrders.getAllOrdersForTheDay(brokerDetails?.accessTokens?.accessToken as string);
   } else {
-    throw new Error('Invalid Broker Name');
+    throw new Error(`Invalid Broker Name: ${brokerDetails.brokerName}`);
   }
 
   return orders;
 };
 
-const insertOrdersToPostgres = async (orders: IOrder[]) => {
-  await Order.bulkCreate(orders);
+const formatKiteOrders = async (orders: IKiteOrder[], userId: string) => {
+  // Format orders to include userId, brokerName (default KITE) and orderDate
+  const commonFields = { userId, orderDate: new Date() };
+  const formattedKiteOrders = orders.map((order) => {
+    return Object.assign({}, order, commonFields);
+  });
+  return formattedKiteOrders;
+};
+
+const formatUpstoxOrders = async (orders: IUpstoxOrder[], userId: string) => {
+  // Format orders to include userId, brokerName (default UPSTOX) and orderDate
+  const commonFields = { userId, orderDate: new Date() };
+  const formattedUpstoxOrders = orders.map((order) => {
+    return Object.assign({}, order, commonFields);
+  });
+  return formattedUpstoxOrders;
 };
 
 // Format the orders to include the userId, brokerName and orderDate and returns the formatted orders
-const formatOrders = async (orders: IOrder[], userId: string, brokerName: string) => {
-  // Format orders to include userId, brokerName and orderDate
-  const formattedOrders = orders.map((order) => {
-    const newOrder = { ...order };
-    newOrder.userId = userId;
-    newOrder.brokerName = brokerName;
-    newOrder.orderDate = new Date();
-    return newOrder;
-  });
-
+const formatOrdersBasedOnBroker = (orders: IKiteOrder[] | IUpstoxOrder[], userId: string, brokerName: string) => {
+  let formattedOrders;
+  if (brokerName === 'KITE') {
+    formattedOrders = formatKiteOrders(orders as IKiteOrder[], userId);
+  } else if (brokerName === 'UPSTOX') {
+    formattedOrders = formatUpstoxOrders(orders as IUpstoxOrder[], userId);
+  }
   return formattedOrders;
+};
+
+const bulkInsertOrdersToPostgres = async (
+  orders: IKiteOrder[] | IUpstoxOrder[],
+  brokerName: string,
+  userId: string,
+) => {
+  if (brokerName === 'KITE') {
+    KiteOrder.createBulkOrders(orders as IKiteOrder[], userId);
+  } else if (brokerName === 'UPSTOX') {
+    UpstoxOrder.createBulkOrders(orders as IUpstoxOrder[], userId);
+  } else {
+    throw new Error(`Invalid Broker Name: ${brokerName}`);
+  }
 };
 
 const processOrders = async (accessToken: string) => {
   // Check accessToken in Redis if it exists and get userId and broker tokens from accessToken
-  const userData = await getUserDataFromRedis(accessToken);
+  const userData = await memoizedGetUserDataFromRedis(accessToken, redisClient);
 
   // Fetch Orders for each brokers
   const brokersDetails = userData.brokerTokens;
@@ -58,10 +86,10 @@ const processOrders = async (accessToken: string) => {
     let orders = await getOrdersBasedOnBroker(broker);
 
     // Format Orders
-    orders = formatOrders(orders, userData.userId, broker);
+    orders = formatOrdersBasedOnBroker(orders, userData.userId, broker.brokerName);
 
     // Bulk Insert into postgres
-    insertOrdersToPostgres(orders);
+    bulkInsertOrdersToPostgres(orders, broker.brokerName, userData.userId);
   }
 };
 
