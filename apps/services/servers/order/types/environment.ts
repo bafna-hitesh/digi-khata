@@ -20,4 +20,7 @@ export interface ProcessEnv {
   APP_HOME_URL: string;
   APP_LOGIN_URL: string;
   APP_SECRET: string;
+
+  REDIS_HOST: string;
+  REDIS_PORT: number;
 }

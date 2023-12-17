@@ -21,7 +21,6 @@
     "kafkajs": "^2.2.4"
   },
   "devDependencies": {
-    "@types/kafka-node": "^3.0.0",
     "@types/kafkajs": "^1.9.0",
     "eslint-config-custom": "*"
   }

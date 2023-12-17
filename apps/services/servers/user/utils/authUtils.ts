@@ -55,6 +55,8 @@ const setAuthenticationToken = async (res: Response, userId: string) => {
     secure: true,
     sameSite: 'strict',
   });
+
+  // Todo - Fire event to trade ms telling the user has logged in and get the orders/trades data
 };
 
 // Checks if the JWT is expired
@@ -90,4 +92,22 @@ const handleExpiredAccessToken = async (refreshToken: string) => {
   return { newAccessToken };
 };
 
-export { setAuthenticationToken, getActiveBrokerTokens, isJwtExpired, handleExpiredAccessToken };
+// Function to get userId from hashedAccessToken
+const getUserIDFromRedis = async (hashedAccessToken: string) => {
+  const userData = await redisClient.get(`accessToken:${hashedAccessToken}`);
+  let userId;
+  if (userData) {
+    // If found userData in Redis, get the userId
+    userId = JSON.parse(userData)?.userId;
+  }
+  return userId;
+};
+
+export {
+  hashToken,
+  setAuthenticationToken,
+  getActiveBrokerTokens,
+  isJwtExpired,
+  handleExpiredAccessToken,
+  getUserIDFromRedis,
+};

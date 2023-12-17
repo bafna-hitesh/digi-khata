@@ -1,19 +1,17 @@
-import { AxiosResponse } from 'axios';
 import axios from './axiosInstance';
 
 interface AllOrders {
   apiKey: string;
-  accessToken: any;
+  accessToken: string;
 }
 
-const getAllOrdersForTheDay = ({ apiKey, accessToken }: AllOrders): Promise<AxiosResponse<any, any>> => {
-  let headers = {
+const getAllOrdersForTheDay = async ({ apiKey, accessToken }: AllOrders) => {
+  const headers = {
     Authorization: `token ${apiKey}:${accessToken}`,
   };
-
-  return axios.get('/orders', { headers });
+  const ordersResponse = await axios.get('/orders', { headers });
+  return ordersResponse.data;
 };
 
-export {
-  getAllOrdersForTheDay
-};
+// eslint-disable-next-line import/prefer-default-export
+export { getAllOrdersForTheDay };

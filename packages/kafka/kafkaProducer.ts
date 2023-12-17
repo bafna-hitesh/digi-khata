@@ -1,21 +1,42 @@
-function createKafkaProducer(kafka: any) {
+import { Kafka, Producer } from 'kafkajs';
+
+function createProducer(kafka: Kafka) {
   return kafka.producer();
 }
 
-async function checkProducerConnectionToKafka(kafkaProducer: any) {
+async function checkProducerConnection(kafkaProducer: Producer) {
   await kafkaProducer.connect();
 }
 
-function produceDataToKafka(kafkaProducer: any, topic: string, partition: string, payload: any) {
-  return kafkaProducer.send({
-    topic: topic,
+async function produceData(kafkaProducer: Producer, topic: string, payload: Record<string, unknown>, key?: string) {
+  await kafkaProducer.send({
+    topic,
     messages: [
       {
-        partition: partition,
+        key,
         value: JSON.stringify(payload),
       },
     ],
   });
 }
 
-export { createKafkaProducer, checkProducerConnectionToKafka, produceDataToKafka };
+async function produceDataInSpecificPartition(
+  kafkaProducer: Producer,
+  topic: string,
+  partition: number,
+  payload: string | Record<string, unknown>,
+  key?: string,
+) {
+  await kafkaProducer.send({
+    topic,
+    messages: [
+      {
+        partition,
+        key,
+        value: JSON.stringify(payload),
+      },
+    ],
+  });
+}
+
+export { createProducer, checkProducerConnection, produceData, produceDataInSpecificPartition };

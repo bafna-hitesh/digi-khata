@@ -1,11 +1,21 @@
 import crypto from 'crypto';
 import { Request } from 'express';
 import axios from './axiosInstance';
-import { loginURL } from './constants';
+import { baseLoginURL } from './constants';
 import IKiteUserProfile from './types/userTypes';
 
 // generate login url to be redirected https://kite.trade/docs/connect/v3/user/#login-flow
-const getLoginUrl = (apiKey: string) => `${loginURL}/?v=3&api_key=${apiKey}`;
+const getLoginUrl = (apiKey: string, state?: string) => {
+  const loginURL = new URL(baseLoginURL);
+  loginURL.searchParams.append('v', '3');
+  loginURL.searchParams.append('api_key', apiKey);
+
+  // If state is passed, then append as query parameter
+  if (state) {
+    loginURL.searchParams.append('redirect_params', state);
+  }
+  return loginURL.toString();
+};
 
 // get request token from url
 const getRequestToken = (url: string) => new URL(url)?.searchParams?.get('request_token');
