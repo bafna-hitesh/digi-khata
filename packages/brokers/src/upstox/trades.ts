@@ -5,7 +5,8 @@ const getAllTradesForTheDay = async (accessToken: string) => {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  return axios.get('/order/trades/get-trades-for-day', { headers });
+  const tradeResponse = await axios.get('/order/trades/get-trades-for-day', { headers });
+  return tradeResponse?.data;
 };
 
 // eslint-disable-next-line import/prefer-default-export

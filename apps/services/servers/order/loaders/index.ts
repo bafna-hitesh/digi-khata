@@ -3,7 +3,7 @@ import expressLoader from './express';
 import { sequelizeLoader } from './sequelize';
 import swaggerLoader from './swagger';
 import errorLoader from './errors';
-import { syncAllBrokersOrdersInBackground, syncAllBrokersTradesInBackground } from './kafka';
+import { consumeDashboardEvents, syncAllBrokersOrdersInBackground, syncAllBrokersTradesInBackground } from './kafka';
 
 export default async ({ expressApp }: { expressApp: Application }) => {
   expressLoader({ app: expressApp });
@@ -11,5 +11,6 @@ export default async ({ expressApp }: { expressApp: Application }) => {
   sequelizeLoader();
   syncAllBrokersOrdersInBackground();
   syncAllBrokersTradesInBackground();
+  consumeDashboardEvents();
   errorLoader({ app: expressApp });
 };
