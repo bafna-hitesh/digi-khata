@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request
 from confluent_kafka import Producer
 

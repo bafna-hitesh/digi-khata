@@ -1,7 +1,7 @@
 # /servers/dashboardMs/index.py
 
 from loaders.index import initialize_app
-from config.index import PORT
+from conf.index import PORT
 
 app = initialize_app()
 
