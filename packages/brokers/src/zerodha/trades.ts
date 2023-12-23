@@ -3,15 +3,16 @@ import axios from './axiosInstance';
 
 interface AllTrades {
   apiKey: string;
-  accessToken: any;
+  accessToken: string;
 }
 
-const getAllTradesForTheDay = ({ apiKey, accessToken }: AllTrades): Promise<AxiosResponse<any, any>> => {
-  let headers = {
+const getAllTradesForTheDay = async ({ apiKey, accessToken }: AllTrades): Promise<AxiosResponse<any, any>> => {
+  const headers = {
     Authorization: `token ${apiKey}:${accessToken}`,
   };
 
-  return axios.get('/trades', { headers });
+  const tradesResponse = await axios.get('/trades', { headers });
+  return tradesResponse?.data;
 };
 
 type TradeType = 'FUTURES' | 'OPTIONS' | 'COMMODITY' | 'EQUITY' | 'CURRENCY' | 'Unknown';
@@ -33,7 +34,13 @@ const getTradeTypeFromTradingSymbol = (tradingSymbol: string): TradeType => {
   }
 
   // Check for Equity: Usually NSE or BSE stocks without any suffix or prefix
-  if (!tradingSymbol.includes(':') && !tradingSymbol.includes('-') && !tradingSymbol.includes('FUT') && !tradingSymbol.includes('CE') && !tradingSymbol.includes('PE')) {
+  if (
+    !tradingSymbol.includes(':') &&
+    !tradingSymbol.includes('-') &&
+    !tradingSymbol.includes('FUT') &&
+    !tradingSymbol.includes('CE') &&
+    !tradingSymbol.includes('PE')
+  ) {
     return 'EQUITY';
   }
 
@@ -46,7 +53,4 @@ const getTradeTypeFromTradingSymbol = (tradingSymbol: string): TradeType => {
   return 'Unknown';
 };
 
-export {
-  getAllTradesForTheDay,
-  getTradeTypeFromTradingSymbol
-};
+export { getAllTradesForTheDay, getTradeTypeFromTradingSymbol };
