@@ -1,35 +1,43 @@
 import logging
 import os
+import sys
 from typing import List
+from pyflink.common import Types
 from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode
-from pyflink.common.serialization import SimpleStringSchema
-from pyflink.common.restart_strategy import RestartStrategies
-from pyflink.common.time import Time
-from pyflink.datastream.connectors import FlinkKafkaConsumer
+from pyflink.datastream.formats.json import JsonRowSerializationSchema, JsonRowDeserializationSchema
+from pyflink.datastream.connectors.kafka import FlinkKafkaProducer, FlinkKafkaConsumer
 from conf.index import KAFKA_HOST, FLINK_TOPICS
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
-from datetime import timedelta
-
+from pyflink.common import WatermarkStrategy
 from api.flink.trades import Router
+from datetime import timedelta
+from pyflink.common.restart_strategy import RestartStrategies
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(message)s")
 
-def create_kafka_consumer(topic: str) -> FlinkKafkaConsumer:
-  try:
-    properties = {
-        'bootstrap.servers': KAFKA_HOST,  # Kafka broker address
-        'group.id': 'flink-group',              # Kafka consumer group
-        # Add more Kafka consumer properties as needed
-    }
+def create_kafka_consumer(topic: str, group_id: str) -> FlinkKafkaConsumer:
+  deserialization_schema = JsonRowDeserializationSchema.Builder() \
+      .type_info(Types.ROW([Types.INT(), Types.STRING()])) \
+      .build()
+  kafka_consumer = FlinkKafkaConsumer(
+      topics=topic,
+      deserialization_schema=deserialization_schema,
+      properties={'bootstrap.servers': KAFKA_HOST, 'group.id': group_id}
+  )
+  kafka_consumer.set_start_from_earliest()
+  return kafka_consumer
 
-    return FlinkKafkaConsumer(
-      topic,
-      SimpleStringSchema(),
-      properties
-    )
-  except Exception as e:
-    logging.error(f"Error creating Kafka consumer for topic {topic}: {e}")
-    raise
+def create_kafka_producer(topic: str) -> FlinkKafkaProducer:
+  type_info = Types.ROW([Types.INT(), Types.STRING()])
+  serialization_schema = JsonRowSerializationSchema.Builder() \
+      .with_type_info(type_info) \
+      .build()
+  kafka_producer = FlinkKafkaProducer(
+      topic=topic,
+      serialization_schema=serialization_schema,
+      producer_config={'bootstrap.servers': KAFKA_HOST, 'group.id': 'flink-group'}
+  )
+  return kafka_producer
 
 def initialize_app(topics: List[str]) -> None:
   try:
@@ -39,7 +47,7 @@ def initialize_app(topics: List[str]) -> None:
     env.set_parallelism(100)
     
     # Set Kafka connector JAR
-    kafka_connector_jar = f'file://{os.getcwd()}/jars/flink-sql-connector-kafka-3.0.2-1.18.jar'
+    kafka_connector_jar = f'file://{os.getcwd()}/servers/dashboardMs/jars/flink-sql-connector-kafka-3.0.2-1.18.jar'
     env.add_jars(kafka_connector_jar)
 
     # TODO: Enable checkpointing for fault tolerance
@@ -65,9 +73,10 @@ def initialize_app(topics: List[str]) -> None:
     router = Router(env, table_env)
 
     for topic in topics:
-      kafka_source = create_kafka_consumer(topic)
-      ds = env.add_source(kafka_source)
-      router.route(topic, kafka_source)
+      kafka_consumer = create_kafka_consumer(topic, 'flink-group')
+      kafka_producer = create_kafka_producer(topic)
+      env.add_source(kafka_consumer).add_sink(kafka_producer)
+      router.route(topic, kafka_consumer)
 
     # Start the Flink application
     env.execute("Dashboard Application")
