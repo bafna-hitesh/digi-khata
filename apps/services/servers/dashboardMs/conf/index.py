@@ -9,4 +9,4 @@ except FileNotFoundError:
 
 PORT = int(os.environ.get("DASHBOARD_PYTHON_PORT", 6000))
 KAFKA_HOST = os.environ.get("KAFKA_HOST", 'localhost:9092')
-FLINK_TOPICS = ["topic1", "topic2"]
+FLINK_TOPICS = ["dashboard"]

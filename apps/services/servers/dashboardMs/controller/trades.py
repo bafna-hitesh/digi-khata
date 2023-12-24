@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Tuple, Union
 from pyflink.common.typeinfo import Types
 from pyflink.datastream import StreamExecutionEnvironment, DataStream
-from pyflink.datastream.connectors import FlinkKafkaConsumer
+from pyflink.datastream.connectors import FlinkKafkaConsumer, FlinkKafkaProducer
 from pyflink.datastream.functions import MapFunction, KeySelector
 from pyflink.table import StreamTableEnvironment
 from pyflink.datastream.window import TumblingEventTimeWindows
@@ -32,20 +32,20 @@ class SumProfit(MapFunction):
     return (value[0], sum(profit for _, profit in value[1]))
 
 class EventController:
-  def __init__(self, env: StreamExecutionEnvironment, kafka_source: FlinkKafkaConsumer, table_env: StreamTableEnvironment):
+  def __init__(self, env: StreamExecutionEnvironment, kafka_consumer: FlinkKafkaConsumer, kafka_producer: FlinkKafkaProducer, table_env: StreamTableEnvironment):
     self.env = env
-    self.kafka_source = kafka_source
+    self.kafka_consumer = kafka_consumer
     self.table_env = table_env
+    self.kafka_producer = kafka_producer
 
   def process(self) -> None:
-    trades: DataStream = self.env.add_source(self.kafka_source)
+    trades: DataStream = self.env.add_source(self.kafka_consumer)
 
-    trades = trades.map(Deserialize(), output_type=Types.PYTHON_OBJECT())
+    trades = trades.map(Deserialize(), output_type=Types.STRING())
+    trades.add_sink(self.kafka_producer)
 
     trades_by_day: DataStream = trades.key_by(ExtractDayOfWeek(), key_type=Types.STRING())
 
     profitable_day: DataStream = trades_by_day \
       .window(TumblingEventTimeWindows.of(Time.days(1))) \
       .apply(SumProfit(), output_type=Types.TUPLE([Types.STRING(), Types.FLOAT()]))
-
-    profitable_day.add_sink(lambda x: print(f"Most profitable day: {x[0]} with profit {x[1]}"))

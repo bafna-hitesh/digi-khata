@@ -1,6 +1,6 @@
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
-from pyflink.datastream.connectors import FlinkKafkaConsumer
+from pyflink.datastream.connectors import FlinkKafkaConsumer, FlinkKafkaProducer
 from controller.trades import EventController
 
 class Router:
@@ -8,9 +8,9 @@ class Router:
     self.env = env
     self.table_env = table_env
 
-  def route(self, topic: str, kafka_source: FlinkKafkaConsumer):
+  def route(self, topic: str, kafka_consumer: FlinkKafkaConsumer, kafka_producer: FlinkKafkaProducer):
     if topic == "dashboard":
-      controller = EventController(self.env, kafka_source, self.table_env)
+      controller = EventController(self.env, kafka_consumer, kafka_producer, self.table_env)
       controller.process()
     # Add more routing logic here
     else:

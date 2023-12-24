@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 from typing import List
-from pyflink.common import Types
+from pyflink.common import Types, Configuration
 from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode
 from pyflink.datastream.formats.json import JsonRowSerializationSchema, JsonRowDeserializationSchema
 from pyflink.datastream.connectors.kafka import FlinkKafkaProducer, FlinkKafkaConsumer
@@ -41,7 +41,12 @@ def create_kafka_producer(topic: str) -> FlinkKafkaProducer:
 
 def initialize_app(topics: List[str]) -> None:
   try:
-    env = StreamExecutionEnvironment.get_execution_environment()
+    config = Configuration()
+    config.set_integer("python.fn-execution.bundle.size", 1000)
+    config.set_integer("python.fn-execution.arrow.batch.size", 1000)
+    config.set_integer("python.fn-execution.bundle.time", 1000)
+    config.set_boolean("python.fn-execution.memory.managed", True)
+    env = StreamExecutionEnvironment.get_execution_environment(config)
 
     env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
     env.set_parallelism(100)
@@ -56,9 +61,6 @@ def initialize_app(topics: List[str]) -> None:
     # # Use CheckpointStorage for setting the checkpoint path
     # checkpoint_storage = CheckpointStorage(checkpoint_path)
     # env.get_checkpoint_config().set_checkpoint_storage(checkpoint_storage)
-
-    # TODO: Network buffer configuration
-    # env.get_configuration().set_string("taskmanager.network.memory.fraction", "0.3")
 
     # Set restart strategy for handling failures
     env.set_restart_strategy(RestartStrategies.fixed_delay_restart(
@@ -75,8 +77,7 @@ def initialize_app(topics: List[str]) -> None:
     for topic in topics:
       kafka_consumer = create_kafka_consumer(topic, 'flink-group')
       kafka_producer = create_kafka_producer(topic)
-      env.add_source(kafka_consumer).add_sink(kafka_producer)
-      router.route(topic, kafka_consumer)
+      router.route(topic, kafka_consumer, kafka_producer)
 
     # Start the Flink application
     env.execute("Dashboard Application")
