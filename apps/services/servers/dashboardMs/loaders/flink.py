@@ -49,7 +49,7 @@ def initialize_app(topics: List[str]) -> None:
     env = StreamExecutionEnvironment.get_execution_environment(config)
 
     env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
-    env.set_parallelism(100)
+    env.set_parallelism(2)
     
     # Set Kafka connector JAR
     kafka_connector_jar = f'file://{os.getcwd()}/servers/dashboardMs/jars/flink-sql-connector-kafka-3.0.2-1.18.jar'
