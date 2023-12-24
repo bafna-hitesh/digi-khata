@@ -7,9 +7,11 @@
   "scripts": {
     "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\" \"yarn dev:validate\"",
     "dev:dashboard": "chmod +x ./servers/dashboardMs/start_dashboard.sh && ./servers/dashboardMs/start_dashboard.sh",
+    "dev:kafka": "kafka-server-start /opt/homebrew/etc/kafka/server.properties",
     "dev:order": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/order/index.ts",
     "dev:user": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/user/index.ts",
     "dev:validate": "nodemon --quiet --watch servers --ext ts --exec ts-node servers/validate/index.ts",
+    "dev:zookeper": "zookeeper-server-start /opt/homebrew/etc/kafka/zookeeper.properties",
     "eslint": "eslint .",
     "standalone:dashboard": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/dashboard/index.ts",
     "standalone:order": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/order/index.ts",

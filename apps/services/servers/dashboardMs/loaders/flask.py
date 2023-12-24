@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify
 from flask_cors import CORS
-from config.index import PORT
+from conf.index import PORT
 
 def create_app():
     app = Flask(__name__)

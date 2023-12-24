@@ -1,0 +1,5 @@
+state.backend.type: filesystem
+state.checkpoints.dir: file://../checkpoints
+state.savepoints.dir: file://../savepoints
+execution.checkpointing.interval: 10000 # Checkpoint every 10000 ms
+pipeline.jars: file://./flink-sql-connector-kafka-3.0.2-1.18.jar
