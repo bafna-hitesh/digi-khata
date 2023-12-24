@@ -17,7 +17,7 @@ interface IKiteOrder {
   status: string;
   tradingsymbol: string;
   exchange: string;
-  intrument_token: string;
+  instrument_token: number;
   transaction_type: string;
   order_type: string;
   product: string;
@@ -29,14 +29,14 @@ interface IKiteOrder {
   pending_quantity: number;
   filled_quantity: number;
   disclosed_quantity: number;
-  order_timestamp: Date;
-  exchange_timestamp: Date;
-  exchange_update_timestamp: Date;
+  order_timestamp: string;
+  exchange_timestamp: string | null;
+  exchange_update_timestamp: string | null;
   status_message: string | null;
   status_message_raw: string | null;
   cancelled_quantity: number;
   // Todo - Find if the below variable is correct in Kite since in response type it is shown as auction_number
-  market_protection: string;
+  market_protection: number;
   meta: Record<string, unknown>;
   tag: string | null;
   guid: string | null;
@@ -76,6 +76,40 @@ class KiteOrder extends Model<IKiteOrder, Partial<IKiteOrder>> {
       },
     });
     return kiteOrders;
+  }
+
+  static async findOrder(orderId: string, userId: string) {
+    console.log(`Finding Kite order ${orderId} on user ${userId}`);
+    const kiteOrder = await KiteOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+    });
+    return kiteOrder;
+  }
+
+  static async getAllDataForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Kite order ${orderId} data on user ${userId}`);
+    const kiteOrderData = await KiteOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return kiteOrderData;
+  }
+
+  static async getAllOrdersForUser(userId: string) {
+    console.log(`Getting all Kite orders for user: ${userId}`);
+    const kiteOrdersData = await KiteOrder.findAll({
+      where: {
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return kiteOrdersData;
   }
 }
 
@@ -136,8 +170,8 @@ KiteOrder.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    intrument_token: {
-      type: DataTypes.STRING,
+    instrument_token: {
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     transaction_type: {
@@ -185,16 +219,16 @@ KiteOrder.init(
       allowNull: false,
     },
     order_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     exchange_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     exchange_update_timestamp: {
-      type: DataTypes.DATE,
-      allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     status_message: {
       type: DataTypes.STRING,
@@ -209,7 +243,7 @@ KiteOrder.init(
       allowNull: false,
     },
     market_protection: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     meta: {
@@ -218,11 +252,11 @@ KiteOrder.init(
     },
     tag: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     guid: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
@@ -233,10 +267,10 @@ KiteOrder.init(
   },
 );
 
-Mistake.belongsToMany(KiteOrder, { through: 'upstox_order_mistake' });
-KiteOrder.belongsToMany(Mistake, { through: 'upstox_order_mistake' });
+Mistake.belongsToMany(KiteOrder, { through: 'kite_order_mistake' });
+KiteOrder.belongsToMany(Mistake, { through: 'kite_order_mistake' });
 
-Strategy.belongsToMany(KiteOrder, { through: 'upstox_order_strategy' });
-KiteOrder.belongsToMany(Strategy, { through: 'upstox_order_strategy' });
+Strategy.belongsToMany(KiteOrder, { through: 'kite_order_strategy' });
+KiteOrder.belongsToMany(Strategy, { through: 'kite_order_strategy' });
 
 export { KiteOrder, IKiteOrder };

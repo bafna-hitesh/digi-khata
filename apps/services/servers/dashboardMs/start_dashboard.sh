@@ -16,4 +16,4 @@ source "$VENV_PATH/bin/activate"
 # pip install -r ./requirements.txt
 
 # Start the Flask application with nodemon
-nodemon --watch '.' --ext py --exec python ./servers/dashboardMs/index.py
+nodemon --watch '.' --ext py --exec python3 ./servers/dashboardMs/index.py

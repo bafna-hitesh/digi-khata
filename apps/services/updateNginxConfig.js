@@ -51,7 +51,7 @@ const installNginx = () => {
     if (platform === 'darwin') {
       command = 'brew install nginx';
     } else if (platform === 'linux') {
-      command = 'sudo apt update && sudo apt install nginx';
+      command = 'sudo apt update && sudo apt install -y nginx';
     } else {
       reject(new Error('Unsupported OS'));
       return;
@@ -68,7 +68,7 @@ const installNginx = () => {
 
 const findNginxConfigPath = async () => {
   return new Promise((resolve, reject) => {
-    exec('nginx -t 2>&1', { encoding: 'utf8' }, (error, stdout) => {
+    exec('sudo nginx -t 2>&1', { encoding: 'utf8' }, (error, stdout) => {
       if (error) {
         return reject(error);
       }
