@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { updateTrade } from '../../controller/trades';
+import { getAllTrades, getTrade, updateTrade } from '../../controller/trades';
 
 const tradesRouter = Router();
 
 export default (baseRouter: Router) => {
   baseRouter.use('/trades', tradesRouter);
-  tradesRouter.put('/:tradeID', updateTrade);
+  tradesRouter.get('/', getAllTrades);
+  tradesRouter.get('/:tradeId', getTrade);
+  tradesRouter.put('/:tradeId', updateTrade);
 };

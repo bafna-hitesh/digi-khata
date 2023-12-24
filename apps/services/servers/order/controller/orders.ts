@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Mistake from '../models/Mistake';
 import Strategy from '../models/Strategy';
-import { getAllTradeDataBasedOnBroker, getAllTradesForUser, getTradeBasedOnBroker } from '../utils/trades';
+import { getOrderBasedOnBroker, getAllOrderDataBasedOnBroker, getAllOrdersForUser } from '../utils/orders';
 import { decodeJWT, isJwtExpired } from '../../user/utils/authUtils';
 
 interface JwtPayload {
@@ -10,18 +10,18 @@ interface JwtPayload {
   exp: number;
 }
 
-const updateTrade = async (req: Request, res: Response) => {
+const updateOrder = async (req: Request, res: Response) => {
   try {
-    // 1. Check for trade
+    // 1. Check for order
     // 2. For each mistake, check if already exists otherwise create it
-    // 3. Add mistake to trade
+    // 3. Add mistake to order
     // 4. Do the same for strategy
 
-    const tradeId = req?.params?.tradeId;
-    const tradeBody = req?.body;
+    const orderId = req?.params?.orderId;
+    const orderBody = req?.body;
     const broker = req?.query?.broker;
 
-    if (!tradeId || !broker || !Array.isArray(tradeBody?.mistakes) || !Array.isArray(tradeBody?.strategies)) {
+    if (!orderId || !broker || !Array.isArray(orderBody?.mistakes) || !Array.isArray(orderBody?.strategies)) {
       return res.status(400).json({
         message: 'Invalid Input',
       });
@@ -44,53 +44,53 @@ const updateTrade = async (req: Request, res: Response) => {
 
     // Todo: Using any below because TypeScript is not recognising the associative functions on KiteTrade and Mistake or vice-versa.
     // Need to resolve it
-    const tradeToUpdate: any = await getTradeBasedOnBroker(tradeId, broker as string, userId);
+    const orderToUpdate: any = await getOrderBasedOnBroker(orderId, broker as string, userId);
 
-    if (tradeToUpdate === null) {
+    if (orderToUpdate === null) {
       return res.status(400).json({
-        message: 'Invalid Trade',
+        message: 'Invalid order',
       });
     }
 
-    const { mistakes, strategies } = tradeBody;
+    const { mistakes, strategies } = orderBody;
 
-    // Loop through mistakes and add it to trade
+    // Loop through mistakes and add it to order
     mistakes.map(async (tag: string) => {
       const [mistake] = await Mistake.findOrCreate({
         where: { tag: tag.toLowerCase() },
       });
 
-      // Adding mistake to trade
-      await tradeToUpdate.addMistake(mistake);
+      // Adding mistake to order
+      await orderToUpdate.addMistake(mistake);
     });
 
-    // Loop through strategies and add it to trade
+    // Loop through strategies and add it to order
     strategies.map(async (tag: string) => {
       const [strategy] = await Strategy.findOrCreate({
         where: { tag: tag.toLowerCase() },
       });
 
-      // Adding strategy to trade
-      await tradeToUpdate.addStrategy(strategy);
+      // Adding strategy to order
+      await orderToUpdate.addStrategy(strategy);
     });
 
     return res.status(200).json({
-      message: `Successfully updated trade with tradeID: ${tradeId}`,
+      message: `Successfully updated Order with orderId: ${orderId}`,
     });
   } catch (err) {
-    console.log('Error Occurred while updating trade ', err);
+    console.log('Error Occurred while updating order ', err);
     return res.status(500).json({
-      message: 'Some Error Occured while updating trade',
+      message: 'Some Error Occured while updating order',
     });
   }
 };
 
-const getTrade = async (req: Request, res: Response) => {
+const getOrder = async (req: Request, res: Response) => {
   try {
-    const tradeId = req?.params?.tradeId;
+    const orderId = req?.params?.orderId;
     const broker = req?.query?.broker;
 
-    if (!broker || !tradeId) {
+    if (!broker || !orderId) {
       return res.status(400).json({
         message: 'Invalid Input',
       });
@@ -111,24 +111,23 @@ const getTrade = async (req: Request, res: Response) => {
       });
     }
 
-    const tradeData = await getAllTradeDataBasedOnBroker(tradeId, broker as string, userId);
+    const orderData = await getAllOrderDataBasedOnBroker(orderId, broker as string, userId);
 
-    if (!tradeData) {
+    if (!orderData) {
       return res.status(400).json({
-        message: 'Invalid Trade',
+        message: 'Invalid Order',
       });
     }
 
-    return res.status(200).json(tradeData);
+    return res.status(200).json(orderData);
   } catch (err) {
-    console.log('Some Error Occured while getting all data for a trade: ', err);
     return res.status(500).json({
-      message: 'Some Error Occured while getting all data for a trade',
+      message: `Some Error Occured while getting all data for a order`,
     });
   }
 };
 
-const getAllTrades = async (req: Request, res: Response) => {
+const getAllOrders = async (req: Request, res: Response) => {
   try {
     const broker = req?.query?.broker;
 
@@ -152,16 +151,15 @@ const getAllTrades = async (req: Request, res: Response) => {
         message: 'Invalid Access or Refresh Token',
       });
     }
+    const ordersData = await getAllOrdersForUser(broker as string, userId);
 
-    const tradesData = await getAllTradesForUser(broker as string, userId);
-
-    return res.status(200).json(tradesData);
+    return res.status(200).json(ordersData);
   } catch (err) {
-    console.log('Some Error Occured while getting all trades: ', err);
+    console.log('Some Error Occured while getting all orders: ', err);
     return res.status(500).json({
-      message: 'Some Error Occured while getting all trades',
+      message: 'Some Error Occured while getting all orders',
     });
   }
 };
 
-export { updateTrade, getTrade, getAllTrades };
+export { updateOrder, getOrder, getAllOrders };

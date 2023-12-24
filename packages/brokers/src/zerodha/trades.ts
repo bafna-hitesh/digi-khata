@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import axios from './axiosInstance';
 
 interface AllTrades {
@@ -6,7 +5,7 @@ interface AllTrades {
   accessToken: string;
 }
 
-const getAllTradesForTheDay = async ({ apiKey, accessToken }: AllTrades): Promise<AxiosResponse<any, any>> => {
+const getAllTradesForTheDay = async ({ apiKey, accessToken }: AllTrades) => {
   const headers = {
     Authorization: `token ${apiKey}:${accessToken}`,
   };
