@@ -1,5 +1,6 @@
 {
-    "name": "@digi/upstox",
-    "main": "src/index.js",
-    "types": "src/index.js"
+  "name": "@digi/upstox",
+  "private": true,
+  "main": "src/index.js",
+  "types": "src/index.js"
 }

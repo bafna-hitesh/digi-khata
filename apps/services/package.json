@@ -4,6 +4,7 @@
   "license": "MIT",
   "author": "Rachit Srivastava",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "concurrently \"yarn dev:user\" \"yarn dev:order\" \"yarn dev:dashboard\" \"yarn dev:validate\"",
     "dev:dashboard": "chmod +x ./servers/dashboardMs/start_dashboard.sh && ./servers/dashboardMs/start_dashboard.sh",
