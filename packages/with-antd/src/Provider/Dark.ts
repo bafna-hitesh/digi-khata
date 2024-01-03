@@ -1,4 +1,5 @@
 import { ThemeConfig, theme as antdTheme } from 'antd';
+
 const { darkAlgorithm } = antdTheme;
 
 const darkTheme: ThemeConfig = {
@@ -13,15 +14,21 @@ const darkTheme: ThemeConfig = {
     colorSuccess: '#94ff9b',
   },
   components: {
+    Layout: {
+      bodyBg: 'var(--background)',
+      footerBg: 'var(--background)',
+      triggerBg: 'var(--background)',
+      siderBg: 'var(--background)',
+    },
     Button: {
       algorithm: true,
       borderRadius: 2,
       opacityLoading: 0,
       primaryColor: 'rgb(32, 33, 36)',
-      colorBgContainer: 'rgb(255, 255, 255)',
+      colorBgContainer: 'var(--foreground)',
       colorText: 'rgb(32, 33, 36)',
       colorLinkHover: 'rgb(232, 234, 237)',
-      colorPrimary: 'rgb(255, 255, 255)',
+      colorPrimary: 'var(--foreground)',
     },
     Checkbox: {
       colorPrimary: 'rgb(32, 33, 36)',
@@ -45,7 +52,7 @@ const darkTheme: ThemeConfig = {
       colorPrimary: 'rgb(0, 0, 0)',
     },
     Spin: {
-      colorPrimary: 'rgb(255, 255, 255)',
+      colorPrimary: 'var(--foreground)',
     },
   },
 };

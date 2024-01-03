@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react';
 import { ConfigProvider } from 'antd';
-import StyledComponentsRegistry from './AntdRegistry';
 import darkTheme from './Dark';
 import lightTheme from './Light';
 
@@ -13,11 +12,7 @@ interface ProviderProps {
 
 const AntdProvider = ({ children, isDarkMode }: ProviderProps) => {
   const theme = isDarkMode ? darkTheme : lightTheme;
-  return (
-    <StyledComponentsRegistry>
-      <ConfigProvider theme={theme}>{children}</ConfigProvider>
-    </StyledComponentsRegistry>
-  );
+  return <ConfigProvider theme={theme}>{children}</ConfigProvider>;
 };
 
 export default AntdProvider;

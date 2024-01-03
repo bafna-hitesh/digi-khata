@@ -16,7 +16,8 @@
     "lint": "turbo run lint",
     "prepare": "husky install && chmod a+x .husky/commit-msg",
     "upgrade": "node updatePackages.js",
-    "postinstall": "pip install -r ./apps/services/servers/dashboardMs/requirements.txt"
+    "postinstall": "pip install -r ./apps/services/servers/dashboardMs/requirements.txt",
+    "dev:web": "turbo dev --filter=web --filter=@digi/components"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [

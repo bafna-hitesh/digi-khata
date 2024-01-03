@@ -1,5 +1,6 @@
 'use client';
 
+import { Provider, StyledComponentsRegistry } from '@digi/components';
 import './global.scss';
 import './flex.scss';
 import { Inter } from 'next/font/google';
@@ -9,10 +10,14 @@ const inter = Inter({
   display: 'swap',
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en' className='dark'>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Provider isDarkMode>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </Provider>
+      </body>
     </html>
   );
 }
