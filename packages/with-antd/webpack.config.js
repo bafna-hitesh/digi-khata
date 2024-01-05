@@ -3,6 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const PrependTextPlugin = require('./PrependTextPlugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
@@ -92,6 +93,7 @@ module.exports = {
       resourceRegExp: /\.DS_Store$/,
     }),
     million.webpack({ auto: true }),
+    new PrependTextPlugin(),
   ],
   optimization: {
     minimize: true,
