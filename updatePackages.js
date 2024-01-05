@@ -20,13 +20,15 @@ const updatePackages = () => {
   packageDirs.forEach((dir) => {
     console.log(`Updating packages in ${dir}...`);
     try {
-      exec(`cd ${dir} && ncu -u && npm i --legacy-peer-deps`);
+      exec(`cd ${dir} && ncu -u`);
       console.log(`Successfully updated packages in ${dir}`);
     } catch (error) {
       console.error(`Failed to update packages in ${dir}`);
       console.error(error);
     }
   });
+  console.log('running yarn install');
+  exec(`yarn install`);
 };
 
 // Run the update

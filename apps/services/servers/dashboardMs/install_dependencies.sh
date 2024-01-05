@@ -18,7 +18,10 @@ fi
 source "$VENV_PATH/bin/activate"
 
 # Install requirements if requirements.txt has changed since last install
-pip install -r "$SCRIPT_DIR/requirements.txt"
+pip install -r "$SCRIPT_DIR/requirements.txt" &
 
 # Start the Flask application with nodemon
 # nodemon --watch '.' --ext py --exec python3 "$SCRIPT_DIR/servers/dashboardMs/index.py"
+
+# Wait for background jobs to finish
+wait
