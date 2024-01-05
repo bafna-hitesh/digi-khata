@@ -5,6 +5,7 @@ import redisClient from '../loaders/redis'; // Ensure correct import path
 import User from '../models/User';
 import BrokerAccount from '../models/Broker';
 import config from '../config';
+import produceDataToKafka from '../loaders/kafka';
 
 // Securely generate a random token
 // const generateToken = () => randomBytes(32).toString('hex');
@@ -56,7 +57,11 @@ const setAuthenticationToken = async (res: Response, userId: string) => {
     sameSite: 'strict',
   });
 
-  // Todo - Fire event to trade ms telling the user has logged in and get the orders/trades data
+  // Fire Event to notify order-ms to start syncing trades/orders in background
+  const data = {
+    tokens: brokerTokens,
+  };
+  produceDataToKafka('login', data, userId);
 };
 
 // Checks if the JWT is expired

@@ -33,4 +33,9 @@ export default {
 
   REDIS_HOST: process.env.REDIS_HOST,
   REDIS_PORT: Number(process.env.REDIS_PORT),
+
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  AWS_DEFAULT_REGION: process.env.AWS_DEFAULT_REGION,
+  AWS_BACKUP_BUCKET: process.env.AWS_BACKUP_BUCKET,
 } as ProcessEnv;
