@@ -15,7 +15,7 @@ interface IUpstoxOrder {
   status: string;
   guid: string | null;
   tag: string | null;
-  intrument_token: string;
+  instrument_token: string;
   placed_by: string;
   trading_symbol: string;
   order_type: string;
@@ -32,8 +32,8 @@ interface IUpstoxOrder {
   parent_order_id: string | null;
   order_id: string;
   variety: string;
-  order_timestamp: Date;
-  exchange_timestamp: Date;
+  order_timestamp: string;
+  exchange_timestamp: string | null;
   is_amo: boolean;
   order_request_id: string;
   order_ref_id: string;
@@ -72,6 +72,40 @@ class UpstoxOrder extends Model<IUpstoxOrder, Partial<IUpstoxOrder>> {
       },
     });
     return upstoxOrders;
+  }
+
+  static async findOrder(orderId: string, userId: string) {
+    console.log(`Finding Upstox order ${orderId} on user ${userId}`);
+    const upstoxOrder = await UpstoxOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+    });
+    return upstoxOrder;
+  }
+
+  static async getAllDataForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Upstox order ${orderId} data on user ${userId}`);
+    const upstoxOrderData = await UpstoxOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return upstoxOrderData;
+  }
+
+  static async getAllOrdersForUser(userId: string) {
+    console.log(`Getting all Upstox orders for user: ${userId}`);
+    const upstoxOrdersData = await UpstoxOrder.findAll({
+      where: {
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return upstoxOrdersData;
   }
 }
 
@@ -123,7 +157,7 @@ UpstoxOrder.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    intrument_token: {
+    instrument_token: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -193,11 +227,11 @@ UpstoxOrder.init(
       allowNull: false,
     },
     order_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     exchange_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     is_amo: {

@@ -17,11 +17,11 @@ interface IUpstoxTrade {
   quantity: number;
   exchange_order_id: string;
   order_id: string;
-  exchange_timestamp: Date;
+  exchange_timestamp: string;
   average_price: number;
   trade_id: string;
   order_ref_id: string;
-  order_timestamp: Date;
+  order_timestamp: string;
   segment: string;
 }
 
@@ -61,6 +61,40 @@ class UpstoxTrade extends Model<IUpstoxTrade, Partial<IUpstoxTrade>> {
       },
     });
     return upstoxTrades;
+  }
+
+  static async findTrade(tradeId: string, userId: string) {
+    console.log(`Finding Upstox trade ${tradeId} on user ${userId}`);
+    const upstoxTrade = await UpstoxTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+    });
+    return upstoxTrade;
+  }
+
+  static async getAllDataForTrade(tradeId: string, userId: string) {
+    console.log(`Getting all Upstox trade ${tradeId} data on user ${userId}`);
+    const upstoxTradeData = await UpstoxTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return upstoxTradeData;
+  }
+
+  static async getAllTradesForUser(userId: string) {
+    console.log(`Getting all Upstox trades for user: ${userId}`);
+    const upstoxTradesData = await UpstoxTrade.findAll({
+      where: {
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return upstoxTradesData;
   }
 }
 
@@ -147,7 +181,7 @@ UpstoxTrade.init(
   },
   {
     modelName: 'UpstoxTrade',
-    tableName: 'trades',
+    tableName: 'upstox_trades',
     sequelize,
   },
 );

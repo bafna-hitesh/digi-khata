@@ -18,7 +18,8 @@
     "standalone:order": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/order/index.ts",
     "standalone:user": "nodemon --watch servers --watch ../../packages/ --ext ts --exec ts-node servers/user/index.ts",
     "test-report": "nyc --reporter=text --reporter=html mocha ./test",
-    "update-nginx": "node updateNginxConfig.js"
+    "update-nginx": "node updateNginxConfig.js",
+    "add-fake-data": "ts-node test/addFakeData.ts"
   },
   "dependencies": {
     "@digi/brokers": "*",

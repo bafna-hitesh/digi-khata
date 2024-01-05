@@ -1,7 +1,7 @@
 import { createKafkaInstance, kafkaConsumer, kafkaProducer } from '@digi/kafka';
 import config from '../config';
-import processOrders from '../utils/orders';
-import processTrades from '../utils/trades';
+import { processOrders } from '../utils/orders';
+import { processTrades } from '../utils/trades';
 import getTradesBasedOnBroker from '../utils/dashboard';
 
 const kafka = createKafkaInstance(config.KAFKA_HOST.split(','), 'order-ms');

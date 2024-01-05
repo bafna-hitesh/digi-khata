@@ -1,6 +1,6 @@
 import { Kafka } from 'kafkajs';
-import processOrders from './orders';
-import processTrades from './trades';
+import { processOrders } from './orders';
+import { processTrades } from './trades';
 
 const createKafkaInstance = (brokersURL: string[]) => {
   return new Kafka({

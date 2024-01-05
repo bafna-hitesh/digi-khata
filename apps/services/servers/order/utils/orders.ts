@@ -31,26 +31,33 @@ const getOrdersBasedOnBroker = async (brokerDetails: IBroker) => {
   return orders;
 };
 
-const formatKiteOrders = async (orders: IKiteOrder[], userId: string) => {
-  // Format orders to include userId, brokerName (default KITE) and orderDate
-  const commonFields = { userId, orderDate: new Date() };
+const formatKiteOrders = async (orders: Partial<IKiteOrder>[], userId: string) => {
+  // Todo - Create a separate type for trade without userId, brokerName, orderDate and segment
+  // Format orders to include userId, brokerName (default KITE), orderDate and segment
+  const commonFields = { userId, orderDate: new Date(), brokerName: 'KITE', segment: '' };
   const formattedKiteOrders = orders.map((order) => {
+    commonFields.segment = zerodha.kiteTrades.getTradeTypeFromTradingSymbol(order?.tradingsymbol as string);
     return Object.assign({}, order, commonFields);
   });
-  return formattedKiteOrders;
+  return formattedKiteOrders as IKiteOrder[];
 };
 
-const formatUpstoxOrders = async (orders: IUpstoxOrder[], userId: string) => {
-  // Format orders to include userId, brokerName (default UPSTOX) and orderDate
-  const commonFields = { userId, orderDate: new Date() };
+const formatUpstoxOrders = async (orders: Partial<IUpstoxOrder>[], userId: string) => {
+  // Format orders to include userId, brokerName (default UPSTOX), orderDate and segment
+  const commonFields = { userId, orderDate: new Date(), brokerName: 'UPSTOX', segment: '' };
   const formattedUpstoxOrders = orders.map((order) => {
+    commonFields.segment = upstox.upstoxOrders.getOrderTypeFromTradingSymbol(order?.trading_symbol as string);
     return Object.assign({}, order, commonFields);
   });
-  return formattedUpstoxOrders;
+  return formattedUpstoxOrders as IUpstoxOrder[];
 };
 
 // Format the orders to include the userId, brokerName and orderDate and returns the formatted orders
-const formatOrdersBasedOnBroker = (orders: IKiteOrder[] | IUpstoxOrder[], userId: string, brokerName: string) => {
+const formatOrdersBasedOnBroker = (
+  orders: Partial<IKiteOrder>[] | Partial<IUpstoxOrder>[],
+  userId: string,
+  brokerName: string,
+) => {
   let formattedOrders;
   if (brokerName === 'KITE') {
     formattedOrders = formatKiteOrders(orders as IKiteOrder[], userId);
@@ -93,4 +100,48 @@ const processOrders = async (accessToken: string) => {
   }
 };
 
-export default processOrders;
+const getOrderBasedOnBroker = async (orderId: string, broker: string, userId: string) => {
+  let order;
+  if (broker === 'KITE') {
+    order = await KiteOrder.findOrder(orderId, userId);
+  } else if (broker === 'UPSTOX') {
+    order = await UpstoxOrder.findOrder(orderId, userId);
+  } else {
+    throw new Error(`Invalid broker: ${broker} when getting order based on broker`);
+  }
+  return order;
+};
+
+const getAllOrderDataBasedOnBroker = async (orderId: string, broker: string, userId: string) => {
+  let orderData;
+  if (broker === 'KITE') {
+    orderData = await KiteOrder.getAllDataForOrder(orderId, userId);
+  } else if (broker === 'UPSTOX') {
+    orderData = await UpstoxOrder.getAllDataForOrder(orderId, userId);
+  } else {
+    throw new Error(`Invalid broker: ${broker} when getting all order data based on broker`);
+  }
+  return orderData;
+};
+
+const getAllOrdersForUser = async (broker: string, userId: string) => {
+  let orderData;
+  if (broker === 'KITE') {
+    orderData = await KiteOrder.getAllOrdersForUser(userId);
+  } else if (broker === 'UPSTOX') {
+    orderData = await UpstoxOrder.getAllOrdersForUser(userId);
+  } else {
+    throw new Error(`Invalid broker: ${broker} when getting all orders for user: ${userId}`);
+  }
+  return orderData;
+};
+
+export {
+  processOrders,
+  getOrderBasedOnBroker,
+  getAllOrderDataBasedOnBroker,
+  getAllOrdersForUser,
+  formatKiteOrders,
+  formatUpstoxOrders,
+  bulkInsertOrdersToPostgres,
+};

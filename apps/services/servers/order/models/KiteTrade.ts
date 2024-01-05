@@ -13,14 +13,14 @@ interface IKiteTrade {
   exchange_order_id: string | null;
   tradingsymbol: string;
   exchange: string;
-  instrument_token: string;
+  instrument_token: number;
   transaction_type: string;
   product: string;
   average_price: number;
-  filled: number;
-  fill_timestamp: Date;
-  order_timestamp: Date;
-  exchange_timestamp: Date;
+  quantity: number;
+  fill_timestamp: string;
+  order_timestamp: string;
+  exchange_timestamp: string;
   segment: string;
 }
 
@@ -60,6 +60,40 @@ class KiteTrade extends Model<IKiteTrade, Partial<IKiteTrade>> {
       },
     });
     return kiteTrades;
+  }
+
+  static async findTrade(tradeId: string, userId: string) {
+    console.log(`Finding Kite trade ${tradeId} on user ${userId}`);
+    const kiteTrade = await KiteTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+    });
+    return kiteTrade;
+  }
+
+  static async getAllDataForTrade(tradeId: string, userId: string) {
+    console.log(`Getting Kite trade ${tradeId} data on user ${userId}`);
+    const kiteTradeData = await KiteTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return kiteTradeData;
+  }
+
+  static async getAllTradesForUser(userId: string) {
+    console.log(`Getting all Kite trades for user: ${userId}`);
+    const kiteTradesData = await KiteTrade.findAll({
+      where: {
+        userId,
+      },
+      include: [{ all: true }], // Include Model Associations
+    });
+    return kiteTradesData;
   }
 }
 
@@ -105,7 +139,7 @@ KiteTrade.init(
       allowNull: false,
     },
     instrument_token: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     transaction_type: {
@@ -120,20 +154,20 @@ KiteTrade.init(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    filled: {
+    quantity: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
     fill_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     order_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     exchange_timestamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     segment: {

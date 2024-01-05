@@ -72,6 +72,11 @@ const isJwtExpired = (token: string) => {
   }
 };
 
+// Decode JWT after checking if it is expired or not
+const decodeJWT = async (token: string) => {
+  return jwt.decode(token);
+};
+
 // Function to handle expired access tokens
 const handleExpiredAccessToken = async (refreshToken: string) => {
   if (isJwtExpired(refreshToken)) {
@@ -110,4 +115,5 @@ export {
   isJwtExpired,
   handleExpiredAccessToken,
   getUserIDFromRedis,
+  decodeJWT,
 };
