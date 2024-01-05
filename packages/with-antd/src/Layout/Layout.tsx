@@ -1,9 +1,8 @@
-import { ReactNode } from 'react';
-import { Layout } from 'antd';
-type Props = {
-  children: ReactNode;
-};
+import { Layout, LayoutProps } from 'antd';
 
-const DigiLayout = ({ children }: Props) => <Layout>{children}</Layout>;
+const { Header, Footer, Sider, Content } = Layout;
 
+const DigiLayout = (props: LayoutProps) => <Layout className='full-height' {...props} />;
+
+export { Header, Footer, Sider, Content };
 export default DigiLayout;

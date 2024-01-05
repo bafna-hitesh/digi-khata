@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "index.ts",
   "module": "index.ts",
+  "private": true,
   "types": "index.ts",
   "license": "MIT",
   "scripts": {
