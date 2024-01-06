@@ -21,8 +21,4 @@ source "$VENV_PATH/bin/activate"
 # pip install -r "$SCRIPT_DIR/requirements.txt"
 
 # Start the Flask application with nodemon
-<<<<<<< HEAD
-nodemon --watch '.' --ext py --exec python3 ./servers/dashboardMs/index.py
-=======
 nodemon --watch '.' --ext py --exec python3 "$SCRIPT_DIR/index.py"
->>>>>>> 2b488f5cb9eee925fb085b58bb692c68d6247522
