@@ -16,7 +16,8 @@
     "lint": "turbo run lint",
     "prepare": "husky install && chmod a+x .husky/commit-msg",
     "upgrade": "node updatePackages.js",
-    "postinstall": "pip install -r ./apps/services/servers/dashboardMs/requirements.txt"
+    "postinstall": "chmod +x ./apps/services/servers/dashboardMs/install_dependencies.sh && ./apps/services/servers/dashboardMs/install_dependencies.sh",
+    "dev:web": "turbo dev --filter=web --filter=@digi/components"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
@@ -37,40 +38,40 @@
   },
   "dependencies": {
     "babel-plugin-module-resolver": "^5.0.0",
-    "classnames": "^2.3.2",
-    "clsx": "^2.0.0",
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.0",
     "css-loader": "^6.8.1",
-    "father": "^4.3.7",
+    "father": "^4.3.8",
     "jws": "^4.0.0",
     "mini-css-extract-plugin": "^2.7.6",
     "module-alias": "^2.2.3",
-    "sass": "^1.69.5",
-    "sass-loader": "^13.3.2"
+    "sass": "^1.69.7",
+    "sass-loader": "^13.3.3"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
-    "@commitlint/is-ignored": "^18.4.3",
-    "@turbo/gen": "^1.11.1",
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/is-ignored": "^18.4.4",
+    "@turbo/gen": "^1.11.3",
     "@types/busboy": "^1.5.3",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.8.0",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "eslint-config-custom": "*",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-prettier": "^5.1.2",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "style-loader": "^3.3.3",
-    "stylelint": "^16.0.1",
+    "stylelint": "^16.1.0",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended": "^14.0.0",
     "stylelint-order": "^6.0.4",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
-    "turbo": "^1.11.1"
+    "turbo": "^1.11.3"
   },
   "packageManager": "yarn@1.22.21",
   "engines": {
