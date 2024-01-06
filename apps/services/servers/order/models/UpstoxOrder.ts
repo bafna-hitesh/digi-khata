@@ -1,7 +1,7 @@
 import { DataTypes, Model, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
-import Mistake from './Mistake';
-import Strategy from './Strategy';
+import { Mistake } from './Mistake';
+import { Strategy } from './Strategy';
 
 interface IUpstoxOrder {
   id: string;
@@ -39,16 +39,16 @@ interface IUpstoxOrder {
   order_ref_id: string;
 }
 class UpstoxOrder extends Model<IUpstoxOrder, Partial<IUpstoxOrder>> {
-  static async findOrCreateOrder(upstoxOrderDetails: IUpstoxOrder) {
+  static async findOrCreateOrder(upstoxOrderDetails: IUpstoxOrder, userId: string) {
     const [upstoxOrder, created] = await UpstoxOrder.findOrCreate({
       where: { order_id: upstoxOrderDetails.order_id },
       defaults: upstoxOrderDetails,
     });
 
     if (created) {
-      console.log('Created new Upstox Order with ID: ', upstoxOrder.get('order_id'));
+      console.log(`Created new Upstox Order for user: ${userId} with Order ID: ${upstoxOrder.get('order_id')}`);
     } else {
-      console.log('Already found Upstox Order with ID: ', upstoxOrder.get('order_id'));
+      console.log(`Already found Upstox Order for user: ${userId} with Order ID: ${upstoxOrder.get('order_id')}`);
     }
 
     return upstoxOrder;
@@ -57,7 +57,7 @@ class UpstoxOrder extends Model<IUpstoxOrder, Partial<IUpstoxOrder>> {
   static async createBulkOrders(upstoxOrdersDetails: IUpstoxOrder[], userId: string) {
     console.log('Creating bulk Upstox orders for user: ', userId);
     // Can lead to inconsistencies if some insert fails due to any reason
-    const [upstoxOrders] = await UpstoxOrder.bulkCreate(upstoxOrdersDetails);
+    const [upstoxOrders] = await UpstoxOrder.bulkCreate(upstoxOrdersDetails, { ignoreDuplicates: true });
     return upstoxOrders;
   }
 
@@ -106,6 +106,38 @@ class UpstoxOrder extends Model<IUpstoxOrder, Partial<IUpstoxOrder>> {
       include: [{ all: true }], // Include Model Associations
     });
     return upstoxOrdersData;
+  }
+
+  static async getAllMistakesForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Mistakes for Upstox Order: ${orderId} on user: ${userId}`);
+    const mistakesForUpstoxOrder = await UpstoxOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Mistake,
+        attributes: ['tag'],
+      },
+    });
+    return mistakesForUpstoxOrder;
+  }
+
+  static async getAllStrategiesForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Strategies for Upstox Order: ${orderId} on user: ${userId}`);
+    const strategiesForUpstoxOrder = await UpstoxOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Strategy,
+        attributes: ['tag'],
+      },
+    });
+    return strategiesForUpstoxOrder;
   }
 }
 

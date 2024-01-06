@@ -1,15 +1,50 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import { DataTypes, Model, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
 
-// eslint-disable-next-line no-use-before-define
-class Strategy extends Model<InferAttributes<Strategy>, InferCreationAttributes<Strategy>> {
-  declare id: CreationOptional<string>;
+interface IStrategy {
+  id: string;
+  tag: string;
+}
 
-  declare tag: string;
+class Strategy extends Model<IStrategy, Partial<IStrategy>> {
+  static async findOrCreateStrategy(tag: string) {
+    const [strategy, created] = await Strategy.findOrCreate({
+      where: { tag },
+      defaults: tag,
+    });
 
-  declare createdAt: CreationOptional<Date>;
+    if (created) {
+      console.log(`Created new strategy with tag: ${tag}`);
+    } else {
+      console.log(`Already found strategy with tag: ${tag}`);
+    }
 
-  declare updatedAt: CreationOptional<Date>;
+    return strategy;
+  }
+
+  static async findAllStrategysStartingWithLetter(startsWith: string) {
+    console.log(`Finding all strategies that start with: ${startsWith}`);
+    const strategies = Strategy.findAll({
+      where: {
+        tag: {
+          [Op.like]: `${startsWith}%`,
+        },
+      },
+      attributes: ['tag'],
+    });
+    return strategies;
+  }
+
+  static async getStrategyDetails(tag: string) {
+    console.log(`Getting strategy details with tag: ${tag}`);
+
+    const strategy = await Strategy.findOne({
+      where: { tag },
+      plain: true,
+    });
+
+    return strategy;
+  }
 }
 
 Strategy.init(
@@ -24,8 +59,6 @@ Strategy.init(
       unique: true,
       allowNull: false,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
   },
   {
     tableName: 'strategies',
@@ -33,4 +66,4 @@ Strategy.init(
   },
 );
 
-export default Strategy;
+export { Strategy, IStrategy };

@@ -57,7 +57,7 @@ const setAuthenticationToken = async (res: Response, userId: string) => {
     sameSite: 'strict',
   });
 
-  // Fire Event to notify order-ms to start syncing trades/orders in background
+  // Fire Event to notify order-ms to start syncing trades/orders
   const data = {
     tokens: brokerTokens,
   };

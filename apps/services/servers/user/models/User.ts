@@ -44,6 +44,11 @@ class User extends Model<IUser, Partial<IUser>> {
 
     return user.get({ plain: true }) as IUser;
   }
+
+  static async getAllUsers() {
+    const users = await User.findAll();
+    return users;
+  }
 }
 
 User.init(

@@ -1,15 +1,52 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import { Model, DataTypes, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
 
-// eslint-disable-next-line no-use-before-define
-class Mistake extends Model<InferAttributes<Mistake>, InferCreationAttributes<Mistake>> {
-  declare id: CreationOptional<string>;
+interface IMistake {
+  id: string;
+  tag: string;
+}
 
-  declare tag: string;
+class Mistake extends Model<IMistake, Partial<IMistake>> {
+  static async findOrCreateMistake(tag: string) {
+    const [mistake, created] = await Mistake.findOrCreate({
+      where: { tag },
+      defaults: tag,
+    });
 
-  declare createdAt: CreationOptional<Date>;
+    if (created) {
+      console.log(`Created new mistake with tag: ${tag}`);
+    } else {
+      console.log(`Already found mistake with tag: ${tag}`);
+    }
 
-  declare updatedAt: CreationOptional<Date>;
+    return mistake;
+  }
+
+  static async findAllMistakesStartingWithLetter(startsWith: string) {
+    console.log(`Finding all mistakes that start with: ${startsWith}`);
+
+    const mistakes = await Mistake.findAll({
+      where: {
+        tag: {
+          [Op.startsWith]: startsWith,
+        },
+      },
+      attributes: ['tag'],
+    });
+
+    return mistakes;
+  }
+
+  static async getMistakeDetails(tag: string) {
+    console.log(`Getting mistake details with tag: ${tag}`);
+
+    const mistake = await Mistake.findOne({
+      where: { tag },
+      plain: true,
+    });
+
+    return mistake;
+  }
 }
 
 Mistake.init(
@@ -24,8 +61,6 @@ Mistake.init(
       unique: true,
       allowNull: false,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
   },
   {
     tableName: 'mistakes',
@@ -33,4 +68,4 @@ Mistake.init(
   },
 );
 
-export default Mistake;
+export { Mistake, IMistake };

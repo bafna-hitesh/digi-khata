@@ -1,8 +1,16 @@
 import { Request, Response } from 'express';
-import Mistake from '../models/Mistake';
-import Strategy from '../models/Strategy';
+import { Mistake } from '../models/Mistake';
+import { Strategy } from '../models/Strategy';
 import { getOrderBasedOnBroker, getAllOrderDataBasedOnBroker, getAllOrdersForUser } from '../utils/orders';
 import { decodeJWT, isJwtExpired } from '../../user/utils/authUtils';
+import BrokerAccount from '../../user/models/Broker';
+import { produceDataToKafka } from '../loaders/kafka';
+import { findMistakesToCreate, findMistakesToDelete, getAllMistakesForOrderBasedOnBroker } from '../utils/mistakes';
+import {
+  findStrategiesToCreate,
+  findStrategiesToDelete,
+  getAllStrategiesForOrderBasedOnBroker,
+} from '../utils/strategies';
 
 interface JwtPayload {
   userId: string;
@@ -52,26 +60,67 @@ const updateOrder = async (req: Request, res: Response) => {
       });
     }
 
-    const { mistakes, strategies } = orderBody;
+    let newMistakes = orderBody.mistakes;
+    let newStrategies = orderBody.strategies;
+
+    // Convert all elements of new mistakes to lower case
+    newMistakes = newMistakes.map((element: string) => {
+      return element.toLowerCase();
+    });
+
+    // Convert all elements of new strategies to lower case
+    newStrategies = newStrategies.map((element: string) => {
+      return element.toLowerCase();
+    });
+
+    const currentMistakes: any = await getAllMistakesForOrderBasedOnBroker(orderId, broker as string, userId);
+    const currentStrategies: any = await getAllStrategiesForOrderBasedOnBroker(orderId, broker as string, userId);
+
+    // TODO - Create new type for mistake that are get from orders
+    const currentMistakeTags = currentMistakes?.Mistakes.map((mistake: any) => {
+      return mistake?.tag;
+    });
+
+    // TODO - Create new type for strategy that are get from orders
+    const currentStrategyTags = currentStrategies?.Strategies.map((strategy: any) => {
+      return strategy?.tag;
+    });
+
+    // Find mistakes/strategies to delete based on current mistakes/strategies and new mistakes/strategies
+    const mistakesToDelete = findMistakesToDelete(currentMistakeTags, newMistakes);
+    const strategiesToDelete = findStrategiesToDelete(currentStrategyTags, newStrategies);
+
+    // Find mistakes/strategies to create based on current mistakes/strategies and new mistakes/strategies
+    const mistakesToCreate = findMistakesToCreate(currentMistakeTags, newMistakes);
+    const strategiesToCreate = findStrategiesToCreate(currentStrategyTags, newStrategies);
 
     // Loop through mistakes and add it to order
-    mistakes.map(async (tag: string) => {
-      const [mistake] = await Mistake.findOrCreate({
-        where: { tag: tag.toLowerCase() },
-      });
+    mistakesToCreate.map(async (tag: string) => {
+      // Check if current mistake is already added
+      const mistake = await Mistake.findOrCreateMistake(tag);
 
       // Adding mistake to order
       await orderToUpdate.addMistake(mistake);
     });
 
     // Loop through strategies and add it to order
-    strategies.map(async (tag: string) => {
-      const [strategy] = await Strategy.findOrCreate({
-        where: { tag: tag.toLowerCase() },
-      });
+    strategiesToCreate.map(async (tag: string) => {
+      const strategy = await Strategy.findOrCreateStrategy(tag);
 
       // Adding strategy to order
       await orderToUpdate.addStrategy(strategy);
+    });
+
+    // Delete all mistakes that needs to be deleted from order
+    mistakesToDelete.map(async (tag: string) => {
+      const mistake = await Mistake.getMistakeDetails(tag);
+      await orderToUpdate.removeMistake(mistake);
+    });
+
+    // Delete all strategies that needs to be deleted from order
+    strategiesToDelete.map(async (tag: string) => {
+      const strategy = await Strategy.getStrategyDetails(tag);
+      await orderToUpdate.removeStrategy(strategy);
     });
 
     return res.status(200).json({
@@ -162,4 +211,47 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-export { updateOrder, getOrder, getAllOrders };
+const syncOrders = async (req: Request, res: Response) => {
+  try {
+    const broker = req?.query?.broker;
+
+    if (!broker) {
+      return res.status(400).json({
+        message: 'Invalid Input',
+      });
+    }
+
+    let accessToken = req?.cookies?.accessToken;
+
+    if (isJwtExpired(accessToken)) {
+      accessToken = req?.cookies?.refreshToken;
+    }
+
+    const decodedJwt = (await decodeJWT(accessToken)) as JwtPayload;
+    const userId = decodedJwt?.userId;
+
+    if (!userId) {
+      return res.status(403).json({
+        message: 'Invalid Access or Refresh Token',
+      });
+    }
+
+    const brokerTokens = await BrokerAccount.getActiveBrokerTokens(userId);
+
+    const data = {
+      tokens: brokerTokens,
+    };
+    await produceDataToKafka('orders', data, userId);
+
+    return res.status(200).json({
+      message: `Syncing ${broker} orders in background`,
+    });
+  } catch (err) {
+    console.log('Some Error Occured while syncing orders: ', err);
+    return res.status(500).json({
+      message: 'Some Error Occured while syncing orders',
+    });
+  }
+};
+
+export { updateOrder, getOrder, getAllOrders, syncOrders };

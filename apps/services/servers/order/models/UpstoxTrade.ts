@@ -1,7 +1,7 @@
 import { DataTypes, Model, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
-import Mistake from './Mistake';
-import Strategy from './Strategy';
+import { Mistake } from './Mistake';
+import { Strategy } from './Strategy';
 
 interface IUpstoxTrade {
   id: string;
@@ -26,31 +26,31 @@ interface IUpstoxTrade {
 }
 
 class UpstoxTrade extends Model<IUpstoxTrade, Partial<IUpstoxTrade>> {
-  static async findOrCreateTrade(upstoxTradeDetails: IUpstoxTrade) {
+  static async findOrCreateTrade(upstoxTradeDetails: IUpstoxTrade, userId: string) {
     const [upstoxTrade, created] = await UpstoxTrade.findOrCreate({
-      where: { order_id: upstoxTradeDetails.trade_id },
+      where: { trade_id: upstoxTradeDetails.trade_id },
       defaults: upstoxTradeDetails,
     });
 
     if (created) {
-      console.log('Created new Upstox Trade with ID: ', upstoxTrade.get('trade_id'));
+      console.log(`Created new Upstox Trade for user: ${userId} with Trade ID: ${upstoxTrade.get('trade_id')}`);
     } else {
-      console.log('Already found Upstox Trade with ID: ', upstoxTrade.get('trade_id'));
+      console.log(`Already found Upstox Trade for user: ${userId} with Trade ID: ${upstoxTrade.get('trade_id')}`);
     }
 
     return upstoxTrade;
   }
 
   static async createBulkTrades(upstoxTradesDetails: IUpstoxTrade[], userId: string) {
-    console.log('Creating bulk Upstox orders for user: ', userId);
+    console.log('Creating bulk Upstox trades for user: ', userId);
     // Can lead to inconsistencies if some insert fails due to any reason
-    const [upstoxTrades] = await UpstoxTrade.bulkCreate(upstoxTradesDetails);
+    const [upstoxTrades] = await UpstoxTrade.bulkCreate(upstoxTradesDetails, { ignoreDuplicates: true });
     return upstoxTrades;
   }
 
   static async findAllTrades(userId: string, startDate: Date, endDate: Date, segment: string) {
     console.log(`
-    Finding all Upstox orders with userId: ${userId}, segment: ${segment}, startDate: ${startDate}, endDate: ${endDate}`);
+    Finding all Upstox trades with userId: ${userId}, segment: ${segment}, startDate: ${startDate}, endDate: ${endDate}`);
     const upstoxTrades = await UpstoxTrade.findAll({
       where: {
         userId,
@@ -95,6 +95,38 @@ class UpstoxTrade extends Model<IUpstoxTrade, Partial<IUpstoxTrade>> {
       include: [{ all: true }], // Include Model Associations
     });
     return upstoxTradesData;
+  }
+
+  static async getAllMistakesForTrade(tradeId: string, userId: string) {
+    console.log(`Getting all Mistakes for Upstox Trade: ${tradeId} on user: ${userId}`);
+    const mistakesForUpstoxTrade = await UpstoxTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Mistake,
+        attributes: ['tag'],
+      },
+    });
+    return mistakesForUpstoxTrade;
+  }
+
+  static async getAllStrategiesForTrade(tradeId: string, userId: string) {
+    console.log(`Getting all Strategies for Upstox Trade: ${tradeId} on user: ${userId}`);
+    const strategiesForUpstoxTrade = await UpstoxTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Strategy,
+        attributes: ['tag'],
+      },
+    });
+    return strategiesForUpstoxTrade;
   }
 }
 

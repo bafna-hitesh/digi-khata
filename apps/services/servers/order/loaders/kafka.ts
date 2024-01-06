@@ -131,4 +131,10 @@ const consumeDashboardEvents = async () => {
   }
 };
 
-export { kafka, syncAllBrokersOrdersInBackground, syncAllBrokersTradesInBackground, consumeDashboardEvents };
+export {
+  kafka,
+  produceDataToKafka,
+  syncAllBrokersOrdersInBackground,
+  syncAllBrokersTradesInBackground,
+  consumeDashboardEvents,
+};
