@@ -1,7 +1,7 @@
 import { DataTypes, Model, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
-import Mistake from './Mistake';
-import Strategy from './Strategy';
+import { Mistake } from './Mistake';
+import { Strategy } from './Strategy';
 
 interface IKiteTrade {
   id: string;
@@ -25,16 +25,16 @@ interface IKiteTrade {
 }
 
 class KiteTrade extends Model<IKiteTrade, Partial<IKiteTrade>> {
-  static async findOrCreateTrade(kiteTradeDetails: IKiteTrade) {
+  static async findOrCreateTrade(kiteTradeDetails: IKiteTrade, userId: string) {
     const [kiteTrade, created] = await KiteTrade.findOrCreate({
       where: { order_id: kiteTradeDetails.trade_id },
       defaults: kiteTradeDetails,
     });
 
     if (created) {
-      console.log('Created new Kite Trade with ID: ', kiteTrade.get('trade_id'));
+      console.log(`Created new Kite Trade for user: ${userId} with Trade ID: ${kiteTrade.get('trade_id')}`);
     } else {
-      console.log('Already found Kite Trade with ID: ', kiteTrade.get('trade_id'));
+      console.log(`Already found Kite Trade for user: ${userId} with Trade ID: ${kiteTrade.get('trade_id')}`);
     }
 
     return kiteTrade;
@@ -43,7 +43,7 @@ class KiteTrade extends Model<IKiteTrade, Partial<IKiteTrade>> {
   static async createBulkTrades(kiteTradesDetails: IKiteTrade[], userId: string) {
     console.log('Creating bulk Kite orders for user: ', userId);
     // Can lead to inconsistencies if some insert fails due to any reason
-    const [kiteTrades] = await KiteTrade.bulkCreate(kiteTradesDetails);
+    const [kiteTrades] = await KiteTrade.bulkCreate(kiteTradesDetails, { ignoreDuplicates: true });
     return kiteTrades;
   }
 
@@ -94,6 +94,38 @@ class KiteTrade extends Model<IKiteTrade, Partial<IKiteTrade>> {
       include: [{ all: true }], // Include Model Associations
     });
     return kiteTradesData;
+  }
+
+  static async getAllMistakesForTrade(tradeId: string, userId: string) {
+    console.log(`Getting all Mistakes for Kite Trade: ${tradeId} on user: ${userId}`);
+    const mistakesForKiteTrade = await KiteTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Mistake,
+        attributes: ['tag'],
+      },
+    });
+    return mistakesForKiteTrade;
+  }
+
+  static async getAllStrategiesForTrade(tradeId: string, userId: string) {
+    console.log(`Getting all Strategies for Kite Trade: ${tradeId} on user: ${userId}`);
+    const strategiesForKiteTrade = await KiteTrade.findOne({
+      where: {
+        trade_id: tradeId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Strategy,
+        attributes: ['tag'],
+      },
+    });
+    return strategiesForKiteTrade;
   }
 }
 

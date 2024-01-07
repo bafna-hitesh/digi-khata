@@ -1,7 +1,7 @@
 import { DataTypes, Model, Op } from 'sequelize';
 import { sequelize } from '../loaders/sequelize';
-import Mistake from './Mistake';
-import Strategy from './Strategy';
+import { Mistake } from './Mistake';
+import { Strategy } from './Strategy';
 
 interface IKiteOrder {
   id: string;
@@ -40,19 +40,21 @@ interface IKiteOrder {
   meta: Record<string, unknown>;
   tag: string | null;
   guid: string | null;
+  Mistakes?: Mistake;
+  Strategies?: Strategy;
 }
 
 class KiteOrder extends Model<IKiteOrder, Partial<IKiteOrder>> {
-  static async findOrCreateOrder(kiteOrderDetails: IKiteOrder) {
+  static async findOrCreateOrder(kiteOrderDetails: IKiteOrder, userId: string) {
     const [kiteOrder, created] = await KiteOrder.findOrCreate({
       where: { order_id: kiteOrderDetails.order_id },
       defaults: kiteOrderDetails,
     });
 
     if (created) {
-      console.log('Created new Kite Order with ID: ', kiteOrder.get('order_id'));
+      console.log(`Created new Kite Order for user: ${userId} with Order ID: ${kiteOrder.get('order_id')}`);
     } else {
-      console.log('Already found Kite Order with ID: ', kiteOrder.get('order_id'));
+      console.log(`Already found Kite Order for user: ${userId} with Order ID: ${kiteOrder.get('order_id')}`);
     }
 
     return kiteOrder;
@@ -61,7 +63,7 @@ class KiteOrder extends Model<IKiteOrder, Partial<IKiteOrder>> {
   static async createBulkOrders(kiteOrdersDetails: IKiteOrder[], userId: string) {
     console.log('Creating bulk Kite orders for user: ', userId);
     // Can lead to inconsistencies if some insert fails due to any reason
-    const [kiteOrders] = await KiteOrder.bulkCreate(kiteOrdersDetails);
+    const [kiteOrders] = await KiteOrder.bulkCreate(kiteOrdersDetails, { ignoreDuplicates: true });
     return kiteOrders;
   }
 
@@ -110,6 +112,38 @@ class KiteOrder extends Model<IKiteOrder, Partial<IKiteOrder>> {
       include: [{ all: true }], // Include Model Associations
     });
     return kiteOrdersData;
+  }
+
+  static async getAllMistakesForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Mistakes for Kite Order: ${orderId} on user: ${userId}`);
+    const mistakesForKiteOrder = await KiteOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Mistake,
+        attributes: ['tag'],
+      },
+    });
+    return mistakesForKiteOrder;
+  }
+
+  static async getAllStrategiesForOrder(orderId: string, userId: string) {
+    console.log(`Getting all Strategies for Kite Order: ${orderId} on user: ${userId}`);
+    const strategiesForKiteOrder = await KiteOrder.findOne({
+      where: {
+        order_id: orderId,
+        userId,
+      },
+      attributes: [],
+      include: {
+        model: Strategy,
+        attributes: ['tag'],
+      },
+    });
+    return strategiesForKiteOrder;
   }
 }
 
