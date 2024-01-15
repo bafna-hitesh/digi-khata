@@ -7,7 +7,7 @@ const darkTheme: ThemeConfig = {
   token: {
     colorPrimary: '#e8eaed',
     colorInfo: '#e8eaed',
-    fontSize: 14,
+    fontSize: 16,
     wireframe: true,
     colorBgBase: '#141414',
     colorError: '#F5222D',
