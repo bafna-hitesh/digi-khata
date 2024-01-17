@@ -1,5 +1,5 @@
+import { Drawer } from 'antd';
 import { memo } from 'react';
-import { Drawer } from '@digi/components';
 import RouteMenu from './Menu';
 import styles from './Sidebar.module.scss';
 

@@ -1,5 +1,5 @@
-import { Menu, MenuProps } from '@digi/components';
-import { HomeOutlined, PieChartOutlined, BookOutlined } from '@ant-design/icons';
+import { BookOutlined, HomeOutlined, PieChartOutlined } from '@ant-design/icons';
+import { Menu, MenuProps } from 'antd';
 
 const items: MenuProps['items'] = [
   {

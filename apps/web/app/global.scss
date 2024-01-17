@@ -18,7 +18,7 @@ body {
 
 html.dark {
   body {
-    background: var(--background);
+    // background: var(--background);
     margin: 0px;
     padding: 0px;
     font-size: 14px;
@@ -57,20 +57,6 @@ html.dark {
       opacity: 0.5;
       cursor: not-allowed;
     }
-  }
-}
-
-html.light {
-  body {
-    background: var(--foreground);
-    margin: 0px;
-    padding: 0px;
-    font-size: 14px;
-    color: var(--background);
-  }
-
-  svg {
-    color: var(--background);
   }
 }
 

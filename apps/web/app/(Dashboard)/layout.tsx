@@ -1,11 +1,13 @@
 'use client';
 
-import { Layout, Header, Sider, Content } from '@digi/components';
 import Sidebar from '@components/Sidebar/Sidebar';
+import { Layout } from 'antd';
+
+const { Header, Sider, Content } = Layout;
 
 const DashboardLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <Layout hasSider>
+    <Layout hasSider className='full-height'>
       <Sider width='15%'>
         <Sidebar />
       </Sider>

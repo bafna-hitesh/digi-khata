@@ -1,14 +1,15 @@
 'use client';
 
 import Logo from '@assets/DigiKhataLogo';
-import cx from 'classnames';
-import LoginWithBrokers from '@components/LoginWithBrokers';
 import HomeTabs from '@components/HomeTabs';
+import LoginWithBrokers from '@components/LoginWithBrokers';
+import { Layout } from 'antd';
+import cx from 'classnames';
 import styles from './home.module.scss';
 
 export default function Page() {
   return (
-    <>
+    <Layout>
       <nav className={styles.header}>
         <div className={styles.headerInner}>
           <a href='/' className='flex-center'>
@@ -36,7 +37,7 @@ export default function Page() {
         <h2 className={styles.headerSubTitle}>The Web&apos;s best</h2>
         <HomeTabs />
       </section>
-    </>
+    </Layout>
   );
 }
 

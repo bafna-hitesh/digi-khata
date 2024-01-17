@@ -1,9 +1,12 @@
 'use client';
 
-import { Provider, StyledComponentsRegistry } from '@digi/components';
-import './global.scss';
-import './flex.scss';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { App, ConfigProvider } from 'antd';
+import darkTheme from 'config/darkTheme';
 import { Inter } from 'next/font/google';
+import './flex.scss';
+import './global.scss';
+
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
   subsets: ['latin'],
@@ -14,9 +17,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang='en' className='dark'>
       <body className={inter.className}>
-        <Provider isDarkMode>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        </Provider>
+        <AntdRegistry>
+          <ConfigProvider theme={darkTheme}>
+            <App className='full-width full-height'>{children}</App>
+          </ConfigProvider>
+        </AntdRegistry>
       </body>
     </html>
   );
