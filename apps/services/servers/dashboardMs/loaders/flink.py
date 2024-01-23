@@ -1,17 +1,19 @@
 import logging
 import os
 import sys
-from typing import List
-from pyflink.common import Types, Configuration
-from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode
-from pyflink.datastream.formats.json import JsonRowSerializationSchema, JsonRowDeserializationSchema
-from pyflink.datastream.connectors.kafka import FlinkKafkaProducer, FlinkKafkaConsumer
-from conf.index import KAFKA_HOST, FLINK_TOPICS
-from pyflink.table import StreamTableEnvironment, EnvironmentSettings
-from pyflink.common import WatermarkStrategy
-from api.flink.trades import Router
 from datetime import timedelta
+from typing import List
+
+from api.flink.trades import Router
+from conf.index import FLINK_TOPICS, KAFKA_HOST
+from pyflink.common import Configuration, Types, WatermarkStrategy
 from pyflink.common.restart_strategy import RestartStrategies
+from pyflink.datastream import RuntimeExecutionMode, StreamExecutionEnvironment
+from pyflink.datastream.connectors.kafka import (FlinkKafkaConsumer,
+                                                 FlinkKafkaProducer)
+from pyflink.datastream.formats.json import (JsonRowDeserializationSchema,
+                                             JsonRowSerializationSchema)
+from pyflink.table import EnvironmentSettings, StreamTableEnvironment
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(message)s")
 
@@ -52,6 +54,7 @@ def initialize_app(topics: List[str]) -> None:
     env.set_parallelism(2)
     
     # Set Kafka connector JAR
+    # move this to env
     kafka_connector_jar = f'file://{os.getcwd()}/servers/dashboardMs/jars/flink-sql-connector-kafka-3.0.2-1.18.jar'
     env.add_jars(kafka_connector_jar)
 
