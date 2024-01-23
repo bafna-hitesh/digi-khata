@@ -55,6 +55,7 @@ def initialize_app(topics: List[str]) -> None:
     
     # Set Kafka connector JAR
     # move this to env
+    
     kafka_connector_jar = f'file://{os.getcwd()}/servers/dashboardMs/jars/flink-sql-connector-kafka-3.0.2-1.18.jar'
     env.add_jars(kafka_connector_jar)
 
