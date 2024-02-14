@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import testData from '../../../test/constants';
+// import testData from '../../../test/constants';
 import {
   getKiteDataByDayOfWeek,
   getKiteDataDaily,
@@ -11,6 +11,26 @@ import {
 } from '../lib/postgres';
 
 export const getDashboardData = async (req: Request, res: Response) => {
+
+  const currentDate = new Date()
+  const lastMonthDate = new Date().setDate(currentDate.getDate() - 30)
+
+  const { broker = 'all', segment = 'fno', intervalType = 'daily' } = req.body || {}
+
+  const filter = {
+    broker,
+    segment,
+    intervalType,
+    startDate: req.body.startDate || new Date(lastMonthDate),
+    endDate: req.body.endDate || new Date(currentDate)
+  }
+
+  try {
+
+  } catch (error) {
+    console.error(error)
+  }
+
   // try {
 
   // Todo - Validate Input

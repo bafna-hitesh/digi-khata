@@ -1,9 +1,10 @@
 'use client';
 
 import Sidebar from '@components/Sidebar/Sidebar';
-import { Layout } from 'antd';
+import { Button, DatePicker, Flex, Layout, Select, Space } from 'antd';
 
 const { Header, Sider, Content } = Layout;
+const { RangePicker } = DatePicker;
 
 const DashboardLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
@@ -11,10 +12,7 @@ const DashboardLayout = ({ children }: Readonly<{ children: React.ReactNode }>) 
       <Sider width='15%'>
         <Sidebar />
       </Sider>
-      <Layout>
-        <Header>Header</Header>
-        <Content>{children}</Content>
-      </Layout>
+     {children}
     </Layout>
   );
 };

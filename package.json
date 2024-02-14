@@ -16,7 +16,6 @@
     "lint": "turbo run lint",
     "prepare": "husky install && chmod a+x .husky/commit-msg",
     "upgrade": "node updatePackages.js",
-    "postinstall": "chmod +x ./apps/services/servers/dashboardMs/install_dependencies.sh && ./apps/services/servers/dashboardMs/install_dependencies.sh",
     "dev:web": "turbo dev --filter=web"
   },
   "lint-staged": {
