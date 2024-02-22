@@ -4,9 +4,9 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { App, ConfigProvider } from 'antd';
 import darkTheme from 'config/darkTheme';
 import { Inter } from 'next/font/google';
+import StoreProvider from './StoreProvider';
 import './flex.scss';
 import './global.scss';
-import StoreProvider from './StoreProvider';
 
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({

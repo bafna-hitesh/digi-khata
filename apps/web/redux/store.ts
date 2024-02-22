@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit'
-import dashboardReducer from '../app/(Dashboard)/dashboard/dashboarSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import dashboardReducer from '../app/(Dashboard)/dashboard/dashboarSlice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: dashboardReducer
-  })
-}
+    reducer: dashboardReducer,
+  });
+};
 
 // Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>
+export type AppStore = ReturnType<typeof makeStore>;
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>
-export type AppDispatch = AppStore['dispatch']
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
