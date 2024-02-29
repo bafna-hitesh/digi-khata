@@ -1,7 +1,7 @@
 import { Card } from 'antd';
-import styles from '../Dashboard/Dashboard.module.scss';
 import cx from 'classnames';
-import { TinyColumnChart } from './TinyColumnChart';
+import styles from '../Dashboard/Dashboard.module.scss';
+import TinyColumnChart from './TinyColumnChart';
 
 const MaxDrawdown = () => {
   return (
