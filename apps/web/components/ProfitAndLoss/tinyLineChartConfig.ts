@@ -1,6 +1,8 @@
-export function tinyLineChartConfig(data: number[]) {
+import type TinyLineChartConfigType from './tinyLineChartConfigTypes';
+
+const tinyLineChartConfig = (profitAndLossData: number[]): TinyLineChartConfigType => {
   return {
-    data,
+    data: profitAndLossData,
     autoFit: true,
     smooth: true,
     height: 70,
@@ -13,10 +15,13 @@ export function tinyLineChartConfig(data: number[]) {
       shape: 'circle',
     },
     tooltip: {
-      customContent: (value: string, data: any[]) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      customContent: (title: string, data: any[]) => {
         const displayData = data[0]?.value;
         return `<p style="font-size: 14px; color: #1C1B20; font-weight: 800; padding: -10px 8px">P&amp;L: ${displayData}</p>`;
       },
     },
   };
-}
+};
+
+export default tinyLineChartConfig;

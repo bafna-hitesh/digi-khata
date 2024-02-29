@@ -1,7 +1,7 @@
 import { Card } from 'antd';
+import cx from 'classnames';
 import LineChart from './LineChart';
 import styles from '../Dashboard/Dashboard.module.scss';
-import cx from 'classnames';
 
 const ProfitAndLoss = () => {
   return (
