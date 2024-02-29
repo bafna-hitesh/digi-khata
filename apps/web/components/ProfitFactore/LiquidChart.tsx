@@ -1,5 +1,5 @@
 import { Liquid } from '@ant-design/charts';
-import { liquidChartConfig } from './liquidChartConfig';
+import liquidChartConfig from './liquidChartConfig';
 
 const LiquidChart = () => {
   const profitFactor = {

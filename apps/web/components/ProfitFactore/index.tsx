@@ -1,7 +1,7 @@
 import { Card } from 'antd';
-import styles from '../Dashboard/Dashboard.module.scss';
 import LiquidChart from '@components/ProfitFactore/LiquidChart';
 import cx from 'classnames';
+import styles from '../Dashboard/Dashboard.module.scss';
 
 const ProfitFactore = () => {
   return (

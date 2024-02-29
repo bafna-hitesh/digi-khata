@@ -1,8 +1,14 @@
-export function liquidChartConfig(data: { currentProfit: number; maxValue: number; height: number }) {
+import type { LiquidChartConfigType, LiquidDataType } from './liquidChartConfigTypes';
+
+const liquidChartConfig = (data: LiquidDataType): LiquidChartConfigType => {
+  const { currentProfit, maxValue, height } = data;
+
+  const percent = currentProfit / maxValue;
+
   return {
-    percent: data.currentProfit / data.maxValue,
+    percent,
     radius: 0.7,
-    height: data.height,
+    height,
     outline: {
       border: 3,
       distance: 0,
@@ -19,8 +25,10 @@ export function liquidChartConfig(data: { currentProfit: number; maxValue: numbe
           fill: '#1C1B20',
           lineHeight: 1,
         },
-        formatter: () => `${data.currentProfit}`,
+        formatter: () => `${currentProfit}`,
       },
     },
   };
-}
+};
+
+export default liquidChartConfig;
