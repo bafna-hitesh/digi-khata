@@ -1,8 +1,8 @@
-import { pieChartConfig } from './pieChartConfig';
 import { Pie } from '@ant-design/charts';
+import pieChartConfig from './pieChartConfig';
 
-export const PieChart = () => {
-  const data = [
+const PieChart = () => {
+  const chargesPaidData = [
     {
       type: 'Broker',
       value: 27,
@@ -13,10 +13,12 @@ export const PieChart = () => {
     },
   ];
 
-  const config = pieChartConfig(data);
+  const config = pieChartConfig(chargesPaidData);
   return (
     <div style={{ height: '100px' }}>
       <Pie {...config} />
     </div>
   );
 };
+
+export default PieChart;

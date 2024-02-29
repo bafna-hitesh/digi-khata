@@ -1,7 +1,7 @@
 import { Card } from 'antd';
-import styles from '../Dashboard/Dashboard.module.scss';
 import cx from 'classnames';
-import { PieChart } from './PieChart';
+import styles from '../Dashboard/Dashboard.module.scss';
+import PieChart from './PieChart';
 
 const ChargesPaid = () => {
   return (
