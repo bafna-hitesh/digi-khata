@@ -1,5 +1,5 @@
 import { Gauge } from '@ant-design/charts';
-import { gaugeChartConfig } from './gaugeChartConfig';
+import gaugeChartConfig from './gaugeChartConfig';
 
 const GaugeChart = () => {
   const config = gaugeChartConfig();

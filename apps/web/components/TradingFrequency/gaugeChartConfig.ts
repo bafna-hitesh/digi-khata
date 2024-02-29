@@ -1,4 +1,6 @@
-export function gaugeChartConfig() {
+import type GaugeChartConfigType from './gaugeChartConfigType';
+
+const gaugeChartConfig = (): GaugeChartConfigType => {
   return {
     percent: 0.75,
     width: 105,
@@ -21,4 +23,6 @@ export function gaugeChartConfig() {
       },
     },
   };
-}
+};
+
+export default gaugeChartConfig;
