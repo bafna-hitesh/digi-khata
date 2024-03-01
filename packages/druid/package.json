@@ -1,0 +1,25 @@
+{
+  "name": "@digi/druid",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "devDependencies": {
+    "@types/luxon": "^3.4.2",
+    "eslint-config-custom": "*"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "luxon": "^3.4.4"
+  }
+}

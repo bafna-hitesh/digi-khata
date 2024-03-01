@@ -1,0 +1,93 @@
+.header {
+  z-index: 100;
+  padding: 22px 24px;
+  width: 90%;
+  max-width: 1328px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.headerInner {
+  max-width: 1328px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  svg {
+    width: 43px;
+    height: 43px;
+  }
+
+  .headerBrandName {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 24px;
+    font-feature-settings:
+      'ss01' on,
+      'cv10' on,
+      'calt' off,
+      'liga' off;
+    padding-left: 8px;
+  }
+}
+
+.main {
+  width: 90%;
+  max-width: 1328px;
+  margin-left: auto;
+  margin-right: auto;
+  header {
+    .headerTitle {
+      background: linear-gradient(180deg, #fff, #adadad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      font-size: max(48px, min(5vw, 76px));
+      line-height: 1;
+      letter-spacing: -0.05em;
+      padding: 2rem 0px;
+      position: relative;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0px;
+    }
+    .headerSubTitle {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin: 0px;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+section {
+  .headerSubTitle {
+    font-weight: 800;
+    font-size: max(48px, min(5vw, 42px));
+    line-height: 1;
+    letter-spacing: -0.05em;
+    padding: 2rem 0px;
+    position: relative;
+    background-clip: text;
+    color: #c8c8c8;
+    margin-top: 10rem;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+}
+
+.brokersContainer {
+  margin-top: 4rem;
+}
+
+.headerContainer {
+  gap: 20px;
+}
+
+@media only screen and (max-width: 1045px) {
+  .headerContainer {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,11 @@
+.isSelected {
+  border-bottom: solid 1px var(--blue);
+}
+
+.tabs {
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding-bottom: 10px;
+  font-weight: 600;
+  transition: border-color 0.3s ease-out;
+}
