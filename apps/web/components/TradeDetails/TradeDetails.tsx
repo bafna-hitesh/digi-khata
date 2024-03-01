@@ -1,8 +1,9 @@
 import cx from 'classnames';
-import styles from '../Dashboard/Dashboard.module.scss';
-import { Card } from 'antd';
+import { Pagination } from 'antd';
 import TradeCard from './TradeCard';
 import TradeFooter from './TradeFooter';
+import styles from '../Dashboard/Dashboard.module.scss';
+import { TradeType } from './tradeDetailsCardType';
 
 /**
  * @summary Displays trade details including date, profit and loss (P&L), and number of trades.
@@ -36,11 +37,21 @@ const TradeDetails = () => {
   return (
     <div className={cx(styles.trade_details_card)}>
       <div className={styles.trade_details_main_card}>
-        {dummyData.map((trade: any, index: number) => (
-          <TradeCard key={index} trade={trade} />
+        {dummyData.map((trade: TradeType, index: number) => (
+          <TradeCard key={`${index + trade.date}`} trade={trade} />
         ))}
       </div>
-
+      <Pagination
+        style={{ margin: '1rem auto' }}
+        responsive
+        size='small'
+        simple
+        disabled
+        showSizeChanger={false}
+        defaultCurrent={1}
+        total={dummyData.length}
+        hideOnSinglePage={false}
+      />
       <TradeFooter />
     </div>
   );

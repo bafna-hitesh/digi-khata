@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
-import styles from '../Dashboard/Dashboard.module.scss';
 import { Card } from 'antd';
+import styles from '../Dashboard/Dashboard.module.scss';
+import { TradeCardPropsType } from './tradeDetailsCardType';
 
 /**
  * @summary TradeCard component displays the date of the trade, profit and loss (P&L), and the number of trades.
@@ -11,23 +12,13 @@ import { Card } from 'antd';
  * Grey border for neutral (zero profit or loss)
  */
 
-interface Trade {
-  date: string;
-  'P&L': number;
-  trades: number;
-}
-
-interface TradeCardProps {
-  trade: Trade;
-}
-
-const TradeCard: React.FC<TradeCardProps> = ({ trade }) => {
+const TradeCard: React.FC<TradeCardPropsType> = ({ trade }) => {
   return (
     <Card.Grid
-      className={cx(
-        styles.sub_card,
-        trade['P&L'] > 0 ? styles.positive : trade['P&L'] < 0 ? styles.negative : styles.idle,
-      )}
+      className={cx(styles.sub_card, {
+        [styles.positive]: trade['P&L'] > 0,
+        [styles.negative]: trade['P&L'] < 0,
+      })}
       hoverable={false}
     >
       <span className={styles.date_details}>{trade.date}</span>
