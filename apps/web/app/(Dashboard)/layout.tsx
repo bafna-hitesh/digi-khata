@@ -7,7 +7,7 @@ const { Sider } = Layout;
 
 const DashboardLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <Layout hasSider className='full-height'>
+    <Layout hasSider>
       <Sider width='15%'>
         <Sidebar />
       </Sider>
