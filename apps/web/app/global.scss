@@ -79,3 +79,76 @@ html.dark {
 .text-center {
   text-align: center;
 }
+
+.progressbar_container {
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  outline: none;
+  padding-right: 0;
+  position: relative;
+  width: 100%;
+}
+
+.progressbar_grid_container {
+  align-items: center;
+  display: grid;
+  grid-template-areas:
+      "ProgressBar"
+      "Summary";
+  grid-template-rows: 1fr auto;
+  outline: none;
+}
+
+.progressbar {
+  grid-area: ProgressBar;
+  /* padding-bottom: 0.125rem; */
+  /* padding-right: 0.25rem; */
+  // background-color: #ccc;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 .0625rem #31373d1a;
+  display: flex;
+  height: 1.2rem;
+  overflow: hidden;
+  width: 100%
+}
+
+.progressbar_info {
+  color: #303030;
+  display: flex;
+  font-size: 0.875rem;
+  grid-area: Summary;
+  justify-self: end;
+  text-align: right;
+}
+// .progressbar div:last-child {
+//   border-bottom-right-radius: .5rem;
+//   border-top-right-radius: .5rem
+// }
+
+.accepted_progress {
+  border-radius: 7px;
+}
+
+
+.rejeccted_progress,.accepted_progress {
+  transition: width 400ms cubic-bezier(.83,.04,.13,.99)
+}
+
+.rejeccted_progress {
+  background: repeating-linear-gradient(135deg, #F4CE14, #F4CE14 .25rem, #000000 .25rem, #000000 .4375rem)
+}
+
+[data-progressbar-type='loss'] {
+  transform: rotate(180deg);
+}
+
+[data-progressbar-color='loss'] {
+  background-color: red;
+}
+
+[data-progressbar-color='profit'] {
+  background-color: green;
+}
+
