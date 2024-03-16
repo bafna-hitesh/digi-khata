@@ -458,4 +458,5 @@ const upstoxTrades = [
   },
 ];
 
-export { config, kiteTrades, upstoxTrades, kiteOrders, upstoxOrders };
+export { config, kiteOrders, kiteTrades, upstoxOrders, upstoxTrades };
+export default config;
