@@ -5,6 +5,10 @@ import TimeAnalysis from '@components/TimeAnalysis/TimeAnalysis';
 import AccountBalanceDetails from '@components/AcountBalanceChart';
 import TradeDetails from '@components/TradeDetails';
 import TradeDetailsByWeekCol from '@components/TradeDetailsByWeek';
+import PerformanceByMistake from '@components/PeroformanceByMistake/PerformanceByMistake';
+import PerformanceByStratergy from '@components/PerformanceByStratergy';
+import TradeDistributionByMistake from '@components/TradeDistributionByMistake';
+import CapitalVsProfitDetails from '@components/CapitalUsePerTradeVsProfit';
 import ProfitFactore from '../ProfitFactore';
 import ProfitAndLoss from '../ProfitAndLoss';
 import MaxDrawdown from '../MaxDrawdown';
@@ -37,6 +41,10 @@ const AnalyticsOverview = () => {
         <TradeDetailsByWeekCol />
         <Evalution />
         <TimeAnalysis />
+        <PerformanceByMistake />
+        <PerformanceByStratergy />
+        <TradeDistributionByMistake />
+        <CapitalVsProfitDetails />
       </Flex>
     </Content>
   );
